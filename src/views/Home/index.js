@@ -1,7 +1,8 @@
 import React from 'react';
+import Logo from '@/components/Home/Logo';
 
 const Home = () => {
-    return <p>hi</p>
+    return <Logo/>
 }
 
 export default Home;

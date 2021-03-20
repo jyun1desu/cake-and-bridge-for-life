@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import Home from './views/Home';
+import WaitRoom from './views/WaitRoom';
+import GameRoom from './views/GameRoom';
 
-function App() {
+import {
+  HashRouter as Router,
+  Switch,
+  Route,
+  // Redirect
+} from "react-router-dom";
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route
+          path="/:roomName/waiting_room/:userName"
+          component={WaitRoom}>
+        </Route>
+        <Route
+          path="/:roomName/game_room/:userName"
+          component={GameRoom}>
+        </Route>
+      </Switch>
+    </Router>
+
+  )
 }
 
 export default App;

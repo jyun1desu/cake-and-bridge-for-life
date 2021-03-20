@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware } from "redux";
-import reducer from "./reducers";
+import reducers from "./redux/reducers";
 import thunkMiddleware from 'redux-thunk-fsa';
 
 const middleware = [thunkMiddleware];
@@ -10,7 +10,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const store = createStore(
-    reducer,
+    reducers,
     null,
     applyMiddleware(...middleware)
 );

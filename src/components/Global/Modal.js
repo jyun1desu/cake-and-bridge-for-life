@@ -15,7 +15,7 @@ const ModalPage = ({children, className,onDeactive,style}) => {
 }
 
 const styledModalPage = styled(ModalPage)`
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.35);
 	width: 100%;
 	height: 100%;
 	position: absolute;

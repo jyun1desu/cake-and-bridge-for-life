@@ -1,5 +1,7 @@
 import React from 'react';
 import db from "database";
+import { v4 as uuidv4 } from 'uuid';
+
 import styled from 'styled-components';
 import { color } from 'style/theme'
 
@@ -7,7 +9,7 @@ import Dialog from "components/Global/Modal";
 import Button from 'components/Global/Button';
 import Input from 'components/Global/Input';
 
-import { userNameState, userRoomState } from "store/user";
+import { userNameState, userRoomState,userIDState } from "store/user";
 import { useSetRecoilState,useRecoilValue } from "recoil";
 import { useHistory } from "react-router-dom";
 
@@ -102,26 +104,30 @@ const Content = styled.div`
 						}
 					}
 				}
+
+				.warn_message {
+					margin: 10px 0 0;
+					font-size: 12px;
+					letter-spacing: 1px;
+					color: ${color.$warn_red_color};
+				}
 			}
 		}
 	}
 `
 
-const RoomDialog = ({ className, closeRoomList,style }) => {
+const RoomDialog = ({ className, closeRoomList, style, roomList }) => {
 	const history = useHistory();
 	const userName = useRecoilValue(userNameState);
 	const setLocalRoom = useSetRecoilState(userRoomState);
-	const [roomList, setRoomList] = React.useState([]);
+	const setUserID = useSetRecoilState(userIDState);
 	const [userInputRoom, setUserInputRoom] = React.useState('');
-
-	React.useEffect(()=>{
-		subscribeRooms();
-		return () => removeListeners();
-	},[])
+	const [warnMessage,setWarnMessage] = React.useState('');
 
 	const createRoom = (e) => {
 		e.preventDefault();
-		if (userInputRoom.length < 3) return;
+		if (userInputRoom.length < 3) return setWarnMessage('請輸入至少三個字');
+		if (roomList.includes(userInputRoom)) return setWarnMessage('已有重複房名');
 		setLocalRoom(userInputRoom);
 		updateDbRoomData(userInputRoom);
 	}
@@ -131,32 +137,14 @@ const RoomDialog = ({ className, closeRoomList,style }) => {
 		updateDbRoomData(roomName);
 	}
 
-	const updateDbRoomData = async (roomName) => {
+	const updateDbRoomData = (roomName) => {
 		const roomRef = db.database().ref(`/${roomName}`);
-		await roomRef.child('playersInfo').child(userName).update({userName});
-		const toPath = `/${roomName}/waiting_room/${userName}`
+		const userID = uuidv4();
+		setUserID(userID);
+		roomRef.child('playersInfo').child(userID).update({player:userName});
+		const toPath = `/${roomName}/waiting_room/${userID}`
 		history.push(toPath);
 	}
-
-	const subscribeRooms = () => {
-		const Firebase = db.database().ref("/");
-		Firebase.on("value", (data) => {
-			const roomsData = data.val();
-			if (roomsData) {
-				let availibleRooms = [];
-				for( const [key,value] of Object.entries(roomsData)) {
-					const players = Object.values(value.playersInfo)
-					if(players.length<4) availibleRooms.push(key);
-				}
-				setRoomList(availibleRooms);
-			}
-		});
-	};
-
-	const removeListeners = () => {
-		const Firebase = db.database().ref("/");
-		Firebase.off();
-	};
 
 	return (
 		<Dialog 
@@ -194,7 +182,10 @@ const RoomDialog = ({ className, closeRoomList,style }) => {
 							<form>
 								<Input
 									value={userInputRoom}
-									onChange={(e) => setUserInputRoom(e.target.value)}
+									onChange={(e) => {
+										setWarnMessage('');
+										setUserInputRoom(e.target.value)
+									}}
 									type="text"
 									maxLength="8"
 									placeholder="請輸入3-8字元"
@@ -206,6 +197,7 @@ const RoomDialog = ({ className, closeRoomList,style }) => {
 									className='create_button'
 								>建立</Button>
 							</form>
+							{warnMessage && <p className='warn_message'>{warnMessage}</p>}
 						</div>
 					</div>
 				</div >

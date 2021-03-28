@@ -1,6 +1,7 @@
 import React from "react";
 import { useTransition } from "react-spring";
 import { useRecoilState } from "recoil";
+import db from "database";
 
 import Logo from "components/Home/Logo";
 import RoomDialog from "components/Home/RoomDialog";
@@ -62,12 +63,40 @@ const HomePage = styled.div`
 
 const Home = () => {
 	const [showRoomDialog, toggleRoomDialog] = React.useState(false);
+	const [roomList, setRoomList] = React.useState([]);
+
+	React.useEffect(()=>{
+		subscribeRooms();
+		return () => removeListeners();
+	},[])
 	
 	const transitions = useTransition(showRoomDialog, {
 		from: { opacity: 0, transform: "translateY(-15px)" },
 		enter: { opacity: 1, transform: "translateY(0px)" },
 		leave: { opacity: 0, transform: "translateY(-15px)" }
 	});
+
+	const subscribeRooms = () => {
+		const Firebase = db.database().ref("/");
+		Firebase.on("value", (data) => {
+			const roomsData = data.val();
+			if (roomsData) {
+				let availibleRooms = [];
+				for( const [key,value] of Object.entries(roomsData)) {
+					const players = Object.values(value.playersInfo)
+					if(players.length<4) availibleRooms.push(key);
+				}
+				setRoomList(availibleRooms);
+			}else{
+				setRoomList([]);
+			}
+		});
+	};
+
+	const removeListeners = () => {
+		const Firebase = db.database().ref("/");
+		Firebase.off();
+	};
 
 	return (
 		<HomePage>
@@ -78,6 +107,7 @@ const Home = () => {
 					item && (
 						<RoomDialog
 							style={props}
+							roomList={roomList}
 							className="room_list_dialog"
 							closeRoomList={() => toggleRoomDialog(false)}
 						/>

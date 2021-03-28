@@ -1,13 +1,16 @@
 import { createGlobalStyle } from "styled-components";
+import { color } from "style/theme";
+
 export const GlobalStyle = createGlobalStyle`
     * {
     font-family: 'Kosugi Maru', sans-serif;
     user-select: none;
     }
+    
     body,
     html {
     font-weight: 400;
-    background-color: #F1EFE4;
+    background-color: ${color.$theme_background};
     box-sizing: border-box;
     overflow: hidden;
     overflow-x: hidden;

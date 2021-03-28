@@ -2,9 +2,11 @@ import React from 'react';
 import Logo from 'components/Home/Logo';
 import RoomDialog from "components/Home/RoomDialog";
 import Input from 'components/Global/Input';
+import Button from 'components/Global/Button';
 import { useRecoilState } from 'recoil';
 import { userNameState } from 'store/user'
 import styled from 'styled-components';
+import { color } from "style/theme";
 
 const NameForm = styled.form`
     display: flex;
@@ -12,16 +14,10 @@ const NameForm = styled.form`
     align-items: center;
 
     p {
-        color: green;
+        color: ${color.$title_font_color};
         font-size: 25px;
         letter-spacing: 2px;
         margin: 0 0 25px 0;
-    }
-
-    button {
-        min-width: 50%;
-        font-size: 20px;
-        letter-spacing: 3px;
     }
 `
 
@@ -37,16 +33,16 @@ const NameFillIn = ({openRoomList}) => {
         <Input
             className='input_name_space'
             maxLength='6'
-            placeholder="請輸入1-6個字元"
             onChange={(e) => setUserName(e.target.value)}
             value={userName}
             type="text" />
-        <button
+        <Button
+            color={`${color.$button_pink_color}`}
             onClick={handleButtonClick}
             type="submit"
             className="enter_button">
             {userName?'加入遊戲':'請輸入姓名'}
-        </button>
+        </Button>
     </NameForm>)
 
 }
@@ -62,7 +58,7 @@ const Home = () => {
     const [showRoomDialog, toggleRoomDialog] = React.useState(false)
     return (
         <HomePage>
-            <Logo />
+            <Logo className='logo' />
             {showRoomDialog && <RoomDialog closeRoomList={()=>toggleRoomDialog(false)}/>}
             <NameFillIn openRoomList={()=>toggleRoomDialog(true)} />
         </HomePage>

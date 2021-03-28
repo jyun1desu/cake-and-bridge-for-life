@@ -16,16 +16,12 @@ const Button = ({ className, children, onClick=()=>{},type='submit', color }) =>
 const styledButton = styled(Button)`
     cursor: pointer;
     background-color: ${(props) => (props.color)};
-    border: none;
     border-radius: 50px;
     padding: 10px 20px;
     color: #fff;
+    letter-spacing: 1px;
     text-align: center;
-
-    &:active,
-    &:focus {
-        outline: none;
-    }
+    transition: 0.2s all;
 
     &.enter_button {
         min-width: 50%;

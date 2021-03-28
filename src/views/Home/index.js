@@ -31,17 +31,17 @@ const NameFillIn = ({openRoomList}) => {
     return (<NameForm id="name" className="user_input">
         <p>請輸入名字</p>
         <Input
-            className='input_name_space'
+            className='name_space'
             maxLength='6'
             onChange={(e) => setUserName(e.target.value)}
             value={userName}
             type="text" />
         <Button
-            color={`${color.$button_pink_color}`}
+            color={`${color.$pink_color}`}
             onClick={handleButtonClick}
             type="submit"
             className="enter_button">
-            {userName?'加入遊戲':'請輸入姓名'}
+            {userName?'加入遊戲':'請輸入名字'}
         </Button>
     </NameForm>)
 
@@ -59,7 +59,10 @@ const Home = () => {
     return (
         <HomePage>
             <Logo className='logo' />
-            {showRoomDialog && <RoomDialog closeRoomList={()=>toggleRoomDialog(false)}/>}
+            {showRoomDialog && 
+            (<RoomDialog 
+                className='room_list_dialog' 
+                closeRoomList={()=>toggleRoomDialog(false)}/>)}
             <NameFillIn openRoomList={()=>toggleRoomDialog(true)} />
         </HomePage>
     )

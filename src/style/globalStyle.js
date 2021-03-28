@@ -25,4 +25,13 @@ export const GlobalStyle = createGlobalStyle`
     height: 100%;
     overflow: hidden;
     }
+
+    button {
+        border: none;
+        
+        &:active,
+        &:focus {
+            outline: none;
+        }
+    }
 `;

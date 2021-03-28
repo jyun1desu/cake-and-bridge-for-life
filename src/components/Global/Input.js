@@ -29,7 +29,7 @@ const styledInput = styled(Input)`
         outline: none;
     }
 
-    &.input_name_space{
+    &.name_space{
         margin: 0 0 20px 0;
         border-bottom: 2px solid ${color.$title_font_color};
         padding: 5px;

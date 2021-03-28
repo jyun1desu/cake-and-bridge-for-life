@@ -4,14 +4,15 @@ import { GlobalStyle } from './style/globalStyle'
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { RecoilRoot } from 'recoil';
+import {
+  BrowserRouter as Router,
+} from "react-router-dom";
 
 ReactDOM.render(
-  <React.StrictMode>
     <RecoilRoot>
         <App />
         <GlobalStyle />
-    </RecoilRoot>
-  </React.StrictMode>,
+    </RecoilRoot>,
   document.getElementById('root')
 );
 

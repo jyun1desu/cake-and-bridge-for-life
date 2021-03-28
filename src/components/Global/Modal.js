@@ -1,12 +1,16 @@
 import React from "react";
+import { animated } from "react-spring";
 import styled from 'styled-components';
 
 
-const ModalPage = ({children, className}) => {
+const ModalPage = ({children, className,onDeactive,style}) => {
     return (
-        <div className={className}>
+        <animated.div 
+        style={style}
+        onClick={onDeactive}
+        className={className}>
             {children}
-        </div>
+        </animated.div>
     )
 }
 

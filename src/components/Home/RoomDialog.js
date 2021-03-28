@@ -14,6 +14,7 @@ import { useHistory } from "react-router-dom";
 const Content = styled.div`
 	background-color: #fff;
 	width: 80vw;
+	position: absolute;
 	border-radius: 10px;
 	overflow: hidden;
 	position: relative;
@@ -58,6 +59,8 @@ const Content = styled.div`
 			flex-direction: column;
 			justify-content: space-between;
 			margin-top: 10px;
+			max-height: 150px;
+			overflow: scroll;
 			}
 
 			.no_room {
@@ -104,7 +107,7 @@ const Content = styled.div`
 	}
 `
 
-const RoomDialog = ({ className, closeRoomList }) => {
+const RoomDialog = ({ className, closeRoomList,style }) => {
 	const history = useHistory();
 	const userName = useRecoilValue(userNameState);
 	const setLocalRoom = useSetRecoilState(userRoomState);
@@ -156,8 +159,15 @@ const RoomDialog = ({ className, closeRoomList }) => {
 	};
 
 	return (
-		<Dialog className={className}>
-			<Content className="content">
+		<Dialog 
+			style={style}
+			onDeactive={(e) => {
+				closeRoomList(e);
+			}} 
+			className={className}>
+			<Content
+				onClick={ e => e.stopPropagation()}
+				className="content">
 				<button
 					onClick={(e) => closeRoomList(e)}
 					className="cancel_button">×</button>

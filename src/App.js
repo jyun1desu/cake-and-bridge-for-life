@@ -11,19 +11,14 @@ import {
 
 const App = () => {
   return (
-      <Router>
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route
-            path="/:roomName/waiting_room/:userName"
-            component={WaitRoom}>
-          </Route>
-          <Route
-            path="/:roomName/game_room/:userName"
-            component={GameRoom}>
-          </Route>
-        </Switch>
-      </Router>
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route path="/:roomName/waiting_room/:userName" component={WaitRoom} />
+        <Route path="/:roomName/game_room/:userName" component={GameRoom} />
+      </Switch>
+    </Router>
+
   )
 }
 

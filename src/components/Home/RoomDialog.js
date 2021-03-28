@@ -3,7 +3,7 @@ import db from "database";
 import styled from 'styled-components';
 import { color } from 'style/theme'
 
-import Dialog from "components/Global/Dialog";
+import Dialog from "components/Global/Modal";
 import Button from 'components/Global/Button';
 import Input from 'components/Global/Input';
 

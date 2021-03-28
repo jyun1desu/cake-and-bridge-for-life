@@ -2,7 +2,7 @@ import React from "react";
 import styled from 'styled-components';
 
 
-const Dialog = ({children, className}) => {
+const ModalPage = ({children, className}) => {
     return (
         <div className={className}>
             {children}
@@ -10,7 +10,7 @@ const Dialog = ({children, className}) => {
     )
 }
 
-const styledDialog = styled(Dialog)`
+const styledModalPage = styled(ModalPage)`
     background-color: rgba(0, 0, 0, 0.5);
 	width: 100%;
 	height: 100%;
@@ -20,4 +20,4 @@ const styledDialog = styled(Dialog)`
 	align-items: center;
 `
 
-export default styledDialog
+export default styledModalPage

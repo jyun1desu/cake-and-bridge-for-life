@@ -7,7 +7,7 @@ import Dialog from "components/Global/Dialog";
 import Button from 'components/Global/Button';
 import Input from 'components/Global/Input';
 
-import { userNameState, userRoomState, databaseRef } from "store/user";
+import { userNameState, userRoomState } from "store/user";
 import { useSetRecoilState,useRecoilValue } from "recoil";
 import { useHistory } from "react-router-dom";
 
@@ -116,7 +116,8 @@ const RoomDialog = ({ className, closeRoomList }) => {
 		return () => removeListeners();
 	},[])
 
-	const createRoom = () => {
+	const createRoom = (e) => {
+		e.preventDefault();
 		if (userInputRoom.length < 3) return;
 		setLocalRoom(userInputRoom);
 		updateDbRoomData(userInputRoom);
@@ -191,7 +192,7 @@ const RoomDialog = ({ className, closeRoomList }) => {
 								/>
 								<Button
 									color={userInputRoom.length > 2 ? `${color.$highlight_color}` : `${color.$unable_color}`}
-									onClick={createRoom}
+									onClick={e=>createRoom(e)}
 									className='create_button'
 								>建立</Button>
 							</form>

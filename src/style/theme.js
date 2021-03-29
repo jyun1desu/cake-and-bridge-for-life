@@ -1,6 +1,7 @@
 export const color = {
     $theme_background: '#F6F3EB',
     $title_font_color: '#965735',
+    $brown_color: '#8c6954',
     $pink_color: '#f29c9b',
     $green_color: '#a3c07e',
     $warn_red_color: '#BF3131',

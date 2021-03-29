@@ -1,6 +1,8 @@
 import {
-    atom,
+    atom, selector,
 } from 'recoil';
+
+import { playersData } from './players';
 
 export const userNameState = atom({
     key: 'userNameState',
@@ -12,6 +14,24 @@ export const userIDState = atom({
     default: '',
 });
 
+export const userIndexState = selector({
+    key: 'userIndexState',
+    get:  ({get}) => {
+        const userName = get(userNameState);
+        const playerList = get(playersData);
+        return playerList.indexOf(data=>data.player===userName)
+    }
+})
+
+export const userTeamState = selector({
+    key: 'userTeamState',
+    get:  ({get}) => {
+        const userName = get(userNameState);
+        const playerList = get(playersData);
+        if(!playerList.length) return null
+        return playerList.find(data=>data.player===userName).team;
+    }
+})
 
 export const userRoomState = atom({
     key: 'userRoomState',

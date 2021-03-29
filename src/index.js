@@ -4,9 +4,6 @@ import { GlobalStyle } from './style/globalStyle'
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { RecoilRoot } from 'recoil';
-import {
-  BrowserRouter as Router,
-} from "react-router-dom";
 
 ReactDOM.render(
     <RecoilRoot>

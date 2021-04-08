@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import RecoilizeDebugger from 'recoilize';
 import { GlobalStyle } from './style/globalStyle'
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -7,6 +8,7 @@ import { RecoilRoot } from 'recoil';
 
 ReactDOM.render(
     <RecoilRoot>
+        <RecoilizeDebugger />
         <App />
         <GlobalStyle />
     </RecoilRoot>,

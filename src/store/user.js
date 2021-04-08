@@ -19,7 +19,7 @@ export const userIndexState = selector({
     get:  ({get}) => {
         const userName = get(userNameState);
         const playerList = get(playersData);
-        return playerList.indexOf(data=>data.player===userName)
+        return playerList.findIndex(data=>data.player===userName)
     }
 })
 

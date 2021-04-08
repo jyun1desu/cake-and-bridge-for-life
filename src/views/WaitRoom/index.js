@@ -31,7 +31,7 @@ const Room = styled.div`
         }
 `
 
-const WaitRoom = ({ match:{ params }}) => {
+const WaitRoom = () => {
     const history = useHistory();
     const [buttonMessage,setButtonMessage] = useState('');
     const setPlayersData = useSetRecoilState(playersData);

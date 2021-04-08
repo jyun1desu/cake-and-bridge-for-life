@@ -43,15 +43,19 @@ const Window = styled.div`
             text-align: center;
             flex: 0 1 auto;
             background-color: #fff;
+            border: 2px solid transparent;
             border-radius: 20px;
             font-size: 20px;
             color:${color.$title_font_color};
             padding: 7px 10px;
             margin: 0;
             position: relative;
+            transition: 0.5s all;
 
-            .ready_to_go {
-                border: 3px solid ${color.$highlight_color};
+            &.ready_to_go {
+                color: #fff;
+                border: 2px solid #fff;
+                background-color: #F3DE93;
             }
         }
     }    
@@ -70,7 +74,7 @@ const PlayerBox = ({ order, playerData }) => {
             [`strawberry_team`]: playerTeam === '1',
             [`canele_team`]: playerTeam === '2',
             })}>
-        {playerName && <p className="player__name">{playerName}</p>}
+        {playerName && <p className={classnames('player__name',{'ready_to_go': playerData.ready})}>{playerName}</p>}
     </div>
 )}
 

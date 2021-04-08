@@ -1,6 +1,7 @@
 import React from "react";
 import classnames from 'classnames'
 import styled from 'styled-components';
+import db from "database";
 import { color } from 'style/theme';
 import { userTeamState } from 'store/user';
 import { useRecoilValue } from 'recoil';
@@ -78,11 +79,13 @@ const Radio = ({team, isChosen, onClick=()=>{}, teamIndex}) => {
     )
 }
 
-const TeamRadios = () => {
+const TeamRadios = ({roomName, userID}) => {
     const userTeam = useRecoilValue(userTeamState);
 
     const handleChooseTeam = (team) => {
-        console.log(team)
+        const roomRef = db.database().ref(`/${roomName}`);
+        const userInfo = roomRef.child('playersInfo').child(`${userID}`);
+        userInfo.update({team});
     };
 
     return (

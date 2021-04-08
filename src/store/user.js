@@ -37,3 +37,13 @@ export const userRoomState = atom({
     key: 'userRoomState',
     default: null
 });
+
+export const userReadyState = selector({
+    key: 'userReadyState',
+    get:  ({get}) => {
+        const userName = get(userNameState);
+        const playerList = get(playersData);
+        if(!playerList.length) return null
+        return playerList.find(data=>data.player===userName).ready;
+    }
+})

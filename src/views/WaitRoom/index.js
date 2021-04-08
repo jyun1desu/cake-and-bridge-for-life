@@ -1,15 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import db from "database";
+import { useHistory } from "react-router-dom";
+import { useTransition } from "react-spring";
 import {color} from 'style/theme'
 import styled from 'styled-components';
 
-import { playersData } from "store/players";
-import { useSetRecoilState } from "recoil";
+import { playersData, teamArray } from "store/players";
+import { userReadyState, userIDState, userRoomState, userTeamState } from "store/user";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 import PlayerWindow from 'components/WaitRoom/PlayerWindow';
 import TeamRadios from 'components/WaitRoom/TeamRadios';
 import Button from 'components/Global/Button';
+import Loading from 'components/Global/Loading';
 
 const Room = styled.div`
         height: 100%;
@@ -28,38 +32,100 @@ const Room = styled.div`
 `
 
 const WaitRoom = ({ match:{ params }}) => {
-    const setPlayersData = useSetRecoilState(playersData)
+    const history = useHistory();
+    const [buttonMessage,setButtonMessage] = useState('');
+    const setPlayersData = useSetRecoilState(playersData);
+    const userID = useRecoilValue(userIDState);
+    const userTeam = useRecoilValue(userTeamState);
+    const roomName = useRecoilValue(userRoomState);
+    const team = useRecoilValue(teamArray);
+    const isUserReady = useRecoilValue(userReadyState);
 
-    React.useEffect(async() => {
-        const roomRef = db.database().ref(`/${params.roomName}`);
+    useEffect(async() => {
+        const roomRef = db.database().ref(`/${roomName}`);
         const playersInfo = roomRef.child('playersInfo');
 
+        await roomRef.child('gameInfo').set(null);
         await playersInfo.once("value", (data) => {
-            const userID = params.userID;
             const playersData = Object.values(data.val());
             const sortedByTimestamp = playersData.sort((a,b) => a.timestamp-b.timestamp);
             const userOrder = sortedByTimestamp.findIndex(data=>data.userID === userID);
             const userDefaultTeam = userOrder === 0 || userOrder === 3 ? '1':'2';
-            playersInfo.child(userID).update({team: userDefaultTeam})
+            playersInfo.child(userID).update({ready: false})
+            if(!userTeam){
+                playersInfo.child(userID).update({team: userDefaultTeam})
+            }
         });
 
         playersInfo.on("value", (data) => {
             const playersData = Object.values(data.val());
             const sortedByTimestamp = playersData.sort((a,b) => a.timestamp-b.timestamp);
-            setPlayersData(sortedByTimestamp)
-        });
+            setPlayersData(sortedByTimestamp);
 
-        return () => playersInfo.off();
-    }, [])
+            // 監聽四人都ready時進入遊戲
+            const allReady = playersData.filter(data=>data.ready).length === 4;
+            if(allReady){
+                playersInfo.off();
+                enterGame();
+            }
+        });
+    }, []);
+
+    useEffect(()=>{
+        if(team.length<4) {
+            return setButtonMessage('人數不足⋯⋯');;
+        };
+        const teamOneAmount = team.filter(team=>team==='1').length;
+        const teamTwoAmount = team.filter(team=>team==='2').length;
+        if(teamOneAmount !== teamTwoAmount){
+            return setButtonMessage('人數不一樣怎麼打！');
+        }
+        return setButtonMessage('開打！');
+    },[team])
+
+    const enterGame = () => {
+        history.push(`/${roomName}/game_room/${userID}`);
+    }
+
+    const setReady = async (boolean) => {
+        if(buttonMessage !== '開打！') return;
+        const roomRef = db.database().ref(`/${roomName}`);
+        const userInfo = roomRef.child('playersInfo').child(userID);
+
+        await roomRef.child('playersInfo').once("value", async(data) => {
+            const playersData = Object.values(data.val());
+            const allReady = playersData.filter(data=>data.ready).length === 3;
+            if(allReady){
+                await roomRef.child('gameInfo').set({nowPlayer: userID});
+            }
+        })
+
+        userInfo.update({ready: boolean});
+    }
+
+    const transitions = useTransition(isUserReady, {
+		from: { opacity: 0},
+		enter: { opacity: 1 },
+		leave: { opacity: 0 }
+	});
 
     return (
         <Room>
-            <PlayerWindow className="cool" />
-            <TeamRadios />
+            <PlayerWindow />
+            <TeamRadios roomName={roomName} userID={userID} />
             <Button
-                color={`${color.$pink_color}`}
+                onClick={()=>setReady(true)}
+                color={buttonMessage === '開打！'?`${color.$pink_color}`:`${color.$unable_color}`}
                 className="start_game"
-            >開打！</Button>
+            >{buttonMessage}</Button>
+            {transitions(
+				(props, item) =>
+					item && (
+						<Loading 
+                            cancelReady={()=>setReady(false)}
+                            style={props} />
+					)
+			)}
         </Room>
     )
 }

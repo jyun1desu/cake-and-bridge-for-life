@@ -137,12 +137,12 @@ const RoomDialog = ({ className, closeRoomList, style, roomList }) => {
 		updateDbRoomData(roomName);
 	}
 
-	const updateDbRoomData = (roomName) => {
+	const updateDbRoomData = async(roomName) => {
 		const roomRef = db.database().ref(`/${roomName}`);
 		const userID = uuidv4();
 		const timestamp = Date.parse(new Date());
 		setUserID(userID);
-		roomRef.child('playersInfo').child(userID).update({timestamp,userID,player:userName});
+		await roomRef.child('playersInfo').child(userID).update({timestamp,userID,player:userName});
 		const toPath = `/${roomName}/waiting_room/${userID}`
 		history.push(toPath);
 	}

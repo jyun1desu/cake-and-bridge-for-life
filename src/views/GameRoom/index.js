@@ -1,11 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import newDeck, { isBadLuck } from 'util/deck';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import db from "database";
+import styled from 'styled-components';
+import newDeck, { isBadLuck } from 'util/deck';
 import { userIndexState } from 'store/user';
 import { userDeckState } from 'store/game';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-// import { playersData, teamArray } from "store/players";
 import { userRoomState } from "store/user";
+
+import Cards from 'components/GameRoom/Cards';
+import CardTable from 'components/GameRoom/CardTable';
+
+const Room = styled.div`
+        background-color: #f3e9e9;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        .start_game {
+            letter-spacing: 2px;
+            font-size: 22px;
+            margin-top: 30px;
+        }
+`
 
 const GameRoom = () => {
     const [toReissue,setReissue] = useState(false);
@@ -22,9 +39,10 @@ const GameRoom = () => {
 
     const dealDeck = async() => {
         const gameInfoRef = roomRef.child('gameInfo');
-        if(userIndex === 1 || toReissue){
+        if(userIndex === 3 || toReissue){
             await gameInfoRef.update({deck: newDeck});
         };
+
         gameInfoRef.child('deck').on("value",(data) => {
             const deck = data.val();
             if(deck){
@@ -37,10 +55,11 @@ const GameRoom = () => {
         })
     }
 
-    return (<div>
-        <p>game room</p>
+    return (<Room className="game_room">
+        <Cards />
+        <CardTable />
         {showModalReissue && <div>倒牌兒</div>}
-    </div>)
+    </Room>)
 }
 
 export default GameRoom;

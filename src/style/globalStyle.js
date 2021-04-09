@@ -24,6 +24,12 @@ export const GlobalStyle = createGlobalStyle`
     #root {
     height: 100%;
     overflow: hidden;
+
+        & > div {
+            padding: 5vw;
+            height: 100%;
+            box-sizing: border-box;
+        }
     }
 
     button {

@@ -16,8 +16,6 @@ import Button from 'components/Global/Button';
 import Loading from 'components/Global/Loading';
 
 const Room = styled.div`
-        height: 100%;
-        box-sizing: border-box;
         padding: 5vw;
         display: flex;
         flex-direction: column;

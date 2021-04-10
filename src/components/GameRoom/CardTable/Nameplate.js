@@ -68,7 +68,7 @@ const fakeplayers = ['아이유','我是喜歡取很長的人哇哈','micheal','
 const PlayerNameTag = ({className, index, isNowPlayer = false}) => {
     return (
         <Tag className={classnames(className,{"is_player_turn": isNowPlayer})}>
-            {isNowPlayer && <ThinkingIcon/>}
+            {!isNowPlayer && <ThinkingIcon className="on_table"/>}
             <div className="player_info">
                 <div className="team"></div>
                 <div className="name">{fakeplayers[index]}</div>

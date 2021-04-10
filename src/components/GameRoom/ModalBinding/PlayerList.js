@@ -3,19 +3,28 @@ import classnames from 'classnames';
 import styled from 'styled-components';
 import { color } from 'style/theme';
 import { suitInPoker, suitColor } from 'util/suit';
+import ThinkingIcon from 'components/GameRoom/ThinkingIcon';
 
 const Player = styled.div`
+    position: relative;
+    flex:  0 1 25%;
     background-color: white;
-    flex:  1 1 25%;
-    border-radius: 4px;
-    overflow: hidden;
     font-size: 13px;
+    border-radius: 4px;
+    box-shadow: ${(props)=>(props.isUserTurn
+            ?`0px 0px 0px 2px ${color.$highlight_color}`
+            :'none')};
+
 
     & + div {
-        margin-left: 5px;
+        margin-left: 6px;
     }
 
     .name {
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        border-bottom: none;
+        max-width: calc(90vw/4 - 38px/4);
         text-align: center;
         line-height: 20px;
         padding: 6px;
@@ -23,7 +32,6 @@ const Player = styled.div`
         letter-spacing: 1px;
         color: white;
         background-color: ${color.$pink_color};
-        width: 100%;
 
         &  > p {
             overflow: hidden;
@@ -57,8 +65,11 @@ const Player = styled.div`
     }
 ` 
 
-const PlayInfo = ({name, calledList}) => (
-    <Player className="player">
+const PlayInfo = ({name, calledList, isUserTurn=true}) => (
+    <Player 
+        className="player"
+        isUserTurn={isUserTurn}>
+        {isUserTurn && <ThinkingIcon className="on_bind_list"/>}
         <div className="name">
             <p>{name}</p>
         </div>
@@ -90,7 +101,7 @@ const PlayerList = ({className}) => {
                         calledList={fackList}
                         name={player}/>
                 ))}
-            </div>
+        </div>
     )
 }
 

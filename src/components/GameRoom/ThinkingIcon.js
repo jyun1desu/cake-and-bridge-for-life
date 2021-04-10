@@ -3,16 +3,12 @@ import styled from 'styled-components';
 import { color } from 'style/theme';
 
 const Icon = styled.div`
-    position: absolute;
-    background-color: #fff;
-    border-radius: 3px;
-    transform: translate(-50%, -150%);
-    padding: 8px;
-    left: 50%;
-    top: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #fff;
+    border-radius: 3px;
+    padding: 8px;
     filter: drop-shadow(0px 0px 2px rgb(170, 170, 170));
     z-index: 1;
     &::after {
@@ -25,6 +21,19 @@ const Icon = styled.div`
         transform-origin: top right;
         transform: rotate(45deg);
         top: 100%;
+    }
+    &.on_table {
+        position: absolute;
+        transform: translate(-50%, -150%);
+        left: 50%;
+        top: 0;
+    }
+    &.on_bind_list {
+        position: absolute;
+        transform: translate(-50%);
+        left: 50%;
+        bottom: 99%;
+        z-index: 500;
     }
 
     .dots {
@@ -74,8 +83,8 @@ const Icon = styled.div`
     }
 `
 
-const ThinkingIcon = () => (
-    <Icon className="thinking">
+const ThinkingIcon = ({className}) => (
+    <Icon className={`thinking ${className}`}>
         <div className="dots">
             <div className="dot"></div>
             <div className="dot"></div>

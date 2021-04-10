@@ -3,8 +3,10 @@ import styled from 'styled-components';
 import { color } from 'style/theme';
 import { userPickBindState  } from 'store/bind';
 import isObjectEquivalent from 'util/isObjectEquivalent';
+import { suitInPoker } from 'util/suit'
 import OptionButton from './OptionButton';
 import { useRecoilValue, useRecoilState } from 'recoil';
+import classnames from 'classnames';
 
 const OptionRow = styled.div`
     display: flex;
@@ -88,21 +90,32 @@ const Box = styled.div`
         letter-spacing: 1px;
         background-color: ${color.$unable_color};
         color: ${color.$unable_font_color};
-
-        &.is-user-turn{
-            background-color: ${color.$highlight_color};
-            color: ${color.$title_font_color};
-        }
     }
 
     & > button {
         padding: 8px 0;
         margin-top: 5px;
         font-size: 16px;
-        letter-spacing: 1px;
+        line-height: 16px;
+        letter-spacing: 2px;
         background-color: ${color.$unable_color};
         color: ${color.$unable_font_color};
     }
+
+    &.is_user_turn{
+            & > p {
+                background-color: ${color.$highlight_color};
+                color: ${color.$title_font_color};
+            }
+            & > button {
+                background-color: ${color.$pass_color};
+                color: white;
+
+                &.has_pick_bind {
+                    background-color: ${color.$pink_color};
+                }
+            }
+        }
 `
 
 const Hint =styled.p`
@@ -116,11 +129,15 @@ const BindList = () => {
     const userPickBind = useRecoilValue(userPickBindState);
     return (
         <>
-            <Box>
-                <p>YOUR TURN</p>
+            <Box className={classnames("bind_list",{"is_user_turn": false})}>
+                <p>{false?'':'NOT '}YOUR TURN</p>
                 <OptionList
                     tricks={[1, 2, 3, 4, 5, 6]} />
-                <button>PASS</button>
+                <button className={classnames({"has_pick_bind": userPickBind})}>{
+                userPickBind 
+                    ? ('喊 '+ userPickBind.number + suitInPoker(userPickBind.suit)) 
+                    : "PASS"}
+                </button>
             </Box>
             { userPickBind && <Hint>再次點擊相同選項可以取消選擇</Hint>}
         </>

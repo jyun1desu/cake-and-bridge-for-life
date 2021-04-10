@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import styled from 'styled-components';
 import { color } from 'style/theme'
 
-import Dialog from "components/Global/Modal";
+import Modal from "components/Global/Modal";
 import Button from 'components/Global/Button';
 import Input from 'components/Global/Input';
 
@@ -66,6 +66,7 @@ const Content = styled.div`
 			}
 
 			.no_room {
+			margin-top: 15px;
 			color: ${color.$unable_color};
 			text-align: center;
 			font-size: 14px;
@@ -148,7 +149,7 @@ const RoomDialog = ({ className, closeRoomList, style, roomList }) => {
 	}
 
 	return (
-		<Dialog 
+		<Modal 
 			style={style}
 			onDeactive={(e) => {
 				closeRoomList(e);
@@ -203,7 +204,7 @@ const RoomDialog = ({ className, closeRoomList, style, roomList }) => {
 					</div>
 				</div >
 			</Content >
-		</Dialog >
+		</Modal >
 	);
 }
 

@@ -5,6 +5,7 @@ import db from "database";
 import { color } from 'style/theme';
 import { userTeamState } from 'store/user';
 import { useRecoilValue } from 'recoil';
+import Radio from 'components/Global/Radio'
 
 const team = ['ショートケーキ', 'カヌレ'];
 
@@ -12,29 +13,6 @@ const StyledRadio = styled.div`
     font-size: 18px;
     letter-spacing: 1px;
     color: rgb(167, 167, 167);
-
-    .radio {
-        cursor: pointer;
-        position: relative;
-        display: inline-block;
-        width: 15px;
-        height: 15px;
-        border-radius: 100%;
-        background-color: #fff;
-        margin-right: 8px;
-
-        &::after {
-            content: "";
-            display: block;
-            width: 70%;
-            height: 70%;
-            border-radius: 70%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-    }
 
     &.chosen {
         &.team1 {
@@ -66,14 +44,18 @@ const RadioArea = styled.div`
     }
 `
 
-const Radio = ({team, isChosen, onClick=()=>{}, teamIndex}) => {
+const TeamOption = ({team, isChosen, onClick=()=>{}, teamIndex}) => {
     return (
         <StyledRadio
         onClick={onClick}
         className={classnames('option',`team${teamIndex}`,{
             'chosen': isChosen,
         })}>
-        <span className="radio"></span>
+        <Radio 
+            className="radio"
+            border
+            size="15"
+            marginRight="8"/>
         <span>{team}</span>
     </StyledRadio>
     )
@@ -94,7 +76,7 @@ const TeamRadios = ({roomName, userID}) => {
                 {team.map((team, index) => {
                     const teamIndex = `${index + 1}`;
                     return (
-                        <Radio 
+                        <TeamOption 
                             onClick={()=>handleChooseTeam(teamIndex)}
                             isChosen={ userTeam === teamIndex }
                             key={index}

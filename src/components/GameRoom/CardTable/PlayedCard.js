@@ -41,7 +41,7 @@ const order = ['cross', 'left', 'right', 'user'];
 
 const PlayedCard = () => {
     return (
-        <CardGroup>
+        <CardGroup className="played_cards_group">
             {order.map(order => (
                 <Card
                     key={order}

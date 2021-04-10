@@ -40,4 +40,8 @@ export const GlobalStyle = createGlobalStyle`
             outline: none;
         }
     }
+
+    p {
+        margin: 0;
+    }
 `;

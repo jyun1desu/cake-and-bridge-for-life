@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Dialog from "components/Global/Modal";
+import Modal from "components/Global/Modal";
 import { color } from 'style/theme';
 import Button from 'components/Global/Button';
 
@@ -134,7 +134,7 @@ const Loading = ({style, cancelReady}) =>  {
     }
 
     return (
-        <Dialog style={style} className="loading-modal">
+        <Modal style={style} className="loading-modal">
             <LoadingModal className="loading">
                 <div className="lds-default">
                     {dots()}
@@ -146,7 +146,7 @@ const Loading = ({style, cancelReady}) =>  {
                     className="cancel_ready"
                 >我還沒好</Button>
             </LoadingModal>
-        </Dialog>
+        </Modal>
     )
 };
 

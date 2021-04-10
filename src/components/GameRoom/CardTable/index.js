@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Nameplate from './Nameplate';
+import PlayedCard from './PlayedCard';
 
 const Table = styled.div`
     width: 60vw;
@@ -14,6 +15,7 @@ const Table = styled.div`
 const CardTable = () => {
     return (
         <Table className="card_table">
+            <PlayedCard />
             <Nameplate />
         </Table>
     )

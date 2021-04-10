@@ -1,9 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
+import classnames from 'classnames';
+import ThinkingIcon from 'components/GameRoom/ThinkingIcon';
 import { color } from 'style/theme'
 
 const Tag = styled.div`
     position: absolute;
+
+    &.is_player_turn {
+        .player_info {
+            border: 2px solid ${color.$highlight_color};
+        }
+    }
 
     &.tag {
         &_cross {
@@ -57,11 +65,10 @@ const Tag = styled.div`
 
 const fakeplayers = ['아이유','我是喜歡取很長的人哇哈','micheal','😉']
 
-const PlayerNameTag = ({className, index}) => {
-    const isThinking = false;
+const PlayerNameTag = ({className, index, isNowPlayer = false}) => {
     return (
-        <Tag className={ className }>
-            {isThinking && <div>thinking icon</div>}
+        <Tag className={classnames(className,{"is_player_turn": isNowPlayer})}>
+            {isNowPlayer && <ThinkingIcon/>}
             <div className="player_info">
                 <div className="team"></div>
                 <div className="name">{fakeplayers[index]}</div>
@@ -76,6 +83,7 @@ const Names = styled.div`
     position: relative;
     width: 100%;
     height: 100%;
+    z-index: 2;
 `
 
 const Nameplate = () => {

@@ -9,6 +9,7 @@ import { userRoomState } from "store/user";
 
 import Cards from 'components/GameRoom/Cards';
 import CardTable from 'components/GameRoom/CardTable';
+import MainInfo from 'components/GameRoom/MainInfo';
 
 const Room = styled.div`
         background-color: #f3e9e9;
@@ -58,6 +59,7 @@ const GameRoom = () => {
     return (<Room className="game_room">
         <Cards />
         <CardTable />
+        <MainInfo />
         {showModalReissue && <div>倒牌兒</div>}
     </Room>)
 }

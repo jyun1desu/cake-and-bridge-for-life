@@ -7,7 +7,7 @@ export const color = {
     $warn_red_color: '#BF3131',
     $red_suit_color: '#AF3C3C',
     $black_suit_color: '#323232',
-    $masking: 'rgba(124, 124, 124, 0.4)',
+    $shadow: 'rgba(124, 124, 124, 0.3)',
     $highlight_color: '#f5db8f',
     $pass_color: '#a5dc6e',
     $unable_color: '#dcdcdc',

@@ -38,7 +38,7 @@ const SideNav = styled.div`
         width: 100%;
         height: 100%;
         box-sizing: border-box;
-        padding: 8px;
+        padding: 8px 12px 8px 8px;
         margin-top: -15px;
         border-bottom-left-radius: 6px;
         border-top-left-radius: 6px;

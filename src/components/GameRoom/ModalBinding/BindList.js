@@ -78,7 +78,7 @@ const OptionList = ({ tricks = [] }) => (
 const Box = styled.div`
     background-color: white;
     border-radius: 4px;
-    margin-top: 5px;
+    margin-top: 8px;
     display: flex;
     flex-direction: column;
     overflow: hidden;

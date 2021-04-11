@@ -7,10 +7,11 @@ import { userIndexState } from 'store/user';
 import { userDeckState } from 'store/game';
 import { userRoomState } from "store/user";
 
-import ModalBinding from 'components/GameRoom/ModalBinding';
+// import ModalBinding from 'components/GameRoom/ModalBinding';
 import Cards from 'components/GameRoom/Cards';
 import CardTable from 'components/GameRoom/CardTable';
 import MainInfo from 'components/GameRoom/MainInfo';
+import Navbar from 'components/GameRoom/Navbar';
 
 const Room = styled.div`
         background-color: #f3e9e9;
@@ -18,12 +19,6 @@ const Room = styled.div`
         flex-direction: column;
         align-items: center;
         justify-content: center;
-
-        .start_game {
-            letter-spacing: 2px;
-            font-size: 22px;
-            margin-top: 30px;
-        }
 `
 
 const GameRoom = () => {
@@ -62,8 +57,9 @@ const GameRoom = () => {
         <Cards />
         <CardTable />
         <MainInfo />
+        <Navbar />
         {showModalReissue && <div>倒牌兒</div>}
-        <ModalBinding />
+        {/* <ModalBinding /> */}
     </Room>)
 }
 

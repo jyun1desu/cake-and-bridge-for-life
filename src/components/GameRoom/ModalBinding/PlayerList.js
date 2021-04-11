@@ -65,7 +65,7 @@ const Player = styled.div`
     }
 ` 
 
-const PlayInfo = ({name, calledList, isUserTurn=true}) => (
+const PlayInfo = ({name, calledList, isUserTurn=false}) => (
     <Player 
         className="player"
         isUserTurn={isUserTurn}>

@@ -47,3 +47,8 @@ export const userReadyState = selector({
         return playerList.find(data=>data.player===userName).ready;
     }
 })
+
+export const navState = atom({
+    key: 'navState',
+    default: null,
+})

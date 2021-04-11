@@ -19,6 +19,7 @@ export const GlobalStyle = createGlobalStyle`
     transform: translate3d(0, 0, 0);
     padding: 0;
     margin: 0;
+    color: ${color.$default_font_color};
     }
 
     #root {

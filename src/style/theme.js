@@ -7,11 +7,12 @@ export const color = {
     $warn_red_color: '#BF3131',
     $red_suit_color: '#AF3C3C',
     $black_suit_color: '#323232',
-    $shadow: 'rgba(124, 124, 124, 0.3)',
+    $shadow: 'rgba(124, 124, 124, 0.4)',
     $highlight_color: '#f5db8f',
     $pass_color: '#a5dc6e',
     $unable_color: '#dcdcdc',
     $unable_font_color: '#C4C4C4',
     $main_orange: '#f5ab57',
     $under_line_color: '#E3E1E1',
+    $default_font_color: '#323232',
 }

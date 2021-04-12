@@ -8,6 +8,7 @@ import { userDeckState } from 'store/game';
 import { userRoomState } from "store/user";
 
 // import ModalBinding from 'components/GameRoom/ModalBinding';
+import ModalSendAdvice from 'components/GameRoom/ModalSendAdvice';
 import Cards from 'components/GameRoom/Cards';
 import CardTable from 'components/GameRoom/CardTable';
 import MainInfo from 'components/GameRoom/MainInfo';
@@ -59,6 +60,7 @@ const GameRoom = () => {
         <MainInfo />
         <Navbar />
         {showModalReissue && <div>倒牌兒</div>}
+        {/* <ModalSendAdvice /> */}
         {/* <ModalBinding /> */}
     </Room>)
 }

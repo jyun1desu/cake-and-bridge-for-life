@@ -6,11 +6,11 @@ import OtherUserHandCards from './OtherUserHandCards';
 
 const CardGroup = styled.div`
 	position: absolute;
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   width: 100%;
-   height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	height: 100%;
 
 	.cards {
 		display: flex;
@@ -18,6 +18,7 @@ const CardGroup = styled.div`
 		&__user {
 			margin-top: auto;
 			margin-bottom: 10px;
+			max-width: 90vw;
 		}
 
 		&__left {

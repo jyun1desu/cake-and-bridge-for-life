@@ -7,12 +7,12 @@ import { navState } from 'store/user';
 import { useRecoilValue } from 'recoil';
 
 const Background = styled.nav`
+    z-index: ${props=>props.nowNav?30:0};
     position: absolute;
     width: 100%;
     height: 100%;
     background-color: ${props=>props.nowNav?color.$shadow:'transparent'};
     transition: .4s all ease-in-out;
-    z-index: 30;
 ` 
 
 const Navbar = () => {

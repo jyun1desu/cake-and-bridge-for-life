@@ -32,6 +32,7 @@ const PokerCard = styled.div`
     border-radius: 3px;
     box-sizing: border-box;
     padding: 2px;
+    transition: 0.3s all;
 
     .card_info {
         display: flex;
@@ -55,6 +56,7 @@ const PokerCard = styled.div`
             }
         }
     }
+
     .pattern {
         background-color: white;
         flex: 1 1 100%;
@@ -77,15 +79,35 @@ const PokerCard = styled.div`
         width: 12vw;
         height: 15vw;
     }
+
+    &.isPicked{
+        flex: 0 0 auto;
+        transform: translateY(-30%) scale(1.1);
+
+        &:not(:first-child){
+            margin-left: -7vw !important;
+        }
+    }
+    &.isNotPicked{
+        &:last-child {
+            flex: 0 0 auto;
+        }
+    }
 `
 
-const Card = ({ number, suit, className, hasDetail }) => {
+const Card = ({ number, suit, className, hasDetail, onClick = ()=>{}, nowPickSuit}) => {
     const numberOnCard = numberInPoker(number);
     const suitOnCard = suitInPoker(suit);
+    const sameSuit = nowPickSuit && (suit === nowPickSuit);
+    const isNotPicked = nowPickSuit && (suit !== nowPickSuit);
 
     return (
         <PokerCard
-            className={classnames(className, "poker_card")}
+            onClick={onClick}
+            className={classnames(className, "poker_card", 
+            {'isPicked': sameSuit,
+            'isNotPicked': isNotPicked,
+        })}
             suitColor={suitColor(suit)}
         >
             { hasDetail && (

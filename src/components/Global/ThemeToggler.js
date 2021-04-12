@@ -49,12 +49,12 @@ const ThemeToggler = () => {
 
     return (
         <Toggler 
+            onClick={handleToggleTheme}
             className={classNames("theme_toggler",{
                 'light_mode': theme==='light',
                 'dark_mode': theme==='dark',
             })}>
             <button 
-                onClick={handleToggleTheme}
                 className="toggle_button" />
         </Toggler>
     )

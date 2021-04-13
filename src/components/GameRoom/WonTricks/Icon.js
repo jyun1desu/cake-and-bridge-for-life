@@ -12,7 +12,7 @@ const StyledCardIcon = styled.div`
         height: 13px;
         border-radius: 2px;
         border: 1px solid #fff;
-        background-color: ${color.$main_orange};
+        background-color: ${color.$orange_color};
         transition: 0.4s all;
 
         &:nth-child(1) {

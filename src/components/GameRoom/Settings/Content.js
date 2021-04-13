@@ -33,7 +33,7 @@ const Content = () =>  {
     </Item>
     <Item>
         <span>離開遊戲</span>
-        <LeaveButton color={color.$main_orange}>EXIT</LeaveButton>
+        <LeaveButton color={color.$orange_color}>EXIT</LeaveButton>
     </Item>
     <Item>
         <span>意見投書</span>

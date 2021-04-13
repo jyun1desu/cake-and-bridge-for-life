@@ -110,66 +110,66 @@ const ContactForm = styled.form`
 `
 
 const ModalSendAdvice = () => {
-    const [state, handleSubmit] = useForm("mnqlqyjv");
-    const [inputContent, setInputContent] = useState('');
+  const [state, handleSubmit] = useForm("mnqlqyjv");
+  const [inputContent, setInputContent] = useState('');
 
-    const handleSend = (e) =>  {
-        e.preventDefault();
-        if(!inputContent) return;
-        handleSubmit(e);
-    }
+  const handleSend = (e) => {
+    e.preventDefault();
+    if (!inputContent) return;
+    handleSubmit(e);
+  }
 
-    const handleClose = () => {
-        setInputContent('');
-        // close modal;
-    }
+  const handleClose = () => {
+    setInputContent('');
+    // close modal;
+  }
 
-    return (
-        <Modal
-            className="send_email_modal">
-            <ContactForm onSubmit={(e)=>handleSend(e)}>
-                {state.succeeded
-                    ? (<>
-                        <p className="success">寄送成功</p>
-                        <Button
-                            onClick={handleClose}
-                            color={color.$pink_color}
-                            type="button">
-                            關閉視窗
+  return (
+    <Modal
+      className="send_email_modal">
+      <ContactForm onSubmit={(e) => handleSend(e)}>
+        {state.succeeded
+          ? (<>
+            <p className="success">寄送成功</p>
+            <Button
+              onClick={handleClose}
+              color={color.$pink_color}
+              type="button">
+              關閉視窗
                             </Button>
-                    </>)
-                    : (<>
-                        <p className="title">歡迎告訴我任何意見</p>
-                        <textarea
-                            onChange={(e)=>setInputContent(e.target.value)}
-                            id="message"
-                            name="message"
-                        />
-                        <ValidationError
-                            prefix="Message"
-                            field="message"
-                            errors={state.errors}
-                        />
-                        <div className="button_area">
-                            <Button
-                                onClick={handleClose}
-                                color={color.$unable_color}
-                                type="button"
-                                disabled={state.submitting}>
-                                取消
+          </>)
+          : (<>
+            <p className="title">歡迎告訴我任何意見</p>
+            <textarea
+              onChange={(e) => setInputContent(e.target.value)}
+              id="message"
+              name="message"
+            />
+            <ValidationError
+              prefix="Message"
+              field="message"
+              errors={state.errors}
+            />
+            <div className="button_area">
+              <Button
+                onClick={handleClose}
+                color={color.$unable_color}
+                type="button"
+                disabled={state.submitting}>
+                取消
                         </Button>
-                            <Button
-                                color={inputContent?color.$green_color : color.$unable_color}
-                                type="submit"
-                                disabled={state.submitting || !inputContent}>
-                                {state.submitting ? <Loading /> : '送出'}
-                            </Button>
-                        </div>
-                    </>)
-                }
-            </ContactForm >
-        </Modal >
-    );
+              <Button
+                color={inputContent ? color.$green_color : color.$unable_color}
+                type="submit"
+                disabled={state.submitting || !inputContent}>
+                {state.submitting ? <Loading /> : '送出'}
+              </Button>
+            </div>
+          </>)
+        }
+      </ContactForm >
+    </Modal >
+  );
 }
 
 export default ModalSendAdvice

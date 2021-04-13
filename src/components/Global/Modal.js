@@ -23,6 +23,10 @@ const styledModalPage = styled(ModalPage)`
 	justify-content: center;
 	align-items: center;
     z-index: 20;
+
+    & > div {
+        min-width: 65vw;
+    }
 `
 
 export default styledModalPage

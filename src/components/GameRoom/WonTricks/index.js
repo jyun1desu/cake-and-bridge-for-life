@@ -8,7 +8,7 @@ const WonTricks = () => (
             title="你贏的墩們"
             type="won tricks"
             height="60vw"
-            color={color.$main_orange}
+            color={color.$orange_color}
             renderIcon={<Icon/>}
             className="won_tricks">
         </SideInfo>

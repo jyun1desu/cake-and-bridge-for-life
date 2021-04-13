@@ -11,7 +11,7 @@ const Box = styled.div`
 
     .title {
         flex-grow: 0;
-        background-color: ${color.$main_orange};
+        background-color: ${color.$orange_color};
         text-align: center;
         padding: 5px 10px;
         color: white;

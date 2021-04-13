@@ -12,7 +12,7 @@ export const color = {
     $pass_color: '#a5dc6e',
     $unable_color: '#dcdcdc',
     $unable_font_color: '#C4C4C4',
-    $main_orange: '#f5ab57',
+    $orange_color: '#f5ab57',
     $under_line_color: '#E3E1E1',
     $default_font_color: '#323232',
 }

@@ -7,7 +7,7 @@ import BindList from './BindList'
 
 
 const Box = styled.div`
-    width: 90vw;
+    width: 85vw;
     align-self: flex-start;
     margin-top: 5vh;
     display: flex;
@@ -22,7 +22,7 @@ const Box = styled.div`
         padding: 10px 0;
         text-align: center;
         font-size: 18px;
-        letter-spacing: 1px;
+        letter-spacing: 2px;
         color: white;
         background-color: ${color.$green_color};
     }

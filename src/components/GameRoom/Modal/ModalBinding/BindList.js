@@ -28,11 +28,12 @@ const OptionRow = styled.div`
     }
 `
 
-const Options = ({ trickNumber }) => {
+const Options = ({ trickNumber, isUserTurn }) => {
     const suits = ["spades", "diamond", "heart", "club"];
     const [pickBindState,setPickBindState] = useRecoilState(userPickBindState);
 
     const handlePickBind = (bindData) => {
+        if(!isUserTurn) return;
         if(isObjectEquivalent(bindData,pickBindState)){
             setPickBindState(null);
         } else {
@@ -64,12 +65,13 @@ const List = styled.div`
     overflow-y: scroll;
 `
 
-const OptionList = ({ tricks = [] }) => (
+const OptionList = ({ tricks = [], isUserTurn }) => (
     <List className="bind_options">
         {tricks.map(trickNumber => (
             <Options
                 key={'trick'+trickNumber}
                 trickNumber={trickNumber}
+                isUserTurn={isUserTurn}
             />
         ))}
     </List>
@@ -127,13 +129,28 @@ const Hint =styled.p`
 
 const BindList = () => {
     const userPickBind = useRecoilValue(userPickBindState);
+    const isUserTurn = true;
+
+    const callBind = () => {
+        if(!isUserTurn) return;
+
+        if(!userPickBind) {
+            console.log('pass')
+        } else {
+            console.log(userPickBind)
+        }
+    };
+
     return (
         <>
-            <Box className={classnames("bind_list",{"is_user_turn": false})}>
-                <p>{false?'':'NOT '}YOUR TURN</p>
+            <Box className={classnames("bind_list",{"is_user_turn": isUserTurn})}>
+                <p>{isUserTurn?'':'NOT '}YOUR TURN</p>
                 <OptionList
+                    isUserTurn={isUserTurn}
                     tricks={[1, 2, 3, 4, 5, 6]} />
-                <button className={classnames({"has_pick_bind": userPickBind})}>{
+                <button 
+                    onClick={callBind}
+                    className={classnames({"has_pick_bind": userPickBind})}>{
                 userPickBind 
                     ? ('喊 '+ userPickBind.number + suitInPoker(userPickBind.suit)) 
                     : "PASS"}

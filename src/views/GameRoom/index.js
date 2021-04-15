@@ -7,7 +7,7 @@ import { userIndexState } from 'store/user';
 import { userDeckState } from 'store/game';
 import { userRoomState } from "store/user";
 
-// import ModalBinding from 'components/GameRoom/Modal/ModalBinding';
+import ModalBinding from 'components/GameRoom/Modal/ModalBinding';
 // import ModalSendAdvice from 'components/GameRoom/Modal/ModalSendAdvice';
 // import ModalGiveUp from 'components/GameRoom/Modal/ModalGiveUp';
 import ModalConfirmLeave from 'components/GameRoom/Modal/ModalConfirmLeave';
@@ -64,7 +64,7 @@ const GameRoom = () => {
         <Navbar />
         {showModalReissue && <div>倒牌兒</div>}
         {/* <ModalSendAdvice /> */}
-        {/* <ModalBinding /> */}
+        <ModalBinding />
         {/* <ModalGiveUp /> */}
         {/* <ModalConfirmLeave /> */}
         {/* <ModalResult /> */}

@@ -19,10 +19,18 @@ const SideNav = styled.div`
     display: flex;
     position: absolute;
     left: 100%;
-    bottom: 7vw;
-    width: 50vw;
     height: ${props => props.height};
     transition: .5s all ease-in-out;
+
+    &.won_tricks {
+        bottom: 7vw;
+        width: 62vw;
+    }
+
+    &.settings {
+        bottom: 15vw;
+        width: 55vw;
+    }
 
     &.isOpen {
         transform: translateX(-100%);
@@ -38,7 +46,7 @@ const SideNav = styled.div`
         width: 100%;
         height: 100%;
         box-sizing: border-box;
-        padding: 8px 12px 8px 8px;
+        padding: 8px 10px 8px 8px;
         margin-top: -15px;
         border-bottom-left-radius: 6px;
         border-top-left-radius: 6px;
@@ -83,7 +91,7 @@ const SideInfo = ({title, type, renderIcon, content, className, color, height}) 
             </Toggler>
             <div className="content_box">
                 <p className="title">{title}</p>
-                { content }
+                {React.cloneElement(content, {isHome: true})}
             </div>
         </SideNav>
     )

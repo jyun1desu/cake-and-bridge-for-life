@@ -14,6 +14,7 @@ import PlayerWindow from 'components/WaitRoom/PlayerWindow';
 import TeamRadios from 'components/WaitRoom/TeamRadios';
 import Button from 'components/Global/Button';
 import Loading from 'components/Global/Loading';
+import ThemeToggler from 'components/Global/ThemeToggler';
 
 const Room = styled.div`
         padding: 5vw;
@@ -109,6 +110,7 @@ const WaitRoom = () => {
 
     return (
         <Room>
+            <ThemeToggler className="on_page"/>
             <PlayerWindow />
             <TeamRadios roomName={roomName} userID={userID} />
             <Button

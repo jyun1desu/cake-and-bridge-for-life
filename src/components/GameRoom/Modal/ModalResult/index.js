@@ -55,6 +55,11 @@ const AninimationBox = styled.div`
             left: 20%;
             top: 60%;
         }
+        &:nth-child(9) {
+            position: absolute;
+            left: -50%;
+            bottom: 10%;
+        }
     }
 `
 
@@ -67,6 +72,7 @@ const Animations = () => {
             preserveAspectRatio: 'xMidYMid slice'
         }
     };
+
     const subFireWorkData = {
         loop: true,
         autoplay: true,
@@ -108,6 +114,10 @@ const Animations = () => {
         />
         <Lottie options={subFireWorkData}
             height={200}
+            width={400}
+        />
+        <Lottie options={subFireWorkData}
+            height={300}
             width={400}
         />
     </AninimationBox>
@@ -169,8 +179,8 @@ const Content = () => (
         <p className="title">勝負揭曉</p>
         <div className="content">
             <div className="text">
-                <p>👑恭喜<span>可麗露</span>贏惹👑</p>
-                <p className="hint">(請享受一下贏家才有的煙火)</p>
+                <p>🎉恭喜<span>可麗露</span>贏惹🎉</p>
+                <p className="hint">(請享受贏家才有的煙火)</p>
                 {/* <p>🥲NO～<span>可麗露</span>贏惹🥲</p> */}
                 {/* <p className="hint">(別氣餒！努力獲勝就能看煙火！)</p> */}
             </div>

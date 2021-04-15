@@ -7,6 +7,7 @@ import Logo from "components/Home/Logo";
 import RoomDialog from "components/Home/RoomDialog";
 import Input from "components/Global/Input";
 import Button from "components/Global/Button";
+import ThemeToggler from 'components/Global/ThemeToggler';
 
 import { userNameState } from "store/user";
 import styled from "styled-components";
@@ -99,6 +100,7 @@ const Home = () => {
 
 	return (
 		<HomePage>
+			<ThemeToggler className="on_page"/>
 			<Logo className="logo" />
 			<NameFillIn openRoomList={() => toggleRoomDialog(true)} />
 			{transitions(

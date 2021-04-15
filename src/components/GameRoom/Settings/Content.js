@@ -9,7 +9,7 @@ const Item = styled.div`
     justify-content: space-between;
     align-items: center;
     margin-left: 2px;
-    padding: 8px 0;
+    padding: 6px 0;
     border-bottom: 1px solid ${color.$under_line_color};
 
     & > span {
@@ -24,23 +24,21 @@ const LeaveButton = styled(Button)`
 `
 
 
-const Content = () =>  {
-    return (
+const Content = ({ isHome }) => (
     <>
-    <Item>
-        <span>更換主題</span>
-        <ThemeToggler />
-    </Item>
-    <Item>
-        <span>離開遊戲</span>
-        <LeaveButton color={color.$orange_color}>EXIT</LeaveButton>
-    </Item>
-    <Item>
-        <span>意見投書</span>
-        <LeaveButton color={color.$green_color}>GO</LeaveButton>
-    </Item>
+        <Item>
+            <span>更換主題</span>
+            <ThemeToggler />
+        </Item>
+        <Item>
+            <span>意見投書</span>
+            <LeaveButton color={color.$green_color}>GO</LeaveButton>
+        </Item>
+        {!isHome && <Item>
+            <span>離開遊戲</span>
+            <LeaveButton color={color.$orange_color}>EXIT</LeaveButton>
+        </Item>}
     </>
-    )
-}
+)
 
 export default Content;

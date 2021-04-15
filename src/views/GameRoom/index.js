@@ -67,7 +67,7 @@ const GameRoom = () => {
         {/* <ModalBinding /> */}
         {/* <ModalGiveUp /> */}
         {/* <ModalConfirmLeave /> */}
-        <ModalResult />
+        {/* <ModalResult /> */}
     </Room>)
 }
 

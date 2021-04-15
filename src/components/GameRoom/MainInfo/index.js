@@ -80,7 +80,7 @@ const Suit = styled.span`
                     : `${color.$black_suit_color}`)};
 `
 
-const MainInfo = ({ suit = 'club'}) => (
+const MainInfo = ({ suit = 'heart'}) => (
     <Board className="main_info">
         <InfoBox title="王牌" className="trump">
             <Suit 

@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { color } from 'style/theme';
-import classNames from 'classnames';
+import classnames from 'classnames';
+import { themeState  } from 'store/theme';
+import { useRecoilState } from 'recoil';
+
 
 const Toggler = styled.div`
     display: flex;
@@ -20,6 +23,12 @@ const Toggler = styled.div`
         transition: .3s all;
     }
 
+    &.on_page {
+		position: absolute;
+		top: 20px;
+		right: 20px;
+	}
+
     &.light_mode {
         background-color: ${color.$pink_color};
         justify-content: flex-start;
@@ -36,23 +45,28 @@ const Toggler = styled.div`
     }
 `
 
-const ThemeToggler = () => {
-    const [theme, toggleTheme] = useState('light');
+const ThemeToggler = ({className}) => {
+    const [theme, toggleTheme] = useRecoilState(themeState);
+
+    const setTheme = (theme) => {
+        toggleTheme(theme);
+        localStorage.setItem('bridge-theme',JSON.stringify(theme));
+    }
 
     const handleToggleTheme = () => {
-        if(theme === 'light') {
-            toggleTheme('dark');
+        if(theme === 'strawberry') {
+            setTheme('canele');
         } else {
-            toggleTheme('light');
+            setTheme('strawberry');
         }
     };
 
     return (
         <Toggler 
             onClick={handleToggleTheme}
-            className={classNames("theme_toggler",{
-                'light_mode': theme==='light',
-                'dark_mode': theme==='dark',
+            className={classnames("theme_toggler", className,{
+                'light_mode': theme==='strawberry',
+                'dark_mode': theme==='canele',
             })}>
             <button 
                 className="toggle_button" />

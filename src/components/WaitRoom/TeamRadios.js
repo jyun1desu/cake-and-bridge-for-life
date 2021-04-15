@@ -53,7 +53,6 @@ const TeamOption = ({team, isChosen, onClick=()=>{}, teamIndex}) => {
         })}>
         <Radio 
             className="radio"
-            border
             size="15"
             marginRight="8"/>
         <span>{team}</span>

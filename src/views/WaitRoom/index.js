@@ -144,7 +144,7 @@ const WaitRoom = () => {
     }
 
     const transitions = useTransition(isUserReady, {
-		from: { opacity: 0},
+		from: { opacity: 0 },
 		enter: { opacity: 1 },
 		leave: { opacity: 0 }
 	});
@@ -162,11 +162,7 @@ const WaitRoom = () => {
             />
             {transitions(
 				(props, item) =>
-					item && (
-						<Loading 
-                            cancelReady={()=>setReady(false)}
-                            style={props} />
-					)
+					item && (<Loading cancelReady={()=>setReady(false)} style={props} />)
 			)}
         </Room>
     )

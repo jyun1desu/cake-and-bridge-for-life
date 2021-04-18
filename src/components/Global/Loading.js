@@ -1,23 +1,45 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useRecoilState } from "recoil";
 import Modal from "components/Global/Modal";
+import { themeState } from 'store/theme';
 import { color } from 'style/theme';
 import Button from 'components/Global/Button';
 
+const themeData = {
+    light: { 
+		bg: 'white',
+        border: 'none',
+        fg: color.$title_font_color,
+        dot: color.$pink_color,
+        button_color: color.$green_color
+	},
+    dark: { 
+		bg: color.$dark_dim_bg_color,
+        border: '1px solid' + color.$dark_border_color,
+        fg: color.$dark_default_font_color,
+        dot: color.$fluorescent_pink_color,
+        button_color: color.$dark_border_color
+	},
+}
+
 const LoadingModal = styled.div`
     width: 50vw;
-    height: 50vw;
+    min-height: 50vw;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
     border-radius: 10px;
-    padding: 20px 20px 10px;
-    background-color: #fff;
+    padding: 20px;
+    background-color: ${({theme}) => themeData[theme].bg };
+    border: ${({theme}) => themeData[theme].border };
 
     .text {
-        color: ${color.$title_font_color};
-        margin: 5px 0;
+        margin: 12px 0;
+        font-size: 15px;
+        letter-spacing: 1px;
+        color: ${({theme}) => themeData[theme].fg };
     }
 
     .lds-default {
@@ -25,15 +47,14 @@ const LoadingModal = styled.div`
         position: relative;
         width: 80px;
         height: 80px;
-        margin-bottom: 10px;
 
         &>div {
             position: absolute;
             width: 6px;
             height: 6px;
-            background: ${color.$pink_color};
             border-radius: 50%;
             animation: lds-default 1.5s linear infinite;
+            background: ${({theme}) => themeData[theme].dot };
 
             &:nth-child(1) {
                 animation-delay: 0s;
@@ -124,6 +145,7 @@ const LoadingModal = styled.div`
 `
 
 const Loading = ({style, cancelReady}) =>  {
+    const [theme] = useRecoilState(themeState);
     const dots = () => {
         const dots = [];
         const dotAmount = 13
@@ -135,13 +157,15 @@ const Loading = ({style, cancelReady}) =>  {
 
     return (
         <Modal style={style} className="loading-modal">
-            <LoadingModal className="loading">
+            <LoadingModal 
+                theme={theme}
+                className="loading">
                 <div className="lds-default">
                     {dots()}
                 </div>
                 <p className="text">等待其他玩家開始</p>
                 <Button 
-                    color={color.$green_color}
+                    color={themeData[theme].button_color}
                     onClick={cancelReady}
                     className="cancel_ready"
                 >我還沒好</Button>

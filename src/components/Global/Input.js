@@ -2,7 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { color } from "style/theme";
 
-const Input = ({ className, placeholder = '', onChange = () => { }, value, maxLength = '10' }) => {
+const Input = ({ 
+    className, 
+    placeholder = '', 
+    onChange = () => { }, 
+    value, 
+    maxLength = '10' 
+}) => {
     return (
         <input
             className={className}
@@ -27,15 +33,6 @@ const styledInput = styled(Input)`
     &:active,
     &:focus {
         outline: none;
-    }
-
-    &.name_space{
-        margin: 0 0 20px 0;
-        border-bottom: 2px solid ${color.$title_font_color};
-        padding: 5px;
-        font-size: 22px;
-        line-height: 25px;
-        letter-spacing: 2px;
     }
 `
 

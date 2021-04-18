@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { color } from 'style/theme';
+import { useRecoilState } from 'recoil';
+import { themeState } from 'store/theme';
+
 import Modal from 'components/Global/Modal';
 import PlayerList from './PlayerList'
 import BindList from './BindList'
@@ -14,8 +17,9 @@ const Box = styled.div`
     flex-direction: column;
     justify-content: stretch;
     border-radius: 6px;
-    background-color: #fff;
     overflow: hidden;
+    transition: 0.5s all;
+    border: ${({theme}) => themeData[theme].border };
 
     .title {
         margin: 0;
@@ -24,12 +28,15 @@ const Box = styled.div`
         font-size: 18px;
         letter-spacing: 2px;
         color: white;
-        background-color: ${color.$green_color};
+        transition: 0.5s all;
+        border-bottom: ${({theme}) => themeData[theme].border };
+        background-color: ${({theme}) => themeData[theme].title_bg };
     }
 
     .content {
         padding: 10px;
-        background-color: ${color.$theme_background};
+        transition: 0.5s all;
+        background-color: ${({theme}) => themeData[theme].content_bg };
 
         .player_list {
             display: flex;
@@ -37,13 +44,29 @@ const Box = styled.div`
     }
 `
 
+const themeData = {
+    light: { 
+        title_bg: color.$green_color, 
+        content_bg: color.$theme_background,
+        border: `1px solid transparent`,
+    },
+    dark: { 
+        title_bg: color.$dark_bg_color, 
+        content_bg: color.$dark_dim_bg_color,
+        border: `1px solid ${color.$dark_dim_border_color}`,
+    },
+}
+
 const BindingBox = () => {
+    const [theme] = useRecoilState(themeState);
     return (
-        <Box className="box">
+        <Box
+            theme={theme}
+            className="box">
             <p className="title">BINDING</p>
             <div className="content">
-                <PlayerList className="player_list"/>
-                <BindList />
+                <PlayerList className="player_list" />
+                <BindList theme={theme} />
             </div>
         </Box>
     )
@@ -51,8 +74,7 @@ const BindingBox = () => {
 
 const ModalBinding = () => {
     return (
-        <Modal 
-            littleMask
+        <Modal
             className="binding_modal">
             <BindingBox />
         </Modal>

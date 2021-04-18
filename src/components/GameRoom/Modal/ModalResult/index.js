@@ -1,9 +1,11 @@
 import React from 'react';
-import { color } from 'style/theme';
+import Lottie from 'react-lottie';
 import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
+import { themeState } from 'store/theme';
+import { color } from 'style/theme';
 import Modal from 'components/Global/Modal';
 import Button from 'components/Global/Button';
-import Lottie from 'react-lottie';
 import mainFireWork from 'assets/16764-firework-animaiton.json'
 import subFireWork from 'assets/14438-fireworks.json'
 
@@ -123,6 +125,24 @@ const Animations = () => {
     </AninimationBox>
 )};
 
+
+const themeData = {
+    light: { 
+        bg: 'white',
+        title_bg: color.$pink_color,
+        border: 'none',
+        title_fg: 'white',
+        win_fg: color.$default_font_color,
+    },
+    dark: { 
+        bg: color.$dark_dim_bg_color,
+        title_bg: 'transparent',
+        border: `1px solid ${color.$fluorescent_pink_color}`,
+        title_fg: color.$fluorescent_pink_color,
+        win_fg: color.$fluorescent_yellow_color,
+    },
+}
+
 const ResultBox = styled.div`
     z-index: 100;
     display:  flex;
@@ -131,30 +151,35 @@ const ResultBox = styled.div`
     background-color: white;
     border-radius: 5px;
     overflow: hidden;
+    background-color: ${({theme}) => themeData[theme].bg };
+    border: ${({theme}) => themeData[theme].border };
 
     .title {
         font-size: 20px;
         letter-spacing: 5px;
         text-align: center;
         color: white;
-        padding: 10px 0;
-        background-color: ${color.$pink_color};
+        padding: 5px 0;
+        color: ${({theme}) => themeData[theme].title_fg };
+        background-color: ${({theme}) => themeData[theme].title_bg };
+        border-bottom: ${({theme}) => themeData[theme].border };
     }
 
     .content {
         box-sizing: border-box;
-        padding: 20px 15px 15px;
+        padding: 15px;
 
         .text {
             text-align: center;
             letter-spacing: 3px;
             margin-bottom: 25px;
+            color: ${({theme}) => themeData[theme].win_fg };
 
             .hint {
-            margin-top: 5px;
-            letter-spacing: 1px;
-            font-size: 12px;
-            color: ${color.$unable_font_color};
+                margin-top: 5px;
+                letter-spacing: 1px;
+                font-size: 12px;
+                color: ${color.$unable_font_color};
             }
         }
     }
@@ -174,8 +199,24 @@ const ResultBox = styled.div`
     }
 `
 
-const Content = () => (
-    <ResultBox className="result_box">
+const Content = () => {
+    const [theme] = useRecoilState(themeState);
+    const buttonColor = {
+        light: {
+            button1: color.$highlight_color,
+            button2: color.$orange_color,
+            button3: color.$green_color,
+        },
+        dark: {
+            button1: color.$fluorescent_orange_color,
+            button2: color.$fluorescent_yellow_color,
+            button3: color.$fluorescent_green_color,
+        }
+    }
+    return(
+    <ResultBox 
+        theme={theme}
+        className="result_box">
         <p className="title">勝負揭曉</p>
         <div className="content">
             <div className="text">
@@ -185,20 +226,23 @@ const Content = () => (
                 {/* <p className="hint">(別氣餒！努力獲勝就能看煙火！)</p> */}
             </div>
             <div className="button_area">
-                <Button color={color.$highlight_color}>更換隊友</Button>
-                <Button color={color.$orange_color}>再玩一局</Button>
-                <Button color={color.$green_color}>翻桌不玩</Button>
+                <Button 
+                    color={buttonColor[theme].button1}>更換隊友</Button>
+                <Button 
+                    color={buttonColor[theme].button2}>再玩一局</Button>
+                <Button 
+                    color={buttonColor[theme].button3}>翻桌不玩</Button>
             </div>
         </div >
     </ResultBox >
-);
+)};
 
 const ModalGiveUp = () => {
     return (
         <Modal
             className="send_email_modal">
             <Content />
-            <Animations />
+            {/* <Animations /> */}
         </Modal >
     );
 }

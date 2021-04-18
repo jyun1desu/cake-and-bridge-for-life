@@ -31,6 +31,7 @@ const Toggler = styled.div`
 
     &.light_mode {
         background-color: ${color.$pink_color};
+        border: 1px solid transparent;
         justify-content: flex-start;
         .toggle_button {
             margin-left: 0;
@@ -38,7 +39,8 @@ const Toggler = styled.div`
     }
 
     &.dark_mode {
-        background-color: ${color.$brown_color};
+        background-color: ${color.$dark_dim_bg_color};
+        border: 1px solid ${color.$dark_border_color};
         .toggle_button {
             margin-left: calc( 40px - 17px);
         }
@@ -50,14 +52,14 @@ const ThemeToggler = ({className}) => {
 
     const setTheme = (theme) => {
         toggleTheme(theme);
-        localStorage.setItem('bridge-theme',JSON.stringify(theme));
+        localStorage.setItem('cake-and-bridge-theme',JSON.stringify(theme));
     }
 
     const handleToggleTheme = () => {
-        if(theme === 'strawberry') {
-            setTheme('canele');
+        if(theme === 'light') {
+            setTheme('dark');
         } else {
-            setTheme('strawberry');
+            setTheme('light');
         }
     };
 
@@ -65,8 +67,8 @@ const ThemeToggler = ({className}) => {
         <Toggler 
             onClick={handleToggleTheme}
             className={classnames("theme_toggler", className,{
-                'light_mode': theme==='strawberry',
-                'dark_mode': theme==='canele',
+                'light_mode': theme==='light',
+                'dark_mode': theme==='dark',
             })}>
             <button 
                 className="toggle_button" />

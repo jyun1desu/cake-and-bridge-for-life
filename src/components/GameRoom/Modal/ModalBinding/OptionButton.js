@@ -5,6 +5,17 @@ import { color } from 'style/theme';
 import { suitInPoker, suitColor } from 'util/suit';
 import Radio from 'components/Global/Radio';
 
+const themeData = {
+    light: { 
+        red_suit_color: color.$red_suit_color,
+        black_suit_color: color.$black_suit_color,
+    },
+    dark: {
+        red_suit_color: color.$dark_red_suit_color,
+        black_suit_color: 'white',
+    },
+}
+
 const Button = styled.div`
     display: flex;
     align-items: center;
@@ -14,11 +25,11 @@ const Button = styled.div`
         line-height: 16px;
 
         &.red {
-            color: ${color.$red_suit_color}
+            color: ${({theme}) => themeData[theme].red_suit_color};
         }
 
         &.black {
-            color: ${color.$black_suit_color}
+            color: ${({theme}) => themeData[theme].black_suit_color};
         }
     }
 
@@ -31,18 +42,33 @@ const Button = styled.div`
     }
 `
 
-const OptionButton = ({trickNumber, suit, onClick=() => {}, isPicked}) => {
+const OptionButton = ({
+    theme, 
+    trickNumber, 
+    suit, 
+    onClick=() => {}, 
+    isPicked
+    }) => {
+    const getBorder = () => {
+        switch(theme) {
+            case 'light':
+            default:
+                return `1px solid ${color.$under_line_color}`;
+            case 'dark': 
+                return `1px solid ${color.$dark_dim_border_color}`;
+        }
+    }
     return (
-        <Button 
+        <Button
         key={trickNumber+suit}
         className={classnames("option",{"chosen": isPicked})}
         onClick={onClick}>
-        <Radio
-            className="radio"
-            border
-            size="12"
-            marginRight="5"
-        />
+            <Radio
+                className="radio"
+                border={getBorder(theme)}
+                size="12"
+                marginRight="5"
+            />
         <span  
             className={classnames("pattern",suitColor(suit))}
         >{suitInPoker(suit)}&#xFE0E;</span>

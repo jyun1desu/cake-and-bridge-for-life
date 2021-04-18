@@ -8,7 +8,8 @@ import styled from 'styled-components';
 
 import { playersData, teamArray } from "store/players";
 import { userReadyState, userIDState, userRoomState, userTeamState } from "store/user";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { themeState } from 'store/theme';
+import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 
 import PlayerWindow from 'components/WaitRoom/PlayerWindow';
 import TeamRadios from 'components/WaitRoom/TeamRadios';
@@ -16,22 +17,62 @@ import Button from 'components/Global/Button';
 import Loading from 'components/Global/Loading';
 import ThemeToggler from 'components/Global/ThemeToggler';
 
+const themeData = {
+    light: { 
+		bg: color.$theme_background,
+	},
+    dark: { 
+		bg: color.$dark_bg_color,
+	},
+}
+
 const Room = styled.div`
         padding: 5vw;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        transition: .5s background-color;
+        background-color: ${({theme}) => themeData[theme].bg };
 
         .start_game {
             letter-spacing: 2px;
-            font-size: 22px;
+            font-size: 20px;
             margin-top: 30px;
         }
 `
 
+const ReadyButton = ({onClick, className, buttonMessage}) =>  {
+    const [theme] = useRecoilState(themeState);
+
+    const getButtonColor = () => {
+        switch(theme) {
+            case 'light':
+            default:
+                return buttonMessage === '開打！'
+                    ?`${color.$pink_color}`
+                    :`${color.$unable_color}`;
+            case 'dark': 
+                return buttonMessage === '開打！'
+                    ? `${color.$fluorescent_pink_color}`
+                    : `${color.$dark_dim_border_color}`;
+        }
+    }
+
+    return (
+        <Button
+            className={className}
+            onClick={onClick}
+            color={getButtonColor()}
+        >
+                {buttonMessage}
+        </Button>
+    )
+}
+
 const WaitRoom = () => {
     const history = useHistory();
+    const [theme] = useRecoilState(themeState);
     const [buttonMessage,setButtonMessage] = useState('');
     const setPlayersData = useSetRecoilState(playersData);
     const userID = useRecoilValue(userIDState);
@@ -109,15 +150,16 @@ const WaitRoom = () => {
 	});
 
     return (
-        <Room>
+        <Room
+            theme={theme}>
             <ThemeToggler className="on_page"/>
             <PlayerWindow />
             <TeamRadios roomName={roomName} userID={userID} />
-            <Button
+            <ReadyButton
+                buttonMessage={buttonMessage}
                 onClick={()=>setReady(true)}
-                color={buttonMessage === '開打！'?`${color.$pink_color}`:`${color.$unable_color}`}
                 className="start_game"
-            >{buttonMessage}</Button>
+            />
             {transitions(
 				(props, item) =>
 					item && (

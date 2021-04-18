@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import classnames from 'classnames';
+import { useRecoilState } from 'recoil';
+import { themeState } from 'store/theme';
 import ThinkingIcon from 'components/GameRoom/ThinkingIcon';
 import { color } from 'style/theme'
 
@@ -9,7 +11,7 @@ const Tag = styled.div`
 
     &.is_player_turn {
         .player_info {
-            border: 2px solid ${color.$highlight_color};
+            border-width: 2px;
         }
     }
 
@@ -43,31 +45,64 @@ const Tag = styled.div`
         vertical-align: middle;
         border-radius: 5px;
         font-size: 14px;
-        color: ${color.$title_font_color};
+        line-height: 26px;
         background-color: white;
         overflow: hidden;
         padding-right: 10px;
+        transition: .5s all;
+        border-style: solid;
+        border-width: ${({theme}) => themeData[theme].bw };
+        border-color: ${({theme, team}) => (theme === 'light'? 'transparent':themeData[theme].team[team])};
+        background-color: ${({theme}) => themeData[theme].name_bg };
+        color: ${({ theme }) => themeData[theme].fc};
 
         .team {
             padding: 5px 10px;
-            background-color: ${color.$pink_color};
+            transition: .5s all;
+            background-color: ${({ theme, team }) => themeData[theme].team[team]};
         }
+
         .name {
             max-width: 32vw;
             letter-spacing: 1px;
-            padding: 5px 0 5px 10px;
+            padding-left: 10px;
             white-space: nowrap;
             overflow: hidden;
-            
         }
     }
 `
 
-const fakeplayers = ['아이유','我是喜歡取很長的人哇哈','micheal','😉']
+const themeData = {
+    light: { 
+        name_bg: 'white',
+        fc: color.$title_font_color,
+        bw: '0px',
+        border: 'transparent',
+        team: {
+            team1: color.$pink_color,
+            team2: color.$brown_color,
+        }
+    },
+    dark: { 
+        name_bg: color.$dark_dim_bg_color,
+        fc: color.$light_pink_color,
+        bw: '1px',
+        team: {
+            team1: color.$fluorescent_pink_color,
+            team2: color.$fluorescent_yellow_color
+        }
+    },
+}
+
+const fakeplayers = ['jyun1dusu','我是喜歡取很長的人哇哈','micheal','😉']
 
 const PlayerNameTag = ({className, index, isNowPlayer = false}) => {
+    const [theme] = useRecoilState(themeState);
     return (
-        <Tag className={classnames(className,{"is_player_turn": isNowPlayer})}>
+        <Tag 
+            theme={theme} 
+            team={"team" + (index%2 + 1)}
+            className={classnames(className,{"is_player_turn": isNowPlayer})}>
             {isNowPlayer && <ThinkingIcon className="on_table"/>}
             <div className="player_info">
                 <div className="team"></div>

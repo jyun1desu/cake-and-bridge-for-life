@@ -1,8 +1,10 @@
 import React from 'react';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import classnames from 'classnames';
 import { suitColor, suitInPoker } from 'util/suit'
 import { color } from "style/theme";
+import { themeState } from 'store/theme';
 
 function numberInPoker(number) {
     const poker = [
@@ -27,12 +29,12 @@ const PokerCard = styled.div`
     z-index: 1;
     display: flex;
     justify-content: space-between;
-    background-color: #fafaf7;
-    border: 1px solid white;
     border-radius: 3px;
     box-sizing: border-box;
     padding: 2px;
-    transition: 0.3s all;
+    transition: all .5s;
+    border: 1px solid ${({ theme }) => themeData[theme].border};
+    background-color: ${({ theme }) => themeData[theme].front_bg};
 
     .card_info {
         display: flex;
@@ -47,9 +49,8 @@ const PokerCard = styled.div`
         .suit {
             font-size: 12px;
             text-align: center;
-            color: ${props => (props.suitColor === 'red'
-                    ? `${color.$red_suit_color}`
-                    : `${color.$black_suit_color}`)};
+            transition: all .5s;
+            color: ${({suitColor, theme}) => themeData[theme].suit[suitColor]};
 
             &.suit {
                 margin-top: 1px;
@@ -58,9 +59,10 @@ const PokerCard = styled.div`
     }
 
     .pattern {
-        background-color: white;
         flex: 1 1 100%;
         margin: 10px 4px;
+        transition: all .5s;
+        background-color: ${({ theme }) => themeData[theme].pattern};
     }
 
     &.group {
@@ -71,13 +73,14 @@ const PokerCard = styled.div`
         }
 
         &.other_player_card{
-            background-color: #eaeaea;
+            background-color: ${({ theme }) => themeData[theme].back_bg};;
         }
     }
 
     &.played_card {
-        width: 12vw;
-        height: 15vw;
+        width: 12.5vw;
+        height: 15.5vw;
+        box-shadow: 1px 1px 2px 1px ${({ theme }) => themeData[theme].shadow};
     }
 
     &.isPicked{
@@ -95,19 +98,47 @@ const PokerCard = styled.div`
     }
 `
 
-const Card = ({ number, suit, className, hasDetail, onClick = ()=>{}, nowPickSuit}) => {
+const themeData = {
+    light: { 
+        front_bg: '#FAF9F8',  
+        back_bg: '#eaeaea', 
+        border: 'white',
+        suit: {
+            red: color.$red_suit_color,
+            black: color.$black_suit_color
+        },
+        pattern: 'white',
+        shadow: color.$shadow,
+    },
+    dark: { 
+        front_bg: color.$dark_bg_color, 
+        back_bg: '#312D28', 
+        border: color.$dark_dim_border_color,
+        suit: {
+            red: color.$dark_red_suit_color,
+            black: color.$dark_black_suit_color,
+        },
+        pattern: color.$dark_dim_bg_color,
+        shadow: 'transparent',
+    },
+}
+
+const Card = ({ number, suit, className, hasDetail, onClick = () => { }, nowPickSuit }) => {
     const numberOnCard = numberInPoker(number);
     const suitOnCard = suitInPoker(suit);
+    const [theme] = useRecoilState(themeState);
     const sameSuit = nowPickSuit && (suit === nowPickSuit);
     const isNotPicked = nowPickSuit && (suit !== nowPickSuit);
 
     return (
         <PokerCard
+            theme={theme}
             onClick={onClick}
-            className={classnames(className, "poker_card", 
-            {'isPicked': sameSuit,
-            'isNotPicked': isNotPicked,
-        })}
+            className={classnames(className, "poker_card",
+                {
+                    'isPicked': sameSuit,
+                    'isNotPicked': isNotPicked,
+                })}
             suitColor={suitColor(suit)}
         >
             { hasDetail && (

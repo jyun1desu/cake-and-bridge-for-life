@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import classnames from 'classnames';
+import { useRecoilState } from 'recoil';
+import { themeState } from 'store/theme';
 import { color } from 'style/theme';
 import { suitColor, suitInPoker } from 'util/suit'
 import InfoBox from './InfoBox';
@@ -12,9 +14,11 @@ const Board = styled.div`
     margin-top: 40px;
 
     & > div {
-        flex: 2 1 50%;
-        & + div {
+        &:first-child {
             flex: 1 0 auto;
+        }
+        &:last-child {
+            flex: 1.2 0 auto;
             margin-left: 15px;
         }
     }
@@ -23,7 +27,8 @@ const Board = styled.div`
 const Point = styled.div`
         &.team1 {
             .team__name {
-                background-color: ${color.$pink_color};
+                transition: .5s all;
+                background-color: ${({ theme }) => themeData[theme].team1color};
             }
         }
 
@@ -32,11 +37,12 @@ const Point = styled.div`
             content: "";
             display: block;
             width: 100%;
-            border-top: 1px solid #f5ab57;
+            border-top: 1px solid ${({ theme }) => themeData[theme].border};
             margin: 5px 0;
             }
             .team__name {
-                background-color: ${color.$brown_color};
+                transition: .5s all;
+                background-color: ${({ theme }) => themeData[theme].team2color};
             }
         }
 
@@ -53,46 +59,77 @@ const Point = styled.div`
         .now_win {
             font-size: 14px;
             margin-right: 3px;
+            transition: .5s all;
+            color: ${({theme}) => themeData[theme].fc};
         }
         .should_win {
             font-size: 12px;
             color: #7e7e7e;
         }
-        }
+    }
 `
 
-const PointInfo = ({team}) => {
+const Suit = styled.span`
+    font-size: 20px;
+    transition: .5s all;
+    color: ${({suitColor, theme}) => themeData[theme].suit[suitColor]};
+`
+
+const themeData = {
+    light: {
+        border: color.$orange_color,
+        fc: color.$default_font_color,
+        suit: {
+            red: color.$red_suit_color,
+            black: color.$black_suit_color
+        },
+        team1color: color.$pink_color,
+        team2color: color.$brown_color
+    },
+    dark: {
+        border: color.$dark_dim_border_color,
+        fc: color.$light_pink_color,
+        suit: {
+            red: color.$dark_red_suit_color,
+            black: color.$light_pink_color,
+        },
+        team1color:color.$fluorescent_pink_color,
+        team2color: color.$fluorescent_yellow_color
+    },
+}
+
+const PointInfo = ({ team }) => {
+    const [theme] = useRecoilState(themeState);
     return (
-        <Point className={classnames('team',team)}>
-                <span className="team__name"></span>
-                <span className="team__tricks">
-                    <span className="now_win">0</span>
-                    <span className="should_win">/7</span>
-                </span>
+        <Point theme={theme} className={classnames('team', team)}>
+            <span className="team__name"></span>
+            <span className="team__tricks">
+                <span className="now_win">0</span>
+                <span className="should_win">/7</span>
+            </span>
         </Point>
     )
 }
 
-const Suit = styled.span`
-    font-size: 20px;
-    color: ${props => (props.suitColor === 'red'
-                    ? `${color.$red_suit_color}`
-                    : `${color.$black_suit_color}`)};
-`
-
-const MainInfo = ({ suit = 'heart'}) => (
-    <Board className="main_info">
-        <InfoBox title="王牌" className="trump">
-            <Suit 
-                className="suit"
-                suitColor={suitColor(suit)}
-            >{suitInPoker(suit)}&#xFE0E;</Suit>
-        </InfoBox>
-        <InfoBox title="戰況" className="">
-            <PointInfo team="team1" />
-            <PointInfo team="team2" />
-        </InfoBox>
-    </Board>
-)
+const MainInfo = ({ suit = 'spades' }) => {
+    const [theme] = useRecoilState(themeState);
+    return (
+        <Board theme={theme} className="main_info">
+            <InfoBox
+                theme={theme}
+                title="王牌"
+                className="trump">
+                <Suit theme={theme}
+                    className="suit"
+                    suitColor={suitColor(suit)}
+                >{suitInPoker(suit)}&#xFE0E;</Suit>
+            </InfoBox>
+            <InfoBox theme={theme} title="戰況" className="team">
+                <PointInfo team="team1" />
+                <PointInfo team="team2" />
+            </InfoBox>
+        </Board>
+    )
+}
 
 export default MainInfo;

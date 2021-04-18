@@ -15,4 +15,17 @@ export const color = {
     $orange_color: '#f5ab57',
     $under_line_color: '#E3E1E1',
     $default_font_color: '#323232',
+    $fluorescent_pink_color: '#FFC2C0',
+    $fluorescent_yellow_color: '#FEEE95',
+    $fluorescent_green_color: '#0FFF50',
+    $fluorescent_orange_color: '#FF5F1F',
+
+    $dark_border_color: '#E5D3D2',
+    $dark_default_font_color: '#F3F3F3',
+    $dark_dim_border_color: '#767675',
+    $dark_black_suit_color: '#E5D3D2',
+    $dark_red_suit_color: '#F7274F',
+    $dark_bg_color: '#2B2C2A',
+    $dark_dim_bg_color: '#333332',
+    $light_pink_color: '#FFE9E8',
 }

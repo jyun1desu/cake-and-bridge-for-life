@@ -10,46 +10,76 @@ import Button from "components/Global/Button";
 import ThemeToggler from 'components/Global/ThemeToggler';
 
 import { userNameState } from "store/user";
+import { themeState } from 'store/theme';
 import styled from "styled-components";
 import { color } from "style/theme";
 
-const NameForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+const themeData = {
+    light: { 
+		bg: color.$theme_background,
+		fg: color.$title_font_color,
+		name_fg: color.$title_font_color,
+		border: color.$title_font_color,
+		button_color: color.$pink_color,
+	},
+    dark: { 
+		bg: color.$dark_bg_color,
+		fg: color.$dark_default_font_color,
+		name_fg: color.$fluorescent_pink_color,
+		border: color.$dark_border_color,
+		button_color: color.$fluorescent_pink_color,
+	},
+}
 
-  p {
-    color: ${color.$title_font_color};
-    font-size: 25px;
-    letter-spacing: 2px;
-    margin: 0 0 25px 0;
-  }
+const NameForm = styled.form`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	p {
+		font-size: 22px;
+		letter-spacing: 3px;
+		margin: 0 0 25px 0;
+		transition: .5s all;
+		color: ${({theme}) => themeData[theme].fg };
+	}
+
+	.name_space{
+		margin: 0 0 20px 0;
+		padding: 5px;
+		font-size: 22px;
+		line-height: 25px;
+		letter-spacing: 2px;
+		color: ${({theme}) => themeData[theme].name_fg };
+		border-bottom: 2px solid ${({theme}) => themeData[theme].border };
+	}
 `;
 
 const NameFillIn = ({ openRoomList }) => {
 	const [userName, setUserName] = useRecoilState(userNameState);
+	const [theme] = useRecoilState(themeState);
 	const handleButtonClick = (e) => {
 		e.preventDefault();
 		if (userName) openRoomList();
 	};
 
 	return (
-		<NameForm id="name" className="user_input">
+		<NameForm theme={theme} id="name" className="user_input">
 			<p>請輸入名字</p>
 			<Input
 				className="name_space"
-				maxLength="6"
+				maxLength="8"
 				onChange={(e) => setUserName(e.target.value)}
 				value={userName}
 				type="text"
 			/>
 			<Button
-				color={`${color.$pink_color}`}
+				className="enter_button"
+				color={themeData[theme].button_color}
 				onClick={handleButtonClick}
 				type="submit"
-				className="enter_button"
 			>
-				{userName ? "加入遊戲" : "請輸入名字"}
+				{userName ? "加入遊戲" : "請至少輸入一個字"}
 			</Button>
 		</NameForm>
 	);
@@ -59,11 +89,14 @@ const HomePage = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
+	transition: .5s background-color;
+    background-color: ${({theme}) => themeData[theme].bg };
 `;
 
 const Home = () => {
 	const [showRoomDialog, toggleRoomDialog] = React.useState(false);
 	const [roomList, setRoomList] = React.useState([]);
+	const [theme] = useRecoilState(themeState);
 
 	React.useEffect(()=>{
 		subscribeRooms();
@@ -99,7 +132,7 @@ const Home = () => {
 	};
 
 	return (
-		<HomePage>
+		<HomePage theme={theme}>
 			<ThemeToggler className="on_page"/>
 			<Logo className="logo" />
 			<NameFillIn openRoomList={() => toggleRoomDialog(true)} />

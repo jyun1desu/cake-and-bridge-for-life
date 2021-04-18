@@ -1,6 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
 import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
+import { themeState } from 'store/theme';
 import { color } from 'style/theme';
 
 const StyledCardIcon = styled.div`
@@ -11,9 +13,9 @@ const StyledCardIcon = styled.div`
         width: 9px;
         height: 13px;
         border-radius: 2px;
-        border: 1px solid #fff;
-        background-color: ${color.$orange_color};
         transition: 0.4s all;
+        border: 1px solid ${({ theme }) => themeData[theme].line};
+        background-color: ${({ theme }) => themeData[theme].bg};
 
         &:nth-child(1) {
             transform: translate(8px, 0px);
@@ -28,18 +30,32 @@ const StyledCardIcon = styled.div`
             }
 
             &:nth-child(2) {
-                transform: rotate(12deg) translate(2px, -2px);
+                transform: rotate(8deg) translate(1px, -2px);
             }
         }
     }
 `
 
-const CardIcon = ({isOpen}) => (
+const themeData = {
+    light: { 
+        bg: color.$orange_color,
+        line: 'white',
+    },
+    dark: { 
+        bg: color.$dark_bg_color,
+        line: color.$dark_border_color
+    },
+}
+
+const CardIcon = ({isOpen}) => {
+    const [theme] = useRecoilState(themeState);
+    return (
     <StyledCardIcon 
+        theme={theme}
         className={classnames("card_icon",{"isOpen": isOpen})}>
         <span className="card"></span>
         <span className="card"></span>
     </StyledCardIcon>
-)
+)}
 
 export default CardIcon;

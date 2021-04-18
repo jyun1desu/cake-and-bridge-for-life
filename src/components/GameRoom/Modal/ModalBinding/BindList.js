@@ -2,96 +2,33 @@ import React from 'react';
 import styled from 'styled-components';
 import { color } from 'style/theme';
 import { userPickBindState  } from 'store/bind';
-import isObjectEquivalent from 'util/isObjectEquivalent';
-import { suitInPoker } from 'util/suit'
-import OptionButton from './OptionButton';
-import { useRecoilValue, useRecoilState } from 'recoil';
+import { suitInPoker } from 'util/suit';
+import OptionList from './OptionList';
+import { useRecoilValue } from 'recoil';
 import classnames from 'classnames';
 
-const OptionRow = styled.div`
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-
-    &:not(:last-child) {
-        border-bottom: 1px solid ${color.$under_line_color};
-    }
-
-    .number {
-        flex: 0 1 25%;
-        margin-right: 15px;
-    }
-    .suits {
-        display: flex;
-        justify-content: space-between;
-        flex: 1 0 auto;
-    }
-`
-
-const Options = ({ trickNumber, isUserTurn }) => {
-    const suits = ["spades", "diamond", "heart", "club"];
-    const [pickBindState,setPickBindState] = useRecoilState(userPickBindState);
-
-    const handlePickBind = (bindData) => {
-        if(!isUserTurn) return;
-        if(isObjectEquivalent(bindData,pickBindState)){
-            setPickBindState(null);
-        } else {
-            setPickBindState(bindData);
-        }
-    }
-
-    return (
-        <OptionRow className="option_row">
-            <span className="number">{trickNumber}</span>
-            <div className="suits">
-                {suits.map((suit)=>(
-                    <OptionButton 
-                        onClick={()=>handlePickBind({suit, number: trickNumber})}
-                        key={trickNumber+suit}
-                        trickNumber={trickNumber}
-                        isPicked={isObjectEquivalent({suit, number: trickNumber},pickBindState)}
-                        suit={suit}>
-                    </OptionButton>
-                ))}
-            </div>
-        </OptionRow>
-    )
-}
-
-const List = styled.div`
-    max-height: 25vh;
-    padding: 5px 10px;
-    overflow-y: scroll;
-`
-
-const OptionList = ({ tricks = [], isUserTurn }) => (
-    <List className="bind_options">
-        {tricks.map(trickNumber => (
-            <Options
-                key={'trick'+trickNumber}
-                trickNumber={trickNumber}
-                isUserTurn={isUserTurn}
-            />
-        ))}
-    </List>
-);
-
 const Box = styled.div`
-    background-color: white;
     border-radius: 4px;
     margin-top: 8px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    transition: 0.5s all;
+    background-color: ${({theme}) => themeData[theme].bg };
+    border-width: ${({theme}) => theme==='light'? 0 : '1px' };
+    border-style: solid;
+    border-color: ${({theme}) => themeData[theme].border };
 
     & > p {
         padding: 8px 0;
         font-size: 16px;
         text-align: center;
         letter-spacing: 1px;
-        background-color: ${color.$unable_color};
-        color: ${color.$unable_font_color};
+        margin-bottom: 5px;
+        transition: 0.5s all;
+        border-bottom: 1px solid ${({theme}) => themeData[theme].border };
+        background-color: ${({theme}) => themeData[theme].status_unable_bg };
+        color: ${({theme}) => themeData[theme].status_unable_fg };
     }
 
     & > button {
@@ -100,24 +37,27 @@ const Box = styled.div`
         font-size: 16px;
         line-height: 16px;
         letter-spacing: 2px;
-        background-color: ${color.$unable_color};
-        color: ${color.$unable_font_color};
+        transition: 0.5s all;
+        border-top: 1px solid ${({theme}) => themeData[theme].border };
+        background-color: ${({theme}) => themeData[theme].call_unable_bg };
+        color: ${({theme}) => themeData[theme].call_unable_fg };
     }
 
     &.is_user_turn{
-            & > p {
-                background-color: ${color.$highlight_color};
-                color: ${color.$title_font_color};
-            }
-            & > button {
-                background-color: ${color.$pass_color};
-                color: white;
+        & > p {
+            background-color: ${({theme}) => themeData[theme].status_active_bg };
+            color: ${({theme}) => themeData[theme].status_active_fg };
+        }
+        & > button {
+            background-color: ${({theme}) => themeData[theme].call_pass_bg };
+            color: ${({theme}) => themeData[theme].call_pass_fg };;
 
-                &.has_pick_bind {
-                    background-color: ${color.$pink_color};
-                }
+            &.has_pick_bind {
+                background-color: ${({theme}) => themeData[theme].call_active_bg };
+                color: ${({theme}) => themeData[theme].call_active_fg };
             }
         }
+    }
 `
 
 const Hint =styled.p`
@@ -125,9 +65,44 @@ const Hint =styled.p`
     margin-top: 4px;
     letter-spacing: 1px;
     font-size: 12px;
+    transition: 0.5s all;
+    color: ${({theme}) => themeData[theme].hint };
 `
 
-const BindList = () => {
+const themeData = {
+    light: { 
+        bg: 'white',
+        status_unable_bg: color.$unable_color, 
+        status_active_bg: color.$highlight_color,
+        status_unable_fg: color.$unable_font_color, 
+        status_active_fg: color.$title_font_color,
+        call_unable_bg: color.$$unable_color,
+        call_unable_fg: color.$unable_font_color,
+        call_pass_bg: color.$pass_color,
+        call_pass_fg: 'white',
+        call_active_bg: color.$pink_color,
+        call_active_fg: 'white',
+        border: 'transparent',
+        hint: color.$default_font_color,
+    },
+    dark: {
+        bg: color.$dark_dim_bg_color,
+        status_unable_bg: color.$dark_dim_bg_color, 
+        status_unable_fg: color.$unable_font_color, 
+        status_active_bg: color.$dark_dim_bg_color,
+        status_active_fg: color.$fluorescent_yellow_color,
+        call_unable_bg: color.$dark_dim_bg_color,
+        call_unable_fg: '#7B7B7B',
+        call_pass_bg: color.$dark_dim_bg_color,
+        call_pass_fg: color.$fluorescent_green_color,
+        call_active_bg: color.$dark_dim_bg_color,
+        call_active_fg: color.$fluorescent_pink_color,
+        border: color.$dark_dim_border_color,
+        hint: 'white',
+    },
+}
+
+const BindList = ({theme}) => {
     const userPickBind = useRecoilValue(userPickBindState);
     const isUserTurn = true;
 
@@ -143,9 +118,12 @@ const BindList = () => {
 
     return (
         <>
-            <Box className={classnames("bind_list",{"is_user_turn": isUserTurn})}>
+            <Box 
+                theme={theme}
+                className={classnames("bind_list",{"is_user_turn": isUserTurn})}>
                 <p>{isUserTurn?'':'NOT '}YOUR TURN</p>
                 <OptionList
+                    theme={theme}
                     isUserTurn={isUserTurn}
                     tricks={[1, 2, 3, 4, 5, 6]} />
                 <button 
@@ -156,7 +134,7 @@ const BindList = () => {
                     : "PASS"}
                 </button>
             </Box>
-            { userPickBind && <Hint>再次點擊相同選項可以取消選擇</Hint>}
+            { userPickBind && <Hint theme={theme}>再次點擊相同選項可以取消選擇</Hint>}
         </>
     )
 }

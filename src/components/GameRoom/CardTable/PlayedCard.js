@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import classnames from 'classnames';
 import Card from 'components/GameRoom/Card';
-import { color } from 'style/theme';
 
 const CardGroup = styled.div`
     position: absolute;
@@ -12,7 +11,6 @@ const CardGroup = styled.div`
 
     .played_card {
         position: absolute;
-        box-shadow: 1px 1px 2px 1px ${color.$shadow};
         &.user {
         left: 50%;
         bottom: 25px;

@@ -3,7 +3,7 @@ import { animated } from "react-spring";
 import styled from 'styled-components';
 
 
-const ModalPage = ({children, className,onDeactive,style, littleMask = false}) => {
+const ModalPage = ({children, className,onDeactive,style}) => {
     return (
         <animated.div
         style={style}
@@ -15,9 +15,11 @@ const ModalPage = ({children, className,onDeactive,style, littleMask = false}) =
 }
 
 const styledModalPage = styled(ModalPage)`
-    background-color: ${props => (props.littleMask ? 'rgba(0, 0, 0, 0.1)': 'rgba(0, 0, 0, 0.35)')};
+    background-color: rgba(0, 0, 0, 0.25);
 	width: 100%;
 	height: 100%;
+    top: 0;
+    left: 0;
 	position: absolute;
 	display: flex;
 	justify-content: center;

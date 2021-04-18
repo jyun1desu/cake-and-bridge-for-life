@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
+import { themeState } from 'store/theme';
 import { color } from 'style/theme';
 import Button from 'components/Global/Button';
 import ThemeToggler from 'components/Global/ThemeToggler';
@@ -10,7 +12,11 @@ const Item = styled.div`
     align-items: center;
     margin-left: 2px;
     padding: 6px 0;
-    border-bottom: 1px solid ${color.$under_line_color};
+    
+    &:not(:last-child) {
+        transition: 0.5s border-bottom; 
+        border-bottom: 1px solid ${({ theme }) => themeData[theme].b_bottom};
+    }
 
     & > span {
         font-size: 13px;
@@ -19,26 +25,44 @@ const Item = styled.div`
     }
 `
 
-const LeaveButton = styled(Button)`
+const SettingButton = styled(Button)`
     padding: 5px 8px;
 `
 
+const themeData = {
+    light: { 
+        b_bottom: color.$under_line_color,
+        exit_button: color.$orange_color,
+        mail_button: color.$green_color,
+    },
+    dark: { 
+        b_bottom: color.$dark_dim_border_color,
+        exit_button: color.$fluorescent_orange_color,
+        mail_button: color.$fluorescent_green_color,
+    },
+}
 
-const Content = ({ isHome }) => (
+const Content = () => {
+    const [theme] = useRecoilState(themeState);
+    return (
     <>
-        <Item>
+        <Item theme={theme}>
             <span>更換主題</span>
             <ThemeToggler />
         </Item>
-        <Item>
+        <Item theme={theme}>
             <span>意見投書</span>
-            <LeaveButton color={color.$green_color}>GO</LeaveButton>
+            <SettingButton 
+                color={themeData[theme].mail_button}
+            >GO</SettingButton>
         </Item>
-        {!isHome && <Item>
+        <Item theme={theme}>
             <span>離開遊戲</span>
-            <LeaveButton color={color.$orange_color}>EXIT</LeaveButton>
-        </Item>}
+            <SettingButton 
+                color={themeData[theme].exit_button}
+            >EXIT</SettingButton>
+        </Item>
     </>
-)
+)}
 
 export default Content;

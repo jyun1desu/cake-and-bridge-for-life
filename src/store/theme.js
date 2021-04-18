@@ -4,5 +4,5 @@ import {
 
 export const themeState = atom({
     key: 'themeState',
-    default: JSON.parse(localStorage.getItem('bridge-theme'))|| 'strawberry',
+    default: JSON.parse(localStorage.getItem('cake-and-bridge-theme'))|| 'light',
 });

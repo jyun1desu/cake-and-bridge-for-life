@@ -9,8 +9,8 @@ import {
   // Redirect
 } from "react-router-dom";
 
-const App = () => {
-  return (
+const App = () => (
+    <>
     <Router>
       <Switch>
         <Route exact path="/" component={Home} />
@@ -18,8 +18,7 @@ const App = () => {
         <Route path="/:roomName/game_room/:userID" component={GameRoom} />
       </Switch>
     </Router>
-
-  )
-}
+    </>
+)
 
 export default App;

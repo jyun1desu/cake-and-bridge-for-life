@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { themeState } from 'store/theme';
+import { responseToBadDeck } from 'store/deck';
 import { color } from 'style/theme';
 import Modal from 'components/Global/Modal';
 import Kanahei from 'assets/kanaheiclap.gif';
@@ -82,6 +83,12 @@ const AskBox = styled.div`
 
 const Content = () => {
     const [theme] = useRecoilState(themeState);
+    const setResponseToBadDeck = useSetRecoilState(responseToBadDeck);
+
+    const restartGame = () => {
+        console.log('倒牌啦');  
+    }
+
     return (
         <AskBox theme={theme} >
             <div className="content">
@@ -89,8 +96,8 @@ const Content = () => {
                 <p>好像可以倒牌捏，要倒嗎？</p>
             </div >
             <div className="button_area">
-                <button>倒啦</button>
-                <button>不倒</button>
+                <button onClick={restartGame}>倒啦</button>
+                <button onClick={()=>setResponseToBadDeck(true)}>不倒</button>
             </div>
         </AskBox >
     )

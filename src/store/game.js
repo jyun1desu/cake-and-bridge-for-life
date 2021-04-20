@@ -1,31 +1,38 @@
 import {
-    atom, atomFamily, selector,
+    atom, selector,
 } from 'recoil';
+import { userNameState } from './user';
 
-export const userDeckState = atom({
-    key: 'userDeckState',
-    default: [{number:1,suit:'club'},
-    {number:2,suit:'club'},
-    {number:3,suit:'heart'},
-    {number:4,suit:'heart'},
-    {number:5,suit:'heart'},
-    {number:6,suit:'heart'},
-    {number:7,suit:'heart'},
-    {number:8,suit:'heart'},
-    {number:9,suit:'spades'},
-    {number:10,suit:'spades'},
-    {number:11,suit:'spades'},
-    {number:12,suit:'spades'},
-    {number:13,suit:'spades'},
-],
+export const nowPlayerName = atom({
+    key: 'nowPlayerName',
+    default: '',
 });
 
-export const otherPlayerDeckFamily = atomFamily({
-    key: 'otherPlayerDeckState',
-    default: [1,2,3,4,5,6,7,8,9,10,11,12,13],
+export const isUserTurnState = selector({
+    key: 'isUserTurnState',
+    get: ({get}) => {
+        const nowPlayer = get(nowPlayerName);
+        const userName = get(userNameState);
+        return userName === nowPlayer;
+    }
+})
+
+export const playersCalledListState = atom({
+    key: 'playersCalledListState',
+    default: {},
 });
 
-export const badDeck = selector({
-    key: 'backDeck',
+export const trumpState = atom({
+    key: 'trumpState',
+    default: null,
+});
+
+export const thisRoundSuit = atom({
+    key: 'trumpState',
+    default: '',
+});
+
+export const thisRoundCards = atom({
+    key: 'trumpState',
     default: '',
 });

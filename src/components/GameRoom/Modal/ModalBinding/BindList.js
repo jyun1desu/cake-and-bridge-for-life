@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import db from "database";
+import classnames from 'classnames';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { color } from 'style/theme';
-import { userPickBindState  } from 'store/bind';
 import { suitInPoker } from 'util/suit';
 import OptionList from './OptionList';
-import { useRecoilValue } from 'recoil';
-import classnames from 'classnames';
+import { userPickBindState, nowBindState, availibleTricksState } from 'store/bind';
+import { isUserTurnState  } from 'store/game';
+import { relationWithUser  } from 'store/players';
+import { userNameState, userRoomState } from 'store/user';
 
 const Box = styled.div`
     border-radius: 4px;
@@ -103,17 +107,51 @@ const themeData = {
 }
 
 const BindList = ({theme}) => {
-    const userPickBind = useRecoilValue(userPickBindState);
-    const isUserTurn = true;
+    const [userPickBind, setUserPickBind] = useRecoilState(userPickBindState);
+    const setNowBind = useSetRecoilState(nowBindState);
+    const { nextPlayer } = useRecoilValue(relationWithUser);
+    const availibleTricks = useRecoilValue(availibleTricksState);
+    const isUserTurn = useRecoilValue(isUserTurnState);
+    const roomName = useRecoilValue(userRoomState);
+    const userName = useRecoilValue(userNameState);
+    const roomRef = db.database().ref(`/${roomName}`);
 
-    const callBind = () => {
-        if(!isUserTurn) return;
-
-        if(!userPickBind) {
-            console.log('pass')
-        } else {
-            console.log(userPickBind)
+    useEffect(() => {
+        const nowBindRef = roomRef.child('gameInfo').child('nowBind');
+        nowBindRef.on("value",(data) => {
+            const nowBindData = data.val();
+            if(nowBindData){
+                setNowBind(nowBindData);
+            }
+        });
+        return () => {
+            nowBindRef.off();
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
+
+    const callBind = async () => {
+        if(!isUserTurn) return;
+        const bindRef = roomRef.child('gameInfo').child('nowBind');
+        const bindListRef = roomRef.child('gameInfo').child('calledBinds').child(userName);
+        const nextPlayerRef = roomRef.child('gameInfo').child('nowPlayer');
+        const calledBind = userPickBind || 'pass';
+
+        await bindListRef.once("value",(data) => {
+            const userCalledBinds = data.val();
+            if(!userCalledBinds){
+                bindListRef.set([calledBind]);
+            } else {
+                const newBinds = [...userCalledBinds, calledBind];
+                bindListRef.set(newBinds);
+            }
+            if(userPickBind) {
+                bindRef.set({...calledBind, player: userName});
+            }
+        });
+
+        await nextPlayerRef.set(nextPlayer);
+        setUserPickBind(null);
     };
 
     return (
@@ -125,7 +163,7 @@ const BindList = ({theme}) => {
                 <OptionList
                     theme={theme}
                     isUserTurn={isUserTurn}
-                    tricks={[1, 2, 3, 4, 5, 6]} />
+                    tricks={availibleTricks} />
                 <button 
                     onClick={callBind}
                     className={classnames({"has_pick_bind": userPickBind})}>{

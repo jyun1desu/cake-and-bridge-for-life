@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import { otherPlayerDeckFamily } from 'store/game';
+import { otherPlayerDeckFamily } from 'store/deck';
 import Card from '../Card'
 
 const OtherUserHandCards = ({ order, className }) => {

@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import classnames from 'classnames';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { themeState } from 'store/theme';
+import { relationWithUser } from 'store/players';
+import { userNameState, userTeamState } from 'store/user';
 import ThinkingIcon from 'components/GameRoom/ThinkingIcon';
 import { color } from 'style/theme'
 
@@ -94,25 +96,21 @@ const themeData = {
     },
 }
 
-const fakeplayers = ['jyun1dusu','我是喜歡取很長的人哇哈','micheal','😉']
-
-const PlayerNameTag = ({className, index, isNowPlayer = false}) => {
-    const [theme] = useRecoilState(themeState);
+const PlayerNameTag = ({className, isNowPlayer = false, player, team}) => {
+    const theme = useRecoilValue(themeState);
     return (
         <Tag 
             theme={theme} 
-            team={"team" + (index%2 + 1)}
+            team={team}
             className={classnames(className,{"is_player_turn": isNowPlayer})}>
             {isNowPlayer && <ThinkingIcon className="on_table"/>}
             <div className="player_info">
                 <div className="team"></div>
-                <div className="name">{fakeplayers[index]}</div>
+                <div className="name">{player}</div>
             </div>
         </Tag>
     )
 } 
-
-const order = ['cross', 'left', 'right', 'user'];
 
 const Names = styled.div`
     position: relative;
@@ -122,14 +120,24 @@ const Names = styled.div`
 `
 
 const Nameplate = () => {
+    const players = useRecoilValue(relationWithUser);
+    const user = useRecoilValue(userNameState);
+    const userTeam = useRecoilValue(userTeamState);
+    const order = ['cross', 'left', 'right', 'user'];
+    const orderedPlayers = [players.teammate,players.nextPlayer,players.previousPlayer,user];
+    const anotherTeam = ['1', '2'].filter(team => team !== userTeam);
+    const teamArray = [userTeam, anotherTeam, anotherTeam, userTeam];
+
     return (
         <Names className="players_name">
-            {order.map((order,index)=>{
+            {orderedPlayers.map((player,index)=>{
                 return(
                     <PlayerNameTag 
-                        key={order+'nameTag'} 
-                        className={`tag_${order}`} 
+                        key={player} 
+                        className={`tag_${order[index]}`} 
                         index={index} 
+                        player={player}
+                        team={'team'+teamArray[index]}
                     />
                 )
             })}

@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classnames from 'classnames';
+import db from "database";
 import styled from 'styled-components';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { themeState } from 'store/theme';
 import { color } from 'style/theme';
 import { suitInPoker, suitColor } from 'util/suit';
+import { OrderedStartFromTeamOne } from 'store/players';
+import { nowPlayerName, playersCalledListState } from 'store/game';
+import { userRoomState } from 'store/user';
 import ThinkingIcon from 'components/GameRoom/ThinkingIcon';
 
 const themeData = {
@@ -54,7 +58,7 @@ const Player = styled.div`
     background-color: ${({theme}) => themeData[theme].binds_bg };
     border: ${({theme}) => themeData[theme].border };
 
-    &.is_user_turn {
+    &.is_player_turn {
         ${({theme, team}) => getUserTurnEffect({theme, team}) };
     }
 
@@ -101,8 +105,7 @@ const Player = styled.div`
         align-items: center;
         padding: 5px;
         box-sizing: border-box;
-        min-height: 5vh;
-        overflow: scroll;
+        min-height: 8vh;
         .bind {
             & + .bind {
                 margin-top: 3px;
@@ -121,21 +124,24 @@ const Player = styled.div`
     }
 ` 
 
-const PlayInfo = ({name, calledList, isUserTurn=name==='jyun1', team}) => {
+const PlayInfo = ({name, team, calledList}) => {
     const [theme] = useRecoilState(themeState);
+    const nowPlayer = useRecoilValue(nowPlayerName);
+    const isPlayerTurn = nowPlayer === name;
+
     return(
-    <Player 
+    <Player
         theme={theme}
         team={team}
-        className={classnames("player",{is_user_turn: isUserTurn})}
+        className={classnames("player",{is_player_turn: isPlayerTurn})}
         >
-        {isUserTurn && <ThinkingIcon className="on_bind_list"/>}
+        {isPlayerTurn && <ThinkingIcon className="on_bind_list"/>}
         <div className="name">
             <p>{name}</p>
         </div>
         <div className="called_bind">
             {calledList.map((called,index)=>{
-                const isPassed = called === 'PASS';
+                const isPassed = typeof called !== 'object';
                 if (isPassed) {
                     return (<span key={'pass'+index} className={classnames("bind","pass")}>PASS</span>)
                 } else {
@@ -149,18 +155,31 @@ const PlayInfo = ({name, calledList, isUserTurn=name==='jyun1', team}) => {
     </Player>
 )};
 
-const fackList = [{suit:'spades',number:1},{suit:'heart',number:1},"PASS"];
-
 const PlayerList = ({className}) => {
-    const fake = ['jyun1','故意取很長的名字','🎉','루루'];
+    const playerList = useRecoilValue(OrderedStartFromTeamOne);
+    const roomName = useRecoilValue(userRoomState);
+    const [calledList, setCalledList] = useRecoilState(playersCalledListState);
+
+    useEffect(()=>{
+        const calledBindsRef = db.database().ref(`/${roomName}`).child('gameInfo').child('calledBinds');
+        calledBindsRef.on("value",(data) => {
+            const allCalledBinds = data.val();
+            setCalledList(allCalledBinds || {});
+        })
+        return () => {
+            calledBindsRef.off();
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     return (
         <div className={className}>
-                {fake.map((player, index) => (
+                {playerList.map((player, index) => (
                     <PlayInfo 
                         key={player}
-                        calledList={fackList}
                         name={player}
-                        team={'team'+ (index%2)+1 }/>
+                        team={'team'+ (index%2)+1 }
+                        calledList={calledList[player] || []}/>
                 ))}
         </div>
     )

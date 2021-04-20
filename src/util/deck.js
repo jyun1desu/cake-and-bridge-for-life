@@ -48,16 +48,6 @@ const dealCards = (playerAmount, deck) => {
     return sorted;
 };
 
-export const isBadLuck = (deck) => {
-    const deckPoint = deck
-        .map((card) => card.number)
-        .reduce((a, b) => {
-            const point = b > 9 ? b - 9 : 0;
-            return a + point;
-        }, 0);
-    return deckPoint < 4;
-}
-
 const shuffledDeck = shuffle(buildNewDeck());
 const newDeck = dealCards(4, shuffledDeck);
 export default newDeck;

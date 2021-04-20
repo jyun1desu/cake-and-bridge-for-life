@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { color } from 'style/theme';
-import { userPickBindState  } from 'store/bind';
+import { userPickBindState, nowBindState  } from 'store/bind';
 import isObjectEquivalent from 'util/isObjectEquivalent';
 import OptionButton from './OptionButton';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 const themeData = {
     light: { 
@@ -41,11 +41,21 @@ const OptionRow = styled.div`
 `
 
 const Options = ({ trickNumber, isUserTurn, theme }) => {
-    const suits = ["spades", "diamond", "heart", "club"];
+    const suits = ["club", "diamond", "heart", "spades"];
     const [pickBindState,setPickBindState] = useRecoilState(userPickBindState);
+    const nowBind = useRecoilValue(nowBindState);
+
+    const isUnableBind = ({suit, number}) => {
+        if(nowBind.number > number) return true;
+        if(nowBind.number === number) {
+            return !(suits.indexOf(suit) > suits.indexOf(nowBind.suit))
+        }
+        if(nowBind.number < number) return false;
+    }
 
     const handlePickBind = (bindData) => {
         if(!isUserTurn) return;
+        if(isUnableBind(bindData)) return;
         if(isObjectEquivalent(bindData,pickBindState)){
             setPickBindState(null);
         } else {
@@ -61,10 +71,10 @@ const Options = ({ trickNumber, isUserTurn, theme }) => {
             <div className="suits">
                 {suits.map((suit)=>(
                     <OptionButton 
-                        theme={theme}
                         onClick={()=>handlePickBind({suit, number: trickNumber})}
                         key={trickNumber+suit}
                         trickNumber={trickNumber}
+                        isUnableBind={isUnableBind({suit, number: trickNumber})}
                         isPicked={isObjectEquivalent({suit, number: trickNumber},pickBindState)}
                         suit={suit}>
                     </OptionButton>
@@ -76,12 +86,14 @@ const Options = ({ trickNumber, isUserTurn, theme }) => {
 
 const List = styled.div`
     max-height: 25vh;
-    padding: 5px 10px;
+    padding: 0 10px;
     overflow-y: scroll;
 `
 
 const OptionList = ({ tricks = [], isUserTurn, theme }) => (
-    <List className="bind_options">
+    <List 
+        theme={theme}
+        className="bind_options">
         {tricks.map(trickNumber => (
             <Options         
                 theme={theme}

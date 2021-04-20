@@ -50,10 +50,6 @@ const fake = [
     [{ number: 9, suit: 'spades' }, { number: 10, suit: 'spades' }, { number: 11, suit: 'spades' }, { number: 12, suit: 'spades' }],
 ];
 
-
-const fake2 = []
-
-
 const Content = () => {
     const [theme] = useRecoilState(themeState);
     return (

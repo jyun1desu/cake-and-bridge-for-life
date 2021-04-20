@@ -28,4 +28,5 @@ export const color = {
     $dark_bg_color: '#2B2C2A',
     $dark_dim_bg_color: '#333332',
     $light_pink_color: '#FFE9E8',
+    $dark_unable_color: '#484545'
 }

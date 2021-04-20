@@ -7,7 +7,7 @@ import {color} from 'style/theme'
 import styled from 'styled-components';
 
 import { playersData, teamArray } from "store/players";
-import { userReadyState, userIDState, userRoomState, userTeamState } from "store/user";
+import { userReadyState, userIDState, userRoomState, userTeamState, userNameState } from "store/user";
 import { themeState } from 'store/theme';
 import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 
@@ -76,6 +76,7 @@ const WaitRoom = () => {
     const [buttonMessage,setButtonMessage] = useState('');
     const setPlayersData = useSetRecoilState(playersData);
     const userID = useRecoilValue(userIDState);
+    const userName = useRecoilValue(userNameState);
     const userTeam = useRecoilValue(userTeamState);
     const roomName = useRecoilValue(userRoomState);
     const team = useRecoilValue(teamArray);
@@ -136,7 +137,7 @@ const WaitRoom = () => {
             const playersData = Object.values(data.val());
             const allReady = playersData.filter(data=>data.ready).length === 3;
             if(allReady){
-                await roomRef.child('gameInfo').set({nowPlayer: userID});
+                await roomRef.child('gameInfo').set({nowPlayer: userName});
             }
         })
 

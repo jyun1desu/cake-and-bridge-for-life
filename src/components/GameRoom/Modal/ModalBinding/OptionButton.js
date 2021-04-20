@@ -1,6 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
 import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
+import { themeState } from 'store/theme';
 import { color } from 'style/theme';
 import { suitInPoker, suitColor } from 'util/suit';
 import Radio from 'components/Global/Radio';
@@ -9,10 +11,12 @@ const themeData = {
     light: { 
         red_suit_color: color.$red_suit_color,
         black_suit_color: color.$black_suit_color,
+        unable_color: color.$unable_color,
     },
     dark: {
         red_suit_color: color.$dark_red_suit_color,
         black_suit_color: 'white',
+        unable_color: color.$dark_unable_color
     },
 }
 
@@ -33,6 +37,12 @@ const Button = styled.div`
         }
     }
 
+    &.is_unable {
+        .pattern {
+            color: ${({theme}) => themeData[theme].unable_color};
+    }
+    }
+
     &.chosen {
         .radio {
             &::after {
@@ -43,12 +53,13 @@ const Button = styled.div`
 `
 
 const OptionButton = ({
-    theme, 
+    isUnableBind,
     trickNumber, 
     suit, 
     onClick=() => {}, 
     isPicked
     }) => {
+    const [theme] = useRecoilState(themeState);
     const getBorder = () => {
         switch(theme) {
             case 'light':
@@ -60,9 +71,10 @@ const OptionButton = ({
     }
     return (
         <Button
-        key={trickNumber+suit}
-        className={classnames("option",{"chosen": isPicked})}
-        onClick={onClick}>
+            theme={theme}
+            key={trickNumber+suit}
+            className={classnames("option",{"chosen": isPicked,"is_unable": isUnableBind})}
+            onClick={onClick}>
             <Radio
                 className="radio"
                 border={getBorder(theme)}

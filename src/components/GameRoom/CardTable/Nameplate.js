@@ -5,7 +5,7 @@ import { useRecoilValue } from 'recoil';
 import { themeState } from 'store/theme';
 import { relationWithUser } from 'store/players';
 import { userNameState, userTeamState } from 'store/user';
-import { nowPlayerName  } from 'store/game';  
+import { currentPlayerName  } from 'store/game';  
 import ThinkingIcon from 'components/GameRoom/ThinkingIcon';
 import { color } from 'style/theme'
 
@@ -133,7 +133,7 @@ const Names = styled.div`
 const Nameplate = () => {
     const players = useRecoilValue(relationWithUser);
     const user = useRecoilValue(userNameState);
-    const currentPlayer = useRecoilValue(nowPlayerName);
+    const currentPlayer = useRecoilValue(currentPlayerName);
     const userTeam = useRecoilValue(userTeamState);
     const order = ['cross', 'left', 'right', 'user'];
     const orderedPlayers = [players.teammate,players.nextPlayer,players.previousPlayer,user];

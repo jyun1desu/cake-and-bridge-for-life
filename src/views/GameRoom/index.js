@@ -7,7 +7,7 @@ import newDeck from 'util/deck';
 import { userIndexState, userRoomState } from 'store/user';
 import { userDeckState } from 'store/deck';
 import { themeState  } from 'store/theme';
-import { nowPlayerName } from 'store/game';
+import { currentPlayerName, thisRoundSuitState } from 'store/game';
 import ModalRoot from 'components/GameRoom/Modal/ModalRoot';
 import Cards from 'components/GameRoom/Cards';
 import CardTable from 'components/GameRoom/CardTable';
@@ -33,13 +33,15 @@ const GameRoom = () => {
     const [theme] = useRecoilState(themeState);
     const userIndex = useRecoilValue(userIndexState);
     const setUserDeck = useSetRecoilState(userDeckState);
-    const setNowPlayerState = useSetRecoilState(nowPlayerName);
+    const setNowPlayerState = useSetRecoilState(currentPlayerName);
+    const setThisRoundSuit = useSetRecoilState(thisRoundSuitState);
     const roomName = useRecoilValue(userRoomState);
     const roomRef = db.database().ref(`/${roomName}`);
 
     useEffect(()=>{
         dealDeck();
         listenOnCurrentPlayer();
+        listenOnThisRoundSuit();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
 
@@ -61,8 +63,18 @@ const GameRoom = () => {
     const listenOnCurrentPlayer = () => {
         const currentPlayerRef = roomRef.child('gameInfo').child('currentPlayer');
         currentPlayerRef.on("value",(data) => {
-            let nowPlayerID = data.val();
+            const nowPlayerID = data.val();
             setNowPlayerState(nowPlayerID);
+        })
+    }
+
+    const listenOnThisRoundSuit = () => {
+        const roundSuitRef = roomRef.child('gameInfo').child('thisRoundSuit');
+        roundSuitRef.on("value",(data) => {
+            const roundSuit = data.val();
+            if(roundSuit) {
+                setThisRoundSuit(roundSuit)
+            }
         })
     }
 

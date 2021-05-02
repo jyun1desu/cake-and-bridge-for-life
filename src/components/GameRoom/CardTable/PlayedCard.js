@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import db from "database";
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import classnames from 'classnames';
+import { userRoomState, userNameState } from 'store/user';
+import { thisRoundCardsState } from 'store/game';
+import { relationWithUser } from 'store/players';
 import Card from 'components/GameRoom/Card';
 
 const CardGroup = styled.div`
@@ -35,20 +40,45 @@ const CardGroup = styled.div`
         }
     }
 `
-const order = ['cross', 'left', 'right', 'user'];
 
 const PlayedCard = () => {
+    const roomName = useRecoilValue(userRoomState);
+    const user = useRecoilValue(userNameState);
+    const { teammate, nextPlayer, previousPlayer } = useRecoilValue(relationWithUser);
+    const [thisRoundCards, updateThisRoundCards] = useRecoilState(thisRoundCardsState);
+
+    useEffect(()=>{
+        const cardsRef = db.database().ref(`/${roomName}`).child('gameInfo').child('thisRoundCards');
+        cardsRef.on("value", d => {
+            const cards = d.val() || [];
+            updateThisRoundCards(orderCards(cards));
+        });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[]);
+
+    const orderCards = (cards) => {
+        if(!cards.length) return [];
+        const orderedPlayers = [teammate, nextPlayer, previousPlayer, user];
+        const result = orderedPlayers.map(playerName => {
+            const card = cards.find(card => card.player === playerName);
+            return card?.card;
+        })
+        return result;
+    }
+
     return (
         <CardGroup className="played_cards_group">
-            {order.map(order => (
+            {thisRoundCards.map((card,index) => {
+                const order = ['cross', 'left', 'right', 'user'];
+                return card && (
                 <Card
-                    key={order}
-                    className={classnames("played_card",order)}
-                    number="12"
-                    suit="heart"
+                    key={order[index]}
+                    className={classnames("played_card",order[index])}
+                    number={card.number}
+                    suit={card.suit}
                     hasDetail
                 />
-            ))}
+            )})}
         </CardGroup>
     )
 }

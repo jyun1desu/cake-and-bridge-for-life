@@ -7,7 +7,7 @@ import { themeState } from 'store/theme';
 import { color } from 'style/theme';
 import { suitInPoker, suitColor } from 'util/suit';
 import { OrderedStartFromTeamOne } from 'store/players';
-import { nowPlayerName } from 'store/game';
+import { currentPlayerName } from 'store/game';
 import { playersCalledListState } from 'store/bind';
 import { userRoomState } from 'store/user';
 import ThinkingIcon from 'components/GameRoom/ThinkingIcon';
@@ -127,7 +127,7 @@ const Player = styled.div`
 
 const PlayInfo = ({name, team, calledList}) => {
     const [theme] = useRecoilState(themeState);
-    const nowPlayer = useRecoilValue(nowPlayerName);
+    const nowPlayer = useRecoilValue(currentPlayerName);
     const isPlayerTurn = nowPlayer === name;
 
     return(

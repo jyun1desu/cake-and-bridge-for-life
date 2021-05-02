@@ -40,7 +40,7 @@ const Button = styled.div`
     &.is_unable {
         .pattern {
             color: ${({theme}) => themeData[theme].unable_color};
-    }
+        }
     }
 
     &.chosen {
@@ -56,7 +56,7 @@ const OptionButton = ({
     isUnableBind,
     trickNumber, 
     suit, 
-    onClick=() => {}, 
+    onClick = () => {}, 
     isPicked
     }) => {
     const [theme] = useRecoilState(themeState);

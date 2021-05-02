@@ -137,7 +137,7 @@ const WaitRoom = () => {
             const playersData = Object.values(data.val());
             const allReady = playersData.filter(data=>data.ready).length === 3;
             if(allReady){
-                await roomRef.child('gameInfo').set({nowPlayer: userName});
+                await roomRef.child('gameInfo').set({currentPlayer: userName});
             }
         })
 

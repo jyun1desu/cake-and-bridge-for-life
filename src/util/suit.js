@@ -2,12 +2,11 @@ export const suitColor = (suit) => {
     switch (suit) {
         case "spades":
         case "club":
+        default:
             return "black";
         case "heart":
         case "diamond":
             return "red";
-        default:
-            return null
     }
 }
 
@@ -20,9 +19,7 @@ export const suitInPoker = (suit) => {
         case "diamond":
             return "♦";
         case "club":
-            return "♣";
         default:
-            break;
+            return "♣";
     }
-    return suit;
 }

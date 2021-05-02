@@ -5,6 +5,7 @@ import { useRecoilValue } from 'recoil';
 import { themeState } from 'store/theme';
 import { relationWithUser } from 'store/players';
 import { userNameState, userTeamState } from 'store/user';
+import { nowPlayerName  } from 'store/game';  
 import ThinkingIcon from 'components/GameRoom/ThinkingIcon';
 import { color } from 'style/theme'
 
@@ -14,6 +15,7 @@ const Tag = styled.div`
     &.is_player_turn {
         .player_info {
             border-width: 2px;
+            border-color: ${({theme, team}) => themeData[theme].hl_c[team]};
         }
     }
 
@@ -83,7 +85,12 @@ const themeData = {
         team: {
             team1: color.$pink_color,
             team2: color.$brown_color,
-        }
+        },
+        hl_c: {
+            team1: color.$highlight_color,
+            team2: color.$highlight_color,
+        },
+
     },
     dark: { 
         name_bg: color.$dark_dim_bg_color,
@@ -92,18 +99,22 @@ const themeData = {
         team: {
             team1: color.$fluorescent_pink_color,
             team2: color.$fluorescent_yellow_color
-        }
+        },
+        hl_c: {
+            team1: color.$fluorescent_pink_color,
+            team2: color.$fluorescent_yellow_color
+        },
     },
 }
 
-const PlayerNameTag = ({className, isNowPlayer = false, player, team}) => {
+const PlayerNameTag = ({className, isCurrentPlayer = false, player, team}) => {
     const theme = useRecoilValue(themeState);
     return (
         <Tag 
             theme={theme} 
             team={team}
-            className={classnames(className,{"is_player_turn": isNowPlayer})}>
-            {isNowPlayer && <ThinkingIcon className="on_table"/>}
+            className={classnames(className,{"is_player_turn": isCurrentPlayer})}>
+            {isCurrentPlayer && <ThinkingIcon className="on_table"/>}
             <div className="player_info">
                 <div className="team"></div>
                 <div className="name">{player}</div>
@@ -122,6 +133,7 @@ const Names = styled.div`
 const Nameplate = () => {
     const players = useRecoilValue(relationWithUser);
     const user = useRecoilValue(userNameState);
+    const currentPlayer = useRecoilValue(nowPlayerName);
     const userTeam = useRecoilValue(userTeamState);
     const order = ['cross', 'left', 'right', 'user'];
     const orderedPlayers = [players.teammate,players.nextPlayer,players.previousPlayer,user];
@@ -137,6 +149,7 @@ const Nameplate = () => {
                         className={`tag_${order[index]}`} 
                         index={index} 
                         player={player}
+                        isCurrentPlayer={currentPlayer === player}
                         team={'team'+teamArray[index]}
                     />
                 )

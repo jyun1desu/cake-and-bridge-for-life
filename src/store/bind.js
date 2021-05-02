@@ -56,3 +56,8 @@ export const teamShouldWinState = selector({
         }
     }},
 );
+
+export const playersCalledListState = atom({
+    key: 'playersCalledListState',
+    default: {},
+});

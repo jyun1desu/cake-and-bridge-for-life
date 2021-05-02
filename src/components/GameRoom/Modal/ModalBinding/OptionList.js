@@ -56,7 +56,7 @@ const Options = ({ trickNumber, isUserTurn, theme }) => {
     const handlePickBind = (bindData) => {
         if(!isUserTurn) return;
         if(isUnableBind(bindData)) return;
-        if(isObjectEquivalent(bindData,pickBindState)){
+        if(isObjectEquivalent(bindData, pickBindState)){
             setPickBindState(null);
         } else {
             setPickBindState(bindData);

@@ -7,7 +7,8 @@ import { themeState } from 'store/theme';
 import { color } from 'style/theme';
 import { suitInPoker, suitColor } from 'util/suit';
 import { OrderedStartFromTeamOne } from 'store/players';
-import { nowPlayerName, playersCalledListState } from 'store/game';
+import { nowPlayerName } from 'store/game';
+import { playersCalledListState } from 'store/bind';
 import { userRoomState } from 'store/user';
 import ThinkingIcon from 'components/GameRoom/ThinkingIcon';
 

@@ -7,8 +7,7 @@ import newDeck from 'util/deck';
 import { userIndexState, userRoomState } from 'store/user';
 import { userDeckState } from 'store/deck';
 import { themeState  } from 'store/theme';
-import { nowPlayerName  } from 'store/game';
-
+import { nowPlayerName } from 'store/game';
 import ModalRoot from 'components/GameRoom/Modal/ModalRoot';
 import Cards from 'components/GameRoom/Cards';
 import CardTable from 'components/GameRoom/CardTable';
@@ -60,9 +59,9 @@ const GameRoom = () => {
     }
 
     const listenOnCurrentPlayer = () => {
-        const currentPlayerRef = roomRef.child('gameInfo').child('nowPlayer');
+        const currentPlayerRef = roomRef.child('gameInfo').child('currentPlayer');
         currentPlayerRef.on("value",(data) => {
-            const nowPlayerID = data.val();
+            let nowPlayerID = data.val();
             setNowPlayerState(nowPlayerID);
         })
     }

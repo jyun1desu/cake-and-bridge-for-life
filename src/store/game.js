@@ -17,22 +17,17 @@ export const isUserTurnState = selector({
     }
 })
 
-export const playersCalledListState = atom({
-    key: 'playersCalledListState',
-    default: {},
+export const thisRoundSuit = atom({
+    key: 'thisRoundSuit',
+    default: '',
+});
+
+export const thisRoundCards = atom({
+    key: 'thisRoundCards',
+    default: '',
 });
 
 export const trumpState = atom({
     key: 'trumpState',
     default: null,
-});
-
-export const thisRoundSuit = atom({
-    key: 'trumpState',
-    default: '',
-});
-
-export const thisRoundCards = atom({
-    key: 'trumpState',
-    default: '',
-});
+})

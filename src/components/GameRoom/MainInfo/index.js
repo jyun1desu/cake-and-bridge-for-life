@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import classnames from 'classnames';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { themeState } from 'store/theme';
+import { trumpState } from 'store/game';
+import { teamShouldWinState } from 'store/bind';
 import { color } from 'style/theme';
 import { suitColor, suitInPoker } from 'util/suit'
 import InfoBox from './InfoBox';
@@ -100,19 +102,21 @@ const themeData = {
 
 const PointInfo = ({ team }) => {
     const [theme] = useRecoilState(themeState);
+    const [teamShouldWin] = useRecoilState(teamShouldWinState);
     return (
         <Point theme={theme} className={classnames('team', team)}>
             <span className="team__name"></span>
             <span className="team__tricks">
                 <span className="now_win">0</span>
-                <span className="should_win">/7</span>
+                <span className="should_win">/{teamShouldWin[team]}</span>
             </span>
         </Point>
     )
 }
 
-const MainInfo = ({ suit = 'spades' }) => {
+const MainInfo = () => {
     const [theme] = useRecoilState(themeState);
+    const trump = useRecoilValue(trumpState);
     return (
         <Board theme={theme} className="main_info">
             <InfoBox
@@ -121,8 +125,8 @@ const MainInfo = ({ suit = 'spades' }) => {
                 className="trump">
                 <Suit theme={theme}
                     className="suit"
-                    suitColor={suitColor(suit)}
-                >{suitInPoker(suit)}&#xFE0E;</Suit>
+                    suitColor={suitColor(trump?.suit)}
+                >{suitInPoker(trump?.suit)}&#xFE0E;</Suit>
             </InfoBox>
             <InfoBox theme={theme} title="戰況" className="team">
                 <PointInfo team="team1" />

@@ -5,6 +5,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { themeState } from 'store/theme';
 import { trumpState } from 'store/game';
 import { teamShouldWinState } from 'store/bind';
+import { teamScoresState } from 'store/score';
 import { color } from 'style/theme';
 import { suitColor, suitInPoker } from 'util/suit'
 import InfoBox from './InfoBox';
@@ -103,11 +104,12 @@ const themeData = {
 const PointInfo = ({ team }) => {
     const [theme] = useRecoilState(themeState);
     const [teamShouldWin] = useRecoilState(teamShouldWinState);
+    const teamScores = useRecoilValue(teamScoresState);
     return (
         <Point theme={theme} className={classnames('team', team)}>
             <span className="team__name"></span>
             <span className="team__tricks">
-                <span className="now_win">0</span>
+                <span className="now_win">{teamScores[team]}</span>
                 <span className="should_win">/{teamShouldWin[team]}</span>
             </span>
         </Point>

@@ -58,7 +58,7 @@ const GameRoom = () => {
                 gameInfoRef.child('deck').off();
             }
         })
-    }
+    };
 
     const listenOnCurrentPlayer = () => {
         const currentPlayerRef = roomRef.child('gameInfo').child('currentPlayer');
@@ -66,7 +66,7 @@ const GameRoom = () => {
             const nowPlayerID = data.val();
             setNowPlayerState(nowPlayerID);
         })
-    }
+    };
 
     const listenOnThisRoundSuit = () => {
         const roundSuitRef = roomRef.child('gameInfo').child('thisRoundSuit');
@@ -76,7 +76,7 @@ const GameRoom = () => {
                 setThisRoundSuit(roundSuit)
             }
         })
-    }
+    };
 
     return (
     <Room theme={theme} className="game_room">

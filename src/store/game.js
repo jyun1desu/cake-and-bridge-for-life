@@ -27,6 +27,18 @@ export const thisRoundCardsState = atom({
     default: [],
 });
 
+export const isThisRoundEndState = selector({
+    key: 'isThisRoundEndState',
+    get: ({get}) => {
+        const thisRoundCards = get(thisRoundCardsState);
+        if(thisRoundCards.filter(card => typeof card === 'object').length === 4) {
+            return true
+        } else {
+            return false
+        }
+    }
+})
+
 export const trumpState = atom({
     key: 'trumpState',
     default: null,

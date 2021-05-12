@@ -48,6 +48,7 @@ export const relationWithUser = selector({
         const teammateIndex = handleIndex(userIndex + 2);
         const previousIndex = handleIndex(userIndex + 3);
         return {
+            user,
             teammate: playerDataState[teammateIndex],
             nextPlayer: playerDataState[nextIndex],
             previousPlayer: playerDataState[previousIndex],

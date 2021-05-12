@@ -2,7 +2,7 @@ import React from 'react';
 import db from "database";
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { userDeckState } from 'store/deck';
-import { isUserTurnState, thisRoundSuitState } from 'store/game';
+import { isUserTurnState, thisRoundSuitState, isUserLastPlayerState } from 'store/game';
 import { userNameState, userRoomState } from 'store/user';
 import { relationWithUser } from 'store/players';
 import Card from '../Card'
@@ -12,6 +12,7 @@ const UserHandCards = ({ className }) => {
     const userName = useRecoilValue(userNameState);
     const isUserTurn = useRecoilValue(isUserTurnState);
     const thisRoundSuit = useRecoilValue(thisRoundSuitState);
+    const isUserLastPlayer = useRecoilValue(isUserLastPlayerState);
     const { nextPlayer } = useRecoilValue(relationWithUser);
     const [userDeck, setUserDeck] = useRecoilState(userDeckState);
     const [nowPickSuit, setNowPickSuit] = React.useState(null);
@@ -26,7 +27,9 @@ const UserHandCards = ({ className }) => {
             await playCard({ number, suit });
             removeCardFromDeck({ number, suit });
             setNowPickSuit(null);
-            await switchToNextPlayer();
+            if (!isUserLastPlayer) {
+                await switchToNextPlayer();
+            }
         } else {
             setNowPickSuit(suit);
         }

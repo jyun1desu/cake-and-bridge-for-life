@@ -72,9 +72,7 @@ const GameRoom = () => {
         const roundSuitRef = roomRef.child('gameInfo').child('thisRoundSuit');
         roundSuitRef.on("value",(data) => {
             const roundSuit = data.val();
-            if(roundSuit) {
-                setThisRoundSuit(roundSuit)
-            }
+            setThisRoundSuit(roundSuit)
         })
     };
 

@@ -49,7 +49,7 @@ const PlayedCard = () => {
     const user = useRecoilValue(userNameState);
     const { teammate, nextPlayer, previousPlayer } = useRecoilValue(relationWithUser);
     const teamArray = useRecoilValue(OrderedStartFromTeamOne);
-    const { suit: trumpSuit} = useRecoilValue(trumpState);
+    const trump = useRecoilValue(trumpState);
     const currentSuit = useRecoilValue(thisRoundSuitState);
     const [thisRoundCards, updateThisRoundCards] = useRecoilState(thisRoundCardsState);
     const [teamScores, updateTeamScores] = useRecoilState(teamScoresState);
@@ -75,9 +75,9 @@ const PlayedCard = () => {
     const handleRoundEnded = async () => {
         const currentPlayerRef = roomRef.child('gameInfo').child('currentPlayer');
         await currentPlayerRef.set(null);
+        await sleep(2000);
         const winner = getRoundWinner();
         updatePoints(winner);
-        await sleep(2000);
         await currentPlayerRef.set(winner);
         initRoundData();
     }
@@ -90,7 +90,7 @@ const PlayedCard = () => {
     }
 
     const getRoundWinner = () => {
-        const winnerIndex = getBiggestCard(trumpSuit, currentSuit, thisRoundCards);
+        const winnerIndex = getBiggestCard(trump.suit, currentSuit, thisRoundCards);
         const playersOrder = [teammate, nextPlayer, previousPlayer, user];
         return playersOrder[winnerIndex];
     };

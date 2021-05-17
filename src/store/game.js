@@ -2,6 +2,9 @@ import {
     atom, selector,
 } from 'recoil';
 import { userNameState } from './user';
+import { teamShouldWinState } from './bind';
+import { teamScoresState } from './score';
+
 
 export const currentPlayerName = atom({
     key: 'currentPlayerName',
@@ -54,4 +57,20 @@ export const isThisRoundEndState = selector({
 export const trumpState = atom({
     key: 'trumpState',
     default: null,
+})
+
+export const isGameEndState = selector({
+    key: 'isGameEndState',
+    get: ({ get }) => {
+        const { team1: team1ShouldWin, team2: team2ShouldWin } = get(teamShouldWinState);
+        const { team1: team1Score, team2: team2Score } = get(teamScoresState);
+
+        if(team1ShouldWin === team1Score){
+            return 'team1'
+        } else if (team2ShouldWin === team2Score) {
+            return 'team2'
+        } else {
+            return null;
+        }
+    }
 })

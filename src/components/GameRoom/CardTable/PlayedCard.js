@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import db from "database";
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import classnames from 'classnames';
 import { userRoomState, userNameState } from 'store/user';
 import { teamScoresState } from 'store/score';
+import { otherPlayerDeckState } from 'store/deck';
 import { thisRoundCardsState, isThisRoundEndState, trumpState, thisRoundSuitState } from 'store/game';
 import { relationWithUser, OrderedStartFromTeamOne } from 'store/players';
 import { getBiggestCard } from 'util/game';
@@ -54,6 +55,7 @@ const PlayedCard = () => {
     const [thisRoundCards, updateThisRoundCards] = useRecoilState(thisRoundCardsState);
     const [teamScores, updateTeamScores] = useRecoilState(teamScoresState);
     const isThisRoundEnd = useRecoilValue(isThisRoundEndState);
+    const setOtherPlayerDeck = useSetRecoilState(otherPlayerDeckState);
     const roomRef = db.database().ref(`/${roomName}`);
 
     useEffect(()=>{
@@ -61,6 +63,14 @@ const PlayedCard = () => {
         cardsRef.on("value", d => {
             const cards = d.val() || [];
             updateThisRoundCards(orderCards(cards));
+
+            const playedPlayer = cards[ cards.length - 1 ]?.player;
+            if (playedPlayer && playedPlayer !== user) {
+                setOtherPlayerDeck(pre => ({
+                    ...pre, 
+                    [playedPlayer]: pre[playedPlayer] - 1
+                }))
+            }
         });
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);

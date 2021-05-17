@@ -7,9 +7,9 @@ export const userDeckState = atom({
     default: [],
 });
 
-export const otherPlayerDeckFamily = atomFamily({
+export const otherPlayerDeckState = atom({
     key: 'otherPlayerDeckState',
-    default: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+    default: {},
 });
 
 export const badDeck = selector({

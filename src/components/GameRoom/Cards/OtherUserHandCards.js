@@ -1,13 +1,15 @@
 import React from 'react';
-import { useRecoilValue } from 'recoil';
-import { otherPlayerDeckFamily } from 'store/deck';
 import Card from '../Card'
 
-const OtherUserHandCards = ({ order, className }) => {
-    const cardAmount = useRecoilValue(otherPlayerDeckFamily(order));
+const generateArray = number => {
+    return Array.from(Array(number), (_, x) => x);
+}
+
+const OtherUserHandCards = ({ className, cardAmount }) => {
+    const cardArray = generateArray(cardAmount);
     return (
         <div className={className}>
-            {cardAmount.map(card=>(
+            {cardArray.map(card=>(
                 <Card key={card} className="group other_player_card"></Card>
             ))}
         </div>

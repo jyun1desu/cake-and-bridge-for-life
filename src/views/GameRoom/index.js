@@ -5,8 +5,9 @@ import styled from 'styled-components';
 import { color } from "style/theme";
 import newDeck from 'util/deck';
 import { userIndexState, userRoomState } from 'store/user';
-import { userDeckState } from 'store/deck';
+import { userDeckState, otherPlayerDeckState } from 'store/deck';
 import { themeState  } from 'store/theme';
+import { relationWithUser } from 'store/players';
 import { currentPlayerName, thisRoundSuitState } from 'store/game';
 import ModalRoot from 'components/GameRoom/Modal/ModalRoot';
 import Cards from 'components/GameRoom/Cards';
@@ -33,6 +34,8 @@ const GameRoom = () => {
     const [theme] = useRecoilState(themeState);
     const userIndex = useRecoilValue(userIndexState);
     const setUserDeck = useSetRecoilState(userDeckState);
+    const setOtherPlayerDeck = useSetRecoilState(otherPlayerDeckState);
+    const { nextPlayer, teammate, previousPlayer } = useRecoilValue(relationWithUser);
     const setNowPlayerState = useSetRecoilState(currentPlayerName);
     const setThisRoundSuit = useSetRecoilState(thisRoundSuitState);
     const roomName = useRecoilValue(userRoomState);
@@ -55,6 +58,11 @@ const GameRoom = () => {
             const deck = data.val();
             if(deck){
                 setUserDeck(deck[userIndex]);
+                setOtherPlayerDeck({
+                    [nextPlayer]: 13,
+                    [teammate]: 13,
+                    [previousPlayer]: 13,
+                })
                 gameInfoRef.child('deck').off();
             }
         })

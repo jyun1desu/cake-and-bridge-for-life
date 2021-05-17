@@ -1,6 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
+import { relationWithUser } from 'store/players';
+import { otherPlayerDeckState } from 'store/deck';
 import UserHandCards from './UserHandCards';
 import OtherUserHandCards from './OtherUserHandCards';
 
@@ -46,13 +49,19 @@ const CardGroup = styled.div`
 
 const Cards = () => {
 	const order = ['cross', 'left', 'right', 'user'];
+	const { teammate, nextPlayer, previousPlayer} = useRecoilValue(relationWithUser);
+	const otherPlayerDeck = useRecoilValue(otherPlayerDeckState);
+	const orderedPlayers = [teammate, nextPlayer, previousPlayer];
 
 	return (
 		<CardGroup className="card_group">
-			{order.map((order) => (
+			{order.map((order, index) => (
 				order === 'user'
 					? <UserHandCards key={order} className={classnames("cards", `cards__${order}`)} />
-					: <OtherUserHandCards key={order} className={classnames("cards", `cards__${order}`)} />
+					: <OtherUserHandCards 
+						key={order} 
+						className={classnames("cards", `cards__${order}`)} 
+						cardAmount={otherPlayerDeck[orderedPlayers[index]]}/>
 			))}
 		</CardGroup >
 	)

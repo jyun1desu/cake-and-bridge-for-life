@@ -26,6 +26,10 @@ const styledModalPage = styled(ModalPage)`
 	align-items: center;
     z-index: 20;
 
+    &.result_modal {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
     & > div {
         min-width: 65vw;
     }

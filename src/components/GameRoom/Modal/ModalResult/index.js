@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Lottie from 'react-lottie';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
@@ -7,8 +7,10 @@ import { userTeamState } from 'store/user';
 import { color } from 'style/theme';
 import Modal from 'components/Global/Modal';
 import Button from 'components/Global/Button';
-import mainFireWork from 'assets/16764-firework-animaiton.json'
-import subFireWork from 'assets/14438-fireworks.json'
+import mainFireWork from 'assets/fireworks/16764-firework-animaiton.json';
+import subFireWork from 'assets/fireworks/14438-fireworks.json';
+import thirdFireWork from 'assets/fireworks/lf30_editor_he0cup9w.json';
+import sleep from 'util/sleep';
 
 const AninimationBox = styled.div`
     position: absolute;
@@ -21,22 +23,22 @@ const AninimationBox = styled.div`
         &:nth-child(1) {
             position: absolute;
             left: -30px;
-            top: -20px;
+            top: -100px;
         }
         &:nth-child(2) {
             position: absolute;
             left: 30px;
-            top: 100px;
+            top: 300px;
         }
         &:nth-child(3) {
             position: absolute;
-            left: -150px;
-            top: 300px;
+            left: -10px;
+            top: 20px;
         }
         &:nth-child(4) {
             position: absolute;
             left: 100px;
-            top: 450px;
+            top: 20px;
         }
         &:nth-child(5) {
             position: absolute;
@@ -60,13 +62,39 @@ const AninimationBox = styled.div`
         }
         &:nth-child(9) {
             position: absolute;
-            left: -50%;
+            left: -30%;
             bottom: 10%;
+        }
+        &:nth-child(10) {
+            position: absolute;
+            left: 0;
+            bottom: 10%;
+        }
+        &:nth-child(11) {
+            position: absolute;
+            left: -30%;
+            top: 10%;
+        }
+        &:nth-child(12) {
+            position: absolute;
+            left: -50%;
+            top: 60%;
         }
     }
 `
 
 const Animations = () => {
+    const [delay, toggleDelay] = useState(false);
+
+    const setDelay = async () => {
+        await sleep(600);
+        toggleDelay(true)
+    }
+
+    useEffect(()=>{
+        setDelay()
+    },[])
+
     const mainFireWorkData = {
         loop: true,
         autoplay: true,
@@ -85,42 +113,63 @@ const Animations = () => {
         }
     };
 
+    const thirdFireWorkData = {
+        loop: true,
+        autoplay: true,
+        animationData: thirdFireWork,
+        rendererSettings: {
+            preserveAspectRatio: 'xMidYMid slice'
+        }
+    };
+
     return (
         <AninimationBox>
-            <Lottie options={mainFireWorkData}
-                height={300}
-                width={400}
-            />
-            <Lottie options={mainFireWorkData}
-                height={300}
+            { delay && <Lottie options={thirdFireWork}
+                height={500}
+                width={500}
+            />}
+            { delay && <Lottie options={mainFireWorkData}
+                height={600}
                 width={600}
+            />}
+            { delay && <Lottie options={thirdFireWork}
+                height={500}
+                width={500}
+            />}
+            <Lottie options={mainFireWorkData}
+                height={300}
+                width={300}
+            />
+            { delay && <Lottie options={thirdFireWork}
+                height={250}
+                width={300}
+            />}
+            <Lottie options={subFireWorkData}
+                height={300}
+                width={300}
+            />
+            <Lottie options={thirdFireWorkData}
+                height={300}
+                width={300}
+            />
+            { delay && <Lottie options={thirdFireWorkData}
+                height={300}
+                width={300}
+            />}
+            <Lottie options={subFireWorkData}
+                height={200}
+                width={500}
+            />
+            <Lottie options={subFireWorkData}
+                height={400}
+                width={400}
             />
             <Lottie options={mainFireWorkData}
                 height={500}
                 width={500}
             />
-            <Lottie options={mainFireWorkData}
-                height={300}
-                width={300}
-            />
-            <Lottie options={subFireWorkData}
-                height={300}
-                width={300}
-            />
-            <Lottie options={subFireWorkData}
-                height={300}
-                width={300}
-            />
-            <Lottie options={subFireWorkData}
-                height={200}
-                width={500}
-            />
-            <Lottie options={subFireWorkData}
-                height={200}
-                width={400}
-            />
-            <Lottie options={subFireWorkData}
-                height={300}
+            <Lottie options={thirdFireWorkData}
+                height={400}
                 width={400}
             />
         </AninimationBox>
@@ -255,8 +304,6 @@ const Content = ({ winTeam, isUserWin }) => {
 const ModalResult = ({ winTeam }) => {
     const userTeam = useRecoilValue(userTeamState);
     const isUserWin = winTeam === `team${userTeam}`;
-    console.log(winTeam)
-    console.log(userTeam)
     return (
         <Modal
             className="result_modal">

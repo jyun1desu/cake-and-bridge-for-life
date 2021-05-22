@@ -81,18 +81,16 @@ const WaitRoom = () => {
     const roomName = useRecoilValue(userRoomState);
     const team = useRecoilValue(teamArray);
     const isUserReady = useRecoilValue(userReadyState);
+    const roomRef = db.database().ref(`/${roomName}`);
+    const playersInfo = roomRef.child('playersInfo');
 
     useEffect(async() => {
-        const roomRef = db.database().ref(`/${roomName}`);
-        const playersInfo = roomRef.child('playersInfo');
-
-        await roomRef.child('gameInfo').set(null);
+        await initWaitRoomData();
         await playersInfo.once("value", (data) => {
             const playersData = Object.values(data.val());
             const sortedByTimestamp = playersData.sort((a,b) => a.timestamp-b.timestamp);
             const userOrder = sortedByTimestamp.findIndex(data=>data.userID === userID);
             const userDefaultTeam = userOrder === 0 || userOrder === 3 ? '1':'2';
-            playersInfo.child(userID).update({ready: false})
             if(!userTeam){
                 playersInfo.child(userID).update({team: userDefaultTeam})
             }
@@ -124,7 +122,13 @@ const WaitRoom = () => {
         return setButtonMessage('開打！');
     },[team])
 
+    const initWaitRoomData = async() => {
+        const playersInfo = roomRef.child('playersInfo');
+        await playersInfo.child(userID).update({ready: false})
+    }
+
     const enterGame = () => {
+        initWaitRoomData();
         history.push(`/${roomName}/game_room/${userID}`);
     }
 

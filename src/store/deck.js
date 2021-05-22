@@ -1,5 +1,5 @@
 import {
-    atom, atomFamily, selector,
+    atom, selector,
 } from 'recoil';
 
 export const userDeckState = atom({

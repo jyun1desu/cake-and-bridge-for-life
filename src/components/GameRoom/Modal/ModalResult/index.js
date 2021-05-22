@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Lottie from 'react-lottie';
 import styled from 'styled-components';
+import { useHistory } from "react-router-dom";
 import { useRecoilValue } from 'recoil';
 import { themeState } from 'store/theme';
-import { userTeamState } from 'store/user';
+import { userTeamState, userRoomState, userIDState } from 'store/user';
 import { color } from 'style/theme';
 import Modal from 'components/Global/Modal';
 import Button from 'components/Global/Button';
@@ -252,19 +253,36 @@ const ResultBox = styled.div`
 
 const Content = ({ winTeam, isUserWin }) => {
     const theme = useRecoilValue(themeState);
+    const userID = useRecoilValue(userIDState);
+    const roomName = useRecoilValue(userRoomState);
+    const history = useHistory();
     const buttonColor = {
         light: {
-            button1: color.$highlight_color,
-            button2: color.$orange_color,
-            button3: color.$green_color,
+            yellow_button: color.$highlight_color,
+            orange_button: color.$orange_color,
+            green_button: color.$green_color,
         },
         dark: {
-            button1: color.$fluorescent_orange_color,
-            button2: color.$fluorescent_yellow_color,
-            button3: color.$fluorescent_green_color,
+            yellow_button: color.$fluorescent_orange_color,
+            orange_button: color.$fluorescent_yellow_color,
+            green_button: color.$fluorescent_green_color,
         }
     }
+
     const teamName = winTeam === 'team1' ? '草莓糕' : '可麗露';
+
+    const backToWaitRoom = () => {
+        const toPath = `/${roomName}/waiting_room/${userID}`;
+        history.push(toPath);
+    }
+
+    const readyToNextRound = () => {
+        console.log('next round')
+    }
+
+    const leaveGame = () => {
+        history.push('/');
+    }
 
     return (
         <ResultBox
@@ -290,11 +308,14 @@ const Content = ({ winTeam, isUserWin }) => {
                 </div>
                 <div className="button_area">
                     <Button
-                        color={buttonColor[theme].button1}>更換隊友</Button>
+                        onClick={backToWaitRoom}
+                        color={buttonColor[theme].yellow_button}>更換隊友</Button>
                     <Button
-                        color={buttonColor[theme].button2}>再玩一局</Button>
+                        onClick={readyToNextRound}
+                        color={buttonColor[theme].orange_button}>再玩一局</Button>
                     <Button
-                        color={buttonColor[theme].button3}>翻桌不玩</Button>
+                        onClick={leaveGame}
+                        color={buttonColor[theme].green_button}>翻桌不玩</Button>
                 </div>
             </div >
         </ResultBox >

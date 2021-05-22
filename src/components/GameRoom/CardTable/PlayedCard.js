@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import classnames from 'classnames';
 import { userRoomState, userNameState } from 'store/user';
 import { teamScoresState } from 'store/score';
+import { userWinTricksState } from 'store/winTricks';
 import { otherPlayerDeckState } from 'store/deck';
 import { thisRoundCardsState, isThisRoundEndState, trumpState, thisRoundSuitState } from 'store/game';
 import { relationWithUser, OrderedStartFromTeamOne } from 'store/players';
@@ -56,6 +57,7 @@ const PlayedCard = () => {
     const [teamScores, updateTeamScores] = useRecoilState(teamScoresState);
     const isThisRoundEnd = useRecoilValue(isThisRoundEndState);
     const setOtherPlayerDeck = useSetRecoilState(otherPlayerDeckState);
+    const setUserWinTricks = useSetRecoilState(userWinTricksState);
     const roomRef = db.database().ref(`/${roomName}`);
 
     useEffect(()=>{
@@ -88,6 +90,9 @@ const PlayedCard = () => {
         await sleep(2000);
         const winner = getRoundWinner();
         updatePoints(winner);
+        if(winner === user) {
+            collectThisTrick();
+        }
         await currentPlayerRef.set(winner);
         initRoundData();
     }
@@ -124,6 +129,10 @@ const PlayedCard = () => {
             return card?.card;
         })
         return result;
+    }
+
+    const collectThisTrick = () => {
+        setUserWinTricks(pre=>([...pre, thisRoundCards]))
     }
 
     return (

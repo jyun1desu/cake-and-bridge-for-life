@@ -50,12 +50,12 @@ const Content = () => {
             <span>更換主題</span>
             <ThemeToggler />
         </Item>
-        <Item theme={theme}>
+        {/* <Item theme={theme}>
             <span>意見投書</span>
             <SettingButton 
                 color={themeData[theme].mail_button}
             >GO</SettingButton>
-        </Item>
+        </Item> */}
         <Item theme={theme}>
             <span>離開遊戲</span>
             <SettingButton 

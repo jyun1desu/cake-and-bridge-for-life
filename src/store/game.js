@@ -5,20 +5,10 @@ import { userNameState } from './user';
 import { teamShouldWinState } from './bind';
 import { teamScoresState } from './score';
 
-
 export const currentPlayerName = atom({
     key: 'currentPlayerName',
     default: '',
 });
-
-export const isUserTurnState = selector({
-    key: 'isUserTurnState',
-    get: ({get}) => {
-        const nowPlayer = get(currentPlayerName);
-        const userName = get(userNameState);
-        return userName === nowPlayer;
-    }
-})
 
 export const thisRoundSuitState = atom({
     key: 'thisRoundSuit',
@@ -29,6 +19,20 @@ export const thisRoundCardsState = atom({
     key: 'thisRoundCardsState',
     default: [],
 });
+
+export const trumpState = atom({
+    key: 'trumpState',
+    default: null,
+})
+
+export const isUserTurnState = selector({
+    key: 'isUserTurnState',
+    get: ({get}) => {
+        const nowPlayer = get(currentPlayerName);
+        const userName = get(userNameState);
+        return userName === nowPlayer;
+    }
+})
 
 export const isUserLastPlayerState = selector({
     key: 'isUserLastPlayerState',
@@ -52,11 +56,6 @@ export const isThisRoundEndState = selector({
             return false
         }
     }
-})
-
-export const trumpState = atom({
-    key: 'trumpState',
-    default: null,
 })
 
 export const isGameEndState = selector({

@@ -14,6 +14,11 @@ export const userIDState = atom({
     default: '',
 });
 
+export const userRoomState = atom({
+    key: 'userRoomState',
+    default: null
+});
+
 export const userIndexState = selector({
     key: 'userIndexState',
     get:  ({get}) => {
@@ -32,11 +37,6 @@ export const userTeamState = selector({
         return playerList.find(data=>data.player===userName)?.team;
     }
 })
-
-export const userRoomState = atom({
-    key: 'userRoomState',
-    default: null
-});
 
 export const userReadyState = selector({
     key: 'userReadyState',

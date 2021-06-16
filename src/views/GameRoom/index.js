@@ -1,18 +1,16 @@
 import React, { useEffect } from 'react';
-import { useRecoilValue, useSetRecoilState, useRecoilState, useResetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil';
 import db from "database";
 import styled from 'styled-components';
 import { color } from "style/theme";
 import { generateNewDeck } from 'util/deck';
+import useInitData from "util/hook/useInitData";
 import { userIndexState, userRoomState } from 'store/user';
 import { modalState } from 'store/modal';
 import { userDeckState, otherPlayerDeckState } from 'store/deck';
 import { themeState  } from 'store/theme';
 import { relationWithUser } from 'store/players';
-import { currentPlayerName, thisRoundSuitState, thisRoundCardsState, trumpState } from 'store/game';
-import { teamScoresState } from 'store/score';
-import { userWinTricksState } from 'store/winTricks';
-import {  userPickBindState, nowBindState, userPassState, playersCalledListState } from 'store/bind';
+import { currentPlayerName, thisRoundSuitState } from 'store/game';
 import ModalRoot from 'components/GameRoom/Modal/ModalRoot';
 import Cards from 'components/GameRoom/Cards';
 import CardTable from 'components/GameRoom/CardTable';
@@ -36,6 +34,7 @@ const themeData = {
 
 const GameRoom = () => {
     const [theme] = useRecoilState(themeState);
+    const [,{ initGameRoomData }] = useInitData();
     const userIndex = useRecoilValue(userIndexState);
     const setUserDeck = useSetRecoilState(userDeckState);
     const setOtherPlayerDeck = useSetRecoilState(otherPlayerDeckState);
@@ -43,17 +42,6 @@ const GameRoom = () => {
     const setModalType = useSetRecoilState(modalState);
     const setNowPlayerState = useSetRecoilState(currentPlayerName);
     const setThisRoundSuit = useSetRecoilState(thisRoundSuitState);
-    /* init recoil */
-    const initModalType = useResetRecoilState(modalState);
-    const initUserDeck = useResetRecoilState(userDeckState);
-    const initScore = useResetRecoilState(teamScoresState);
-    const initUserPickBind = useResetRecoilState(userPickBindState);
-    const initNowBind = useResetRecoilState(nowBindState);
-    const initPassState = useResetRecoilState(userPassState);
-    const initRoundCards = useResetRecoilState(thisRoundCardsState);
-    const initTrump = useResetRecoilState(trumpState);
-    const initCalledList = useResetRecoilState(playersCalledListState);
-    const initWinTricks = useResetRecoilState(userWinTricksState);
     const roomName = useRecoilValue(userRoomState);
     const roomRef = db.database().ref(`/${roomName}`);
 
@@ -72,16 +60,7 @@ const GameRoom = () => {
     const initGameData = async () => {
         const gameInfoRef = roomRef.child('gameInfo');
         await gameInfoRef.remove();
-        initUserDeck();
-        initModalType();
-        initScore();
-        initUserPickBind();
-        initNowBind();
-        initPassState();
-        initCalledList();
-        initRoundCards();
-        initTrump();
-        initWinTricks();
+        initGameRoomData();
         await dealDeck();
     }
 

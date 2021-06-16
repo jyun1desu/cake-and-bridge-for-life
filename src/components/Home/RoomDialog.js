@@ -15,7 +15,7 @@ import { themeState } from 'store/theme';
 const themeData = {
 	light: {
 		bg: 'white',
-		fg: color.$default_font_color,
+		fg: color.$brown_color,
 		box_border: 'none',
 		cancel_bg: color.$warn_red_color,
 		cancel_fg: 'white',

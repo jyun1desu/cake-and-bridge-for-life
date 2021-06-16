@@ -5,7 +5,6 @@ import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import { themeState } from 'store/theme';
 import { userRoomState } from 'store/user';
 import { responseToBadDeck } from 'store/deck';
-import { modalState } from 'store/modal';
 import { color } from 'style/theme';
 import Modal from 'components/Global/Modal';
 import Kanahei from 'assets/kanaheiclap.gif';
@@ -98,10 +97,10 @@ const Content = () => {
         <AskBox theme={theme} >
             <div className="content">
                 <img alt="icon" className="icon" src={Kanahei}></img>
-                <p>好像可以倒牌捏，要倒嗎？</p>
+                <p>好像可以倒牌捏</p>
             </div >
             <div className="button_area">
-                <button onClick={restartGame}>倒啦</button>
+                <button onClick={restartGame}>倒爆</button>
                 <button onClick={()=>setResponseToBadDeck(true)}>不倒</button>
             </div>
         </AskBox >

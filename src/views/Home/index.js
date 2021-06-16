@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useTransition } from "react-spring";
-import { useRecoilValue, useResetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import db from "database";
 
 import Logo from "components/Home/Logo";
@@ -10,20 +10,20 @@ import Button from "components/Global/Button";
 import ThemeToggler from 'components/Global/ThemeToggler';
 
 import useUserName from "util/hook/useUserName";
-import { userNameState, userRoomState } from "store/user";
+import useInitData from "util/hook/useInitData";
 import { themeState } from 'store/theme';
 import styled from "styled-components";
 import { color } from "style/theme";
 
 const themeData = {
-    light: { 
+	light: {
 		bg: color.$theme_background,
 		fg: color.$title_font_color,
 		name_fg: color.$title_font_color,
 		border: color.$title_font_color,
 		button_color: color.$pink_color,
 	},
-    dark: { 
+	dark: {
 		bg: color.$dark_bg_color,
 		fg: color.$dark_default_font_color,
 		name_fg: color.$fluorescent_pink_color,
@@ -42,7 +42,7 @@ const NameForm = styled.form`
 		letter-spacing: 3px;
 		margin: 0 0 25px 0;
 		transition: .5s all;
-		color: ${({theme}) => themeData[theme].fg };
+		color: ${({ theme }) => themeData[theme].fg};
 	}
 
 	.name_space{
@@ -50,13 +50,13 @@ const NameForm = styled.form`
 		font-size: 22px;
 		line-height: 25px;
 		letter-spacing: 2px;
-		color: ${({theme}) => themeData[theme].name_fg };
-		border-bottom: 2px solid ${({theme}) => themeData[theme].border };
+		color: ${({ theme }) => themeData[theme].name_fg};
+		border-bottom: 2px solid ${({ theme }) => themeData[theme].border};
 	}
 
 	.warn_message {
 		margin-top: 10px;
-		color: ${({theme}) => themeData[theme].name_fg };
+		color: ${({ theme }) => themeData[theme].name_fg};
 		opacity: 0.6;
 		letter-spacing: 1px;
 	}
@@ -68,16 +68,16 @@ const NameForm = styled.form`
 
 const NameFillIn = ({ openRoomList }) => {
 	const [
-        { userName, warnMessage },
-        { setUserName, validateUserName, setWarnMessage }
-    ] = useUserName();
+		{ userName, warnMessage },
+		{ setUserName, validateUserName, setWarnMessage }
+	] = useUserName();
 
 	const theme = useRecoilValue(themeState);
 	const handleButtonClick = (e) => {
 		e.preventDefault();
 		const isValid = validateUserName();
 
-		if(isValid) {
+		if (isValid) {
 			openRoomList();
 		}
 	};
@@ -86,7 +86,7 @@ const NameFillIn = ({ openRoomList }) => {
 		<NameForm theme={theme} id="name" className="user_input">
 			<p>請輸入名字</p>
 			<Input
-				onFocus={()=>setWarnMessage('')}
+				onFocus={() => setWarnMessage('')}
 				className="name_space"
 				maxLength="8"
 				onChange={(e) => setUserName(e.target.value)}
@@ -111,28 +111,22 @@ const HomePage = styled.div`
 	flex-direction: column;
 	justify-content: space-around;
 	transition: .5s background-color;
-    background-color: ${({theme}) => themeData[theme].bg };
+    background-color: ${({ theme }) => themeData[theme].bg};
 `;
 
 const Home = () => {
 	const [showRoomDialog, toggleRoomDialog] = useState(false);
 	const [roomList, setRoomList] = useState([]);
-	const initUserName = useResetRecoilState(userNameState);
-	const initUserRoom = useResetRecoilState(userRoomState);
+	const [,{ initGameData }] = useInitData();
 	const theme = useRecoilValue(themeState);
 
-	React.useEffect(()=>{
-		initUserData();
+	React.useEffect(() => {
+		initGameData();
 		subscribeRooms();
 		return () => removeListeners();
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	},[])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
-	const initUserData = () => {
-		initUserName();
-		initUserRoom();
-	}
-	
 	const transitions = useTransition(showRoomDialog, {
 		from: { opacity: 0, transform: "translateY(-15px)" },
 		enter: { opacity: 1, transform: "translateY(0px)" },
@@ -145,12 +139,12 @@ const Home = () => {
 			const roomsData = data.val();
 			if (roomsData) {
 				let availibleRooms = [];
-				for( const [key,value] of Object.entries(roomsData)) {
+				for (const [key, value] of Object.entries(roomsData)) {
 					const players = Object.values(value.playersInfo)
-					if(players.length<4) availibleRooms.push(key);
+					if (players.length < 4) availibleRooms.push(key);
 				}
 				setRoomList(availibleRooms);
-			}else{
+			} else {
 				setRoomList([]);
 			}
 		});
@@ -163,7 +157,7 @@ const Home = () => {
 
 	return (
 		<HomePage theme={theme}>
-			<ThemeToggler className="on_page"/>
+			<ThemeToggler className="on_page" />
 			<Logo className="logo" />
 			<NameFillIn openRoomList={() => toggleRoomDialog(true)} />
 			{transitions(

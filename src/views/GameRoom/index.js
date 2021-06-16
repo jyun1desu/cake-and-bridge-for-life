@@ -82,13 +82,15 @@ const GameRoom = () => {
         initRoundCards();
         initTrump();
         initWinTricks();
-        dealDeck();
+        await dealDeck();
     }
 
     const dealDeck = async () => {
         const gameInfoRef = roomRef.child('gameInfo');
-        const newDeck = generateNewDeck();
-        await gameInfoRef.update({deck: newDeck});
+        if(userIndex === 1) {
+            const newDeck = generateNewDeck();
+            await gameInfoRef.update({deck: newDeck});
+        }
 
         gameInfoRef.child('deck').on("value",(data) => {
             const deck = data.val();
@@ -104,7 +106,7 @@ const GameRoom = () => {
     };
 
     const listenOnCurrentPlayer = () => {
-        const currentPlayerRef = roomRef.child('gameInfo').child('currentPlayer');
+        const currentPlayerRef = roomRef.child('currentPlayer');
         currentPlayerRef.on("value",(data) => {
             const nowPlayerID = data.val();
             setNowPlayerState(nowPlayerID);
@@ -146,7 +148,7 @@ const GameRoom = () => {
     const removeListeners = () => {
         const gameInfoRef = roomRef.child('gameInfo');
         const deckInfo = gameInfoRef.child('deck');
-        const currentPlayerRef = roomRef.child('gameInfo').child('currentPlayer');
+        const currentPlayerRef = roomRef.child('currentPlayer');
         const roundSuitRef = roomRef.child('gameInfo').child('thisRoundSuit');
         const changeMateRef = roomRef.child('changeMate');
         const leaveRef = roomRef.child('someoneLeaveGame');

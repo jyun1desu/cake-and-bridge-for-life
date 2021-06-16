@@ -136,7 +136,7 @@ const BindList = ({ theme }) => {
 
     useEffect(() => {
         if (isUserTurn && isUserPass) {
-            roomRef.child('gameInfo').child('currentPlayer').set(nextPlayer);
+            roomRef.child('currentPlayer').set(nextPlayer);
         }
     }, [isUserTurn, isUserPass, nextPlayer, roomRef]);
 
@@ -158,7 +158,7 @@ const BindList = ({ theme }) => {
         if (!isUserTurn || buttonMessage === '不能PASS!') return;
         const bindRef = roomRef.child('gameInfo').child('nowBind');
         const bindListRef = roomRef.child('gameInfo').child('calledBinds').child(userName);
-        const nextPlayerRef = roomRef.child('gameInfo').child('currentPlayer');
+        const nextPlayerRef = roomRef.child('currentPlayer');
         const calledBind = userPickBind || 'pass';
 
         await bindListRef.once("value", (data) => {
@@ -182,7 +182,7 @@ const BindList = ({ theme }) => {
 
     const detectTrumpDecided = () => {
         const bindListRef = roomRef.child('gameInfo').child('calledBinds');
-        const nextPlayerRef = roomRef.child('gameInfo').child('currentPlayer');
+        const nextPlayerRef = roomRef.child('currentPlayer');
         bindListRef.on("value", (data) => {
             const binds = data.val();
             if(!binds) return;

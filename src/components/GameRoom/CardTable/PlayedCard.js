@@ -89,7 +89,7 @@ const PlayedCard = () => {
     },[isThisRoundEnd])
 
     const handleRoundEnded = async () => {
-        const currentPlayerRef = roomRef.child('gameInfo').child('currentPlayer');
+        const currentPlayerRef = roomRef.child('currentPlayer');
         await currentPlayerRef.set(null);
         await sleep(2000);
         const winner = getRoundWinner();

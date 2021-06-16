@@ -43,8 +43,8 @@ const ModalRoot = ({ initGameData }) => {
         roomRef.child('someoneLeaveGame').remove();
     }
 
-    const refreshGame = () => {
-        initGameData();
+    const refreshGame = async() => {
+        await initGameData();
         roomRef.child('restart').remove();
     }
 
@@ -52,8 +52,8 @@ const ModalRoot = ({ initGameData }) => {
 
     return (
         <Root className="modal_root">
-            {/* { !trump && isOKtoPlay && <ModalBinding /> } */}
-            { isOKtoPlay && <ModalGiveUp />}
+            { !trump && isOKtoPlay && <ModalBinding /> }
+            { !isOKtoPlay && <ModalGiveUp />}
             { modalType === 'result' && <ModalResult openLoadingWindow={() => toggleLoading(true)} winTeam={isGotWinner} />}
             { modalType === 'advice' && <ModalSendAdvice closeModal={closeModal} />}
             { modalType === 'cofirm-leave' && <ModalConfirmLeave closeModal={closeModal} />}

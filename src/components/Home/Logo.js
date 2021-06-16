@@ -20,8 +20,8 @@ const StyledLogo = styled.div`
     margin: 30px auto 0;
     border-radius: 100%;
     text-align: center;
-    width: 70vw;
-    height: 70vw;
+    width: 270px;
+    height: 270px;
     padding: 30px;
     box-sizing: border-box;
     display: flex;

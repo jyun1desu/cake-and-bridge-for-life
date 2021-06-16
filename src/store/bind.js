@@ -14,6 +14,16 @@ export const nowBindState = atom({
     default: { player: null, number:0, suit:'club' },
 });
 
+export const userPassState = atom({
+    key: 'userPassState',
+    default: false,
+});
+
+export const playersCalledListState = atom({
+    key: 'playersCalledListState',
+    default: {},
+});
+
 export const availibleTricksState = selector({
     key: 'availibleTricksState',
     get: ({get}) => {
@@ -29,11 +39,6 @@ export const availibleTricksState = selector({
         return tricksArray;
     }},
 );
-
-export const userPassState = atom({
-    key: 'userPassState',
-    default: false,
-});
 
 export const teamShouldWinState = selector({
     key: 'teamShouldWinState',
@@ -56,8 +61,3 @@ export const teamShouldWinState = selector({
         }
     }},
 );
-
-export const playersCalledListState = atom({
-    key: 'playersCalledListState',
-    default: {},
-});

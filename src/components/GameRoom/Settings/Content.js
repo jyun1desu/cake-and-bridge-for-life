@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { themeState } from 'store/theme';
+import { modalState } from 'store/modal';
+import { navState } from 'store/user';
 import { color } from 'style/theme';
 import Button from 'components/Global/Button';
 import ThemeToggler from 'components/Global/ThemeToggler';
@@ -44,6 +46,8 @@ const themeData = {
 
 const Content = () => {
     const [theme] = useRecoilState(themeState);
+    const setModalType = useSetRecoilState(modalState);
+    const setNowNav = useSetRecoilState(navState);
     return (
     <>
         <Item theme={theme}>
@@ -59,6 +63,10 @@ const Content = () => {
         <Item theme={theme}>
             <span>離開遊戲</span>
             <SettingButton 
+                onClick={()=>{
+                    setNowNav(null);
+                    setModalType('cofirm-leave')
+                }}
                 color={themeData[theme].exit_button}
             >EXIT</SettingButton>
         </Item>

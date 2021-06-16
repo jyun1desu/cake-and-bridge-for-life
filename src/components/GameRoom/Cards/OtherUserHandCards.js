@@ -1,9 +1,6 @@
 import React from 'react';
-import Card from '../Card'
-
-const generateArray = number => {
-    return Array.from(Array(number), (_, x) => x);
-}
+import Card from '../Card';
+import generateArray from 'util/generateArray';
 
 const OtherUserHandCards = ({ className, cardAmount }) => {
     const cardArray = generateArray(cardAmount);

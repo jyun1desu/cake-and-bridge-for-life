@@ -74,6 +74,10 @@ const PlayedCard = () => {
                 }))
             }
         });
+
+        return () => {
+            cardsRef.off();
+        }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
 

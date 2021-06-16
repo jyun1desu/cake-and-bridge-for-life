@@ -29,7 +29,7 @@ export const userTeamState = selector({
         const userName = get(userNameState);
         const playerList = get(playersData);
         if(!playerList.length) return null
-        return playerList.find(data=>data.player===userName).team;
+        return playerList.find(data=>data.player===userName)?.team;
     }
 })
 

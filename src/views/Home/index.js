@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTransition } from "react-spring";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import db from "database";
 
 import Logo from "components/Home/Logo";
@@ -9,7 +9,7 @@ import Input from "components/Global/Input";
 import Button from "components/Global/Button";
 import ThemeToggler from 'components/Global/ThemeToggler';
 
-import { userNameState } from "store/user";
+import { userNameState, userRoomState } from "store/user";
 import { themeState } from 'store/theme';
 import styled from "styled-components";
 import { color } from "style/theme";
@@ -57,7 +57,7 @@ const NameForm = styled.form`
 
 const NameFillIn = ({ openRoomList }) => {
 	const [userName, setUserName] = useRecoilState(userNameState);
-	const [theme] = useRecoilState(themeState);
+	const theme = useRecoilValue(themeState);
 	const handleButtonClick = (e) => {
 		e.preventDefault();
 		if (userName) openRoomList();
@@ -94,14 +94,23 @@ const HomePage = styled.div`
 `;
 
 const Home = () => {
-	const [showRoomDialog, toggleRoomDialog] = React.useState(false);
-	const [roomList, setRoomList] = React.useState([]);
-	const [theme] = useRecoilState(themeState);
+	const [showRoomDialog, toggleRoomDialog] = useState(false);
+	const [roomList, setRoomList] = useState([]);
+	const initUserName = useResetRecoilState(userNameState);
+	const initUserRoom = useResetRecoilState(userRoomState);
+	const theme = useRecoilValue(themeState);
 
 	React.useEffect(()=>{
+		initUserData();
 		subscribeRooms();
 		return () => removeListeners();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	},[])
+
+	const initUserData = () => {
+		initUserName();
+		initUserRoom();
+	}
 	
 	const transitions = useTransition(showRoomDialog, {
 		from: { opacity: 0, transform: "translateY(-15px)" },

@@ -1,5 +1,6 @@
 import React from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState} from 'recoil';
+import { modalState } from 'store/modal';
 import { themeState } from 'store/theme';
 import { color } from 'style/theme';
 import styled from 'styled-components';
@@ -88,7 +89,8 @@ const AskBox = styled.div`
 `
 
 const Content = () => {
-    const [theme] = useRecoilState(themeState);
+    const theme = useRecoilValue(themeState);
+    const setModalType = useSetRecoilState(modalState);
     return (
         <AskBox theme={theme}>
             <div className="content">
@@ -97,7 +99,7 @@ const Content = () => {
             </div >
             <div className="button_area">
                 <button>離開</button>
-                <button>繼續玩</button>
+                <button onClick={()=>setModalType(null)}>繼續玩</button>
             </div>
         </AskBox >
     )

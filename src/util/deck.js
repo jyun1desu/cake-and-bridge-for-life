@@ -48,6 +48,8 @@ const dealCards = (playerAmount, deck) => {
     return sorted;
 };
 
-const shuffledDeck = shuffle(buildNewDeck());
-const newDeck = dealCards(4, shuffledDeck);
-export default newDeck;
+const shuffledDeck = () => shuffle(buildNewDeck());
+
+export const generateNewDeck = () => {
+    return dealCards(4, shuffledDeck());
+};

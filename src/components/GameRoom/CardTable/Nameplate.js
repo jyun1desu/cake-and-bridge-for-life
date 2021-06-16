@@ -5,7 +5,7 @@ import { useRecoilValue } from 'recoil';
 import { themeState } from 'store/theme';
 import { relationWithUser } from 'store/players';
 import { userNameState, userTeamState } from 'store/user';
-import { currentPlayerName  } from 'store/game';  
+import { currentPlayerName } from 'store/game';
 import ThinkingIcon from 'components/GameRoom/ThinkingIcon';
 import { color } from 'style/theme'
 
@@ -15,7 +15,7 @@ const Tag = styled.div`
     &.is_player_turn {
         .player_info {
             border-width: 2px;
-            border-color: ${({theme, team}) => themeData[theme].hl_c[team]};
+            border-color: ${({ theme, team }) => themeData[theme].hl_c[team]};
         }
     }
 
@@ -55,9 +55,9 @@ const Tag = styled.div`
         padding-right: 10px;
         transition: .5s all;
         border-style: solid;
-        border-width: ${({theme}) => themeData[theme].bw };
-        border-color: ${({theme, team}) => (theme === 'light'? 'transparent':themeData[theme].team[team])};
-        background-color: ${({theme}) => themeData[theme].name_bg };
+        border-width: ${({ theme }) => themeData[theme].bw};
+        border-color: ${({ theme, team }) => (theme === 'light' ? 'transparent' : themeData[theme].team[team])};
+        background-color: ${({ theme }) => themeData[theme].name_bg};
         color: ${({ theme }) => themeData[theme].fc};
 
         .team {
@@ -77,7 +77,7 @@ const Tag = styled.div`
 `
 
 const themeData = {
-    light: { 
+    light: {
         name_bg: 'white',
         fc: color.$title_font_color,
         bw: '0px',
@@ -92,7 +92,7 @@ const themeData = {
         },
 
     },
-    dark: { 
+    dark: {
         name_bg: color.$dark_dim_bg_color,
         fc: color.$light_pink_color,
         bw: '1px',
@@ -107,21 +107,21 @@ const themeData = {
     },
 }
 
-const PlayerNameTag = ({className, isCurrentPlayer = false, player, team}) => {
+const PlayerNameTag = ({ className, isCurrentPlayer = false, player, team }) => {
     const theme = useRecoilValue(themeState);
     return (
-        <Tag 
-            theme={theme} 
+        <Tag
+            theme={theme}
             team={team}
-            className={classnames(className,{"is_player_turn": isCurrentPlayer})}>
-            {isCurrentPlayer && <ThinkingIcon className="on_table"/>}
+            className={classnames(className, { "is_player_turn": isCurrentPlayer })}>
+            {isCurrentPlayer && <ThinkingIcon className="on_table" />}
             <div className="player_info">
                 <div className="team"></div>
                 <div className="name">{player}</div>
             </div>
         </Tag>
     )
-} 
+}
 
 const Names = styled.div`
     position: relative;
@@ -136,24 +136,23 @@ const Nameplate = () => {
     const currentPlayer = useRecoilValue(currentPlayerName);
     const userTeam = useRecoilValue(userTeamState);
     const order = ['cross', 'left', 'right', 'user'];
-    const orderedPlayers = [players.teammate,players.nextPlayer,players.previousPlayer,user];
+    const orderedPlayers = [players.teammate, players.nextPlayer, players.previousPlayer, user];
     const anotherTeam = ['1', '2'].filter(team => team !== userTeam);
     const teamArray = [userTeam, anotherTeam, anotherTeam, userTeam];
 
     return (
         <Names className="players_name">
-            {orderedPlayers.map((player,index)=>{
-                return(
-                    <PlayerNameTag 
-                        key={player} 
-                        className={`tag_${order[index]}`} 
-                        index={index} 
-                        player={player}
-                        isCurrentPlayer={currentPlayer === player}
-                        team={'team'+teamArray[index]}
-                    />
-                )
-            })}
+            {orderedPlayers.map((player, index) => (
+                <PlayerNameTag
+                    key={order[index]}
+                    className={`tag_${order[index]}`}
+                    index={index}
+                    player={player}
+                    isCurrentPlayer={currentPlayer === player}
+                    team={'team' + teamArray[index]}
+                />
+            )
+            )}
         </Names>
     )
 }

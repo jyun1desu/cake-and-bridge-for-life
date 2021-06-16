@@ -18,7 +18,7 @@ export const GlobalStyle = createGlobalStyle`
     width: 100%;
     transform: translate3d(0, 0, 0);
     padding: 0;
-    margin: 0;
+    margin: auto;
     color: ${color.$default_font_color};
     }
 

@@ -96,7 +96,7 @@ const WaitRoom = () => {
             }
         });
 
-        playersInfo.on("value", (data) => {
+        playersInfo.on("value", async(data) => {
             const playersData = Object.values(data.val());
             const sortedByTimestamp = playersData.sort((a,b) => a.timestamp-b.timestamp);
             setPlayersData(sortedByTimestamp);
@@ -104,8 +104,7 @@ const WaitRoom = () => {
             // 監聽四人都ready時進入遊戲
             const allReady = playersData.filter(data=>data.ready).length === 4;
             if(allReady){
-                playersInfo.off();
-                enterGame();
+                await enterGame();
             }
         });
     }, []);
@@ -124,28 +123,29 @@ const WaitRoom = () => {
 
     const initWaitRoomData = async() => {
         const playersInfo = roomRef.child('playersInfo');
-        await playersInfo.child(userID).update({ready: false})
+        await playersInfo.child(userID).update({ ready: false })
     }
 
-    const enterGame = () => {
-        initWaitRoomData();
+    const enterGame = async() => {
+        await initWaitRoomData();
         history.push(`/${roomName}/game_room/${userID}`);
     }
 
-    const setReady = async (boolean) => {
+    const setReady = async (isReady) => {
         if(buttonMessage !== '開打！') return;
         const roomRef = db.database().ref(`/${roomName}`);
         const userInfo = roomRef.child('playersInfo').child(userID);
-
-        await roomRef.child('playersInfo').once("value", async(data) => {
-            const playersData = Object.values(data.val());
-            const allReady = playersData.filter(data=>data.ready).length === 3;
-            if(allReady){
-                await roomRef.child('gameInfo').set({currentPlayer: userName});
-            }
-        })
-
-        userInfo.update({ready: boolean});
+        await userInfo.update({ ready: isReady });
+        if (isReady) {
+            await roomRef.child('playersInfo').once("value", async (data) => {
+                const playersData = Object.values(data.val());
+                const allReady = playersData.filter(data => data.ready).length === 4;
+                if (allReady) {
+                    await roomRef.child('gameInfo').set({ currentPlayer: userName });
+                    roomRef.child('playersInfo').off();
+                }
+            })
+        }
     }
 
     const transitions = useTransition(isUserReady, {

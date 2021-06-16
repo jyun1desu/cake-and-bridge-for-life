@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import db from "database";
 import Lottie from 'react-lottie';
 import styled from 'styled-components';
 import { useHistory } from "react-router-dom";
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { themeState } from 'store/theme';
-import { userTeamState, userRoomState, userIDState } from 'store/user';
+import { modalState } from 'store/modal';
+import { userTeamState, userRoomState, userIDState, userNameState } from 'store/user';
 import { color } from 'style/theme';
 import Modal from 'components/Global/Modal';
 import Button from 'components/Global/Button';
@@ -92,9 +94,9 @@ const Animations = () => {
         toggleDelay(true)
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         setDelay()
-    },[])
+    }, [])
 
     const mainFireWorkData = {
         loop: true,
@@ -251,11 +253,14 @@ const ResultBox = styled.div`
     }
 `
 
-const Content = ({ winTeam, isUserWin }) => {
+const Content = ({ winTeam, isUserWin, openLoadingWindow }) => {
     const theme = useRecoilValue(themeState);
     const userID = useRecoilValue(userIDState);
+    const userName = useRecoilValue(userNameState);
     const roomName = useRecoilValue(userRoomState);
+    const initModalType = useResetRecoilState(modalState);
     const history = useHistory();
+    const roomRef = db.database().ref(`/${roomName}`);
     const buttonColor = {
         light: {
             yellow_button: color.$highlight_color,
@@ -274,13 +279,33 @@ const Content = ({ winTeam, isUserWin }) => {
     const backToWaitRoom = () => {
         const toPath = `/${roomName}/waiting_room/${userID}`;
         history.push(toPath);
+        initModalType();
+        roomRef.child('changeMate').set(true);
     }
 
-    const readyToNextRound = () => {
-        console.log('next round')
+    const setReady = async (isReady) => {
+        const userInfo = roomRef.child('playersInfo').child(userID);
+        await userInfo.update({ ready: isReady });
+
+        if (isReady) {
+            await roomRef.child('playersInfo').once("value", async (data) => {
+                const playersData = Object.values(data.val());
+                const allReady = playersData.filter(data => data.ready).length === 4;
+                if (allReady) {
+                    await roomRef.child('gameInfo').set({ currentPlayer: userName });
+                }
+            })
+        }
     }
 
-    const leaveGame = () => {
+    const readyToNextRound = async () => {
+        setReady(true);
+        openLoadingWindow();
+    }
+
+    const leaveGame = async() => {
+        await roomRef.child('playersInfo').child(userID).remove();
+        await roomRef.child('someoneLeaveGame').set(true);
         history.push('/');
     }
 
@@ -322,13 +347,13 @@ const Content = ({ winTeam, isUserWin }) => {
     )
 };
 
-const ModalResult = ({ winTeam }) => {
+const ModalResult = ({ winTeam, openLoadingWindow }) => {
     const userTeam = useRecoilValue(userTeamState);
     const isUserWin = winTeam === `team${userTeam}`;
     return (
         <Modal
             className="result_modal">
-            <Content winTeam={winTeam} isUserWin={isUserWin} />
+            <Content openLoadingWindow={openLoadingWindow} winTeam={winTeam} isUserWin={isUserWin} />
             {isUserWin && <Animations />}
         </Modal >
     );

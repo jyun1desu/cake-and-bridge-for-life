@@ -128,7 +128,7 @@ const MainInfo = () => {
                 <Suit theme={theme}
                     className="suit"
                     suitColor={suitColor(trump?.suit)}
-                >{suitInPoker(trump?.suit)}&#xFE0E;</Suit>
+                >{trump?.suit ? suitInPoker(trump?.suit) : ''}&#xFE0E;</Suit>
             </InfoBox>
             <InfoBox theme={theme} title="戰況" className="team">
                 <PointInfo team="team1" />

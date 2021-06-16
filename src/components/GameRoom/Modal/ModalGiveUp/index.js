@@ -1,8 +1,11 @@
 import React from 'react';
+import db from "database";
 import styled from 'styled-components';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import { themeState } from 'store/theme';
+import { userRoomState } from 'store/user';
 import { responseToBadDeck } from 'store/deck';
+import { modalState } from 'store/modal';
 import { color } from 'style/theme';
 import Modal from 'components/Global/Modal';
 import Kanahei from 'assets/kanaheiclap.gif';
@@ -26,7 +29,7 @@ const themeData = {
         no_button_fg: color.$fluorescent_green_color,
         no_button_bg: 'transparent',
     },
-  }
+}
 
 const AskBox = styled.div`
     display:  flex;
@@ -83,10 +86,12 @@ const AskBox = styled.div`
 
 const Content = () => {
     const [theme] = useRecoilState(themeState);
+    const roomName = useRecoilValue(userRoomState);
     const setResponseToBadDeck = useSetRecoilState(responseToBadDeck);
 
     const restartGame = () => {
-        console.log('倒牌啦');  
+        const roomRef = db.database().ref(`/${roomName}`);
+        roomRef.child('restart').set(true);
     }
 
     return (

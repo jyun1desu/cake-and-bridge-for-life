@@ -16,7 +16,8 @@ const UserHandCards = ({ className }) => {
     const { nextPlayer } = useRecoilValue(relationWithUser);
     const [userDeck, setUserDeck] = useRecoilState(userDeckState);
     const [nowPickSuit, setNowPickSuit] = React.useState(null);
-    const gameInfoRef = db.database().ref(`/${roomName}`).child('gameInfo')
+    const roomRef = db.database().ref(`/${roomName}`);
+    const gameInfoRef = roomRef.child('gameInfo');
 
     const handlePickCard = async (e, { number, suit }) => {
         e.stopPropagation();
@@ -73,7 +74,7 @@ const UserHandCards = ({ className }) => {
     };
 
     const switchToNextPlayer = async () => {
-        const nextPlayerRef = gameInfoRef.child('currentPlayer');
+        const nextPlayerRef = roomRef.child('currentPlayer');
         await nextPlayerRef.set(nextPlayer);
     }
 

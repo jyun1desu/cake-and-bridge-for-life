@@ -292,7 +292,7 @@ const Content = ({ winTeam, isUserWin, openLoadingWindow }) => {
                 const playersData = Object.values(data.val());
                 const allReady = playersData.filter(data => data.ready).length === 4;
                 if (allReady) {
-                    await roomRef.child('gameInfo').set({ currentPlayer: userName });
+                    await roomRef.child('currentPlayer').set(userName);
                 }
             })
         }

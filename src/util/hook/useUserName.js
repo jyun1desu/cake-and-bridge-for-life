@@ -8,7 +8,7 @@ const useUserName = () => {
     const [warnMessage, setWarnMessage] = useState('');
 
     const validateUserName = () => {
-        const regex = /^[^.?]*$/g;
+        const regex = /^[^.]*$/g;
         const isVaild = regex.test(userName);
 
         if (!userName) {

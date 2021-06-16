@@ -16,7 +16,7 @@ export const userIDState = atom({
 
 export const userRoomState = atom({
     key: 'userRoomState',
-    default: null
+    default: '',
 });
 
 export const userIndexState = selector({

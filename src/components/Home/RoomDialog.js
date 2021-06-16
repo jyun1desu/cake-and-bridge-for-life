@@ -9,6 +9,7 @@ import Modal from "components/Global/Modal";
 import Button from 'components/Global/Button';
 import Input from 'components/Global/Input';
 
+import userGameRoomName from "util/hook/useGameRoomName";
 import { userNameState, userRoomState, userIDState } from "store/user";
 import { themeState } from 'store/theme';
 
@@ -191,18 +192,22 @@ const RoomButton = ({ onClick, className, roomName }) => {
 const RoomDialog = ({ className, closeRoomList, style, roomList }) => {
 	const history = useHistory();
 	const [theme] = useRecoilState(themeState);
+	const [
+		{ gameRoomName, warnMessage },
+		{ setRoomName, validateRoomName, setWarnMessage }
+	] = userGameRoomName();
 	const userName = useRecoilValue(userNameState);
 	const setLocalRoom = useSetRecoilState(userRoomState);
 	const setUserID = useSetRecoilState(userIDState);
-	const [userInputRoom, setUserInputRoom] = React.useState('');
-	const [warnMessage, setWarnMessage] = React.useState('');
 
 	const createRoom = (e) => {
 		e.preventDefault();
-		if (userInputRoom.length < 3) return setWarnMessage('請輸入至少三個字');
-		if (roomList.includes(userInputRoom)) return setWarnMessage('已有重複房名');
-		setLocalRoom(userInputRoom);
-		updateDbRoomData(userInputRoom);
+		const isValid = validateRoomName();
+
+		if (isValid) {
+			setLocalRoom(gameRoomName);
+			updateDbRoomData(gameRoomName);
+		}
 	}
 
 	const pickExistRoom = (roomName) => {
@@ -258,10 +263,10 @@ const RoomDialog = ({ className, closeRoomList, style, roomList }) => {
 							<form>
 								<Input
 									className="room_name"
-									value={userInputRoom}
+									value={gameRoomName}
 									onChange={(e) => {
 										setWarnMessage('');
-										setUserInputRoom(e.target.value)
+										setRoomName(e.target.value)
 									}}
 									type="text"
 									maxLength="8"
@@ -269,7 +274,7 @@ const RoomDialog = ({ className, closeRoomList, style, roomList }) => {
 								/>
 								<CreateButton
 									className='create_button'
-									inputLength={userInputRoom.length}
+									inputLength={gameRoomName.length}
 									onClick={e => createRoom(e)}
 								>建立</CreateButton>
 							</form>

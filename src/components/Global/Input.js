@@ -5,9 +5,10 @@ import { color } from "style/theme";
 const Input = ({ 
     className, 
     placeholder = '', 
-    onChange = () => { }, 
+    onChange = () => {}, 
+    onFocus = () => {},
     value, 
-    maxLength = '10' 
+    maxLength = '10',
 }) => {
     return (
         <input
@@ -15,6 +16,7 @@ const Input = ({
             maxLength={maxLength}
             placeholder={placeholder}
             onChange={onChange}
+            onFocus={onFocus}
             value={value}
             type="text" />
     )

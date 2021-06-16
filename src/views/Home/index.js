@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useTransition } from "react-spring";
-import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
+import { useRecoilValue, useResetRecoilState } from "recoil";
 import db from "database";
 
 import Logo from "components/Home/Logo";
@@ -9,6 +9,7 @@ import Input from "components/Global/Input";
 import Button from "components/Global/Button";
 import ThemeToggler from 'components/Global/ThemeToggler';
 
+import useUserName from "util/hook/useUserName";
 import { userNameState, userRoomState } from "store/user";
 import { themeState } from 'store/theme';
 import styled from "styled-components";
@@ -45,7 +46,6 @@ const NameForm = styled.form`
 	}
 
 	.name_space{
-		margin: 0 0 20px 0;
 		padding: 5px;
 		font-size: 22px;
 		line-height: 25px;
@@ -53,33 +53,54 @@ const NameForm = styled.form`
 		color: ${({theme}) => themeData[theme].name_fg };
 		border-bottom: 2px solid ${({theme}) => themeData[theme].border };
 	}
+
+	.warn_message {
+		margin-top: 10px;
+		color: ${({theme}) => themeData[theme].name_fg };
+		opacity: 0.6;
+		letter-spacing: 1px;
+	}
+
+	.enter_button {
+		margin-top: 20px;
+	}
 `;
 
 const NameFillIn = ({ openRoomList }) => {
-	const [userName, setUserName] = useRecoilState(userNameState);
+	const [
+        { userName, warnMessage },
+        { setUserName, validateUserName, setWarnMessage }
+    ] = useUserName();
+
 	const theme = useRecoilValue(themeState);
 	const handleButtonClick = (e) => {
 		e.preventDefault();
-		if (userName) openRoomList();
+		const isValid = validateUserName();
+
+		if(isValid) {
+			openRoomList();
+		}
 	};
 
 	return (
 		<NameForm theme={theme} id="name" className="user_input">
 			<p>請輸入名字</p>
 			<Input
+				onFocus={()=>setWarnMessage('')}
 				className="name_space"
 				maxLength="8"
 				onChange={(e) => setUserName(e.target.value)}
 				value={userName}
 				type="text"
 			/>
+			{warnMessage && <span className="warn_message">{warnMessage}</span>}
 			<Button
 				className="enter_button"
 				color={themeData[theme].button_color}
 				onClick={handleButtonClick}
 				type="submit"
 			>
-				{userName ? "加入遊戲" : "請至少輸入一個字"}
+				加入遊戲
 			</Button>
 		</NameForm>
 	);

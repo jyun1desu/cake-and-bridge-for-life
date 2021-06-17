@@ -152,7 +152,7 @@ const LoadingModal = styled.div`
 `
 
 const Loading = ({
-    style,
+    active,
     type = 'ready',
     text = '等待其他玩家開始',
     actionText,
@@ -166,6 +166,8 @@ const Loading = ({
     const dots = generateArray(12);
 
     useEffect(() => {
+        if(!active) return;
+
         if (!timeLeft) {
             action();
             return;
@@ -181,7 +183,7 @@ const Loading = ({
 
     return (
         <Modal 
-            style={style} 
+            active={active}
             className={classnames('loading-modal',{
                 'no-opacity': noOpacity,
             })}

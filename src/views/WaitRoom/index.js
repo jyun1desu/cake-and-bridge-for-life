@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import db from "database";
 import { useHistory } from "react-router-dom";
-import { useTransition } from "react-spring";
 import { color } from 'style/theme'
 import styled from 'styled-components';
 
@@ -153,12 +152,6 @@ const WaitRoom = () => {
         }
     }
 
-    const transitions = useTransition(isUserReady, {
-        from: { opacity: 0 },
-        enter: { opacity: 1 },
-        leave: { opacity: 0 }
-    });
-
     return (
         <Room
             theme={theme}>
@@ -170,10 +163,9 @@ const WaitRoom = () => {
                 onClick={() => setReady(true)}
                 className="start_game"
             />
-            {transitions(
-                (props, item) =>
-                    item && (<Loading cancelReady={() => setReady(false)} style={props} />)
-            )}
+            <Loading 
+                active={isUserReady} 
+                cancelReady={() => setReady(false)} />
         </Room>
     )
 }

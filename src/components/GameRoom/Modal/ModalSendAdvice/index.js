@@ -172,7 +172,7 @@ const ContactForm = styled.form`
     }
 `
 
-const ModalSendAdvice = () => {
+const ModalSendAdvice = ({active}) => {
   const [state, handleSubmit] = useForm("mnqlqyjv");
   const [inputContent, setInputContent] = useState('');
   const [theme] = useRecoilState(themeState);
@@ -190,6 +190,7 @@ const ModalSendAdvice = () => {
 
   return (
     <Modal
+      active={active}
       className="send_email_modal">
       <ContactForm 
         theme={theme}

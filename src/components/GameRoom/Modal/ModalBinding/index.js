@@ -72,9 +72,10 @@ const BindingBox = () => {
     )
 }
 
-const ModalBinding = () => {
+const ModalBinding = ({ active }) => {
     return (
         <Modal
+            active={active}
             className="binding_modal">
             <BindingBox />
         </Modal>

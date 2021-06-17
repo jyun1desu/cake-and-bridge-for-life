@@ -43,48 +43,55 @@ const ModalRoot = ({ initGameData }) => {
         roomRef.child('someoneLeaveGame').remove();
     }
 
-    const refreshGame = async() => {
+    const refreshGame = async () => {
         await initGameData();
         roomRef.child('restart').remove();
     }
 
-    const closeModal = () => setModalType(null);
+    const closeModal = () => setModalType('');
 
     return (
         <Root className="modal_root">
-            { !trump && isOKtoPlay && <ModalBinding /> }
-            { !isOKtoPlay && <ModalGiveUp />}
-            { modalType === 'result' && <ModalResult openLoadingWindow={() => toggleLoading(true)} winTeam={isGotWinner} />}
-            { modalType === 'advice' && <ModalSendAdvice closeModal={closeModal} />}
-            { modalType === 'cofirm-leave' && <ModalConfirmLeave closeModal={closeModal} />}
-            { modalType === 'countdown-leave' && (
-                <Loading 
-                    type={modalType} 
-                    countdown={3} 
-                    action={backToWaitRoom} 
-                    actionText="回到等待室"
-                    text="有人離開嚕！"
-                />
-            )}
-            { modalType === 'countdown-change-mate' && (
-                <Loading 
-                    type={modalType} 
-                    countdown={3} 
-                    action={backToWaitRoom}
-                    actionText="回到等待室"
-                    text="有人要換隊友唷！"
-                />
-            )}
-            { modalType === 'countdown-restart' && (
-                <Loading 
-                    type={modalType}
-                    countdown={3}
-                    action={refreshGame}
-                    actionText="重新牌局"
-                    text="倒牌啦！"
-                    noOpacity
-                />)}
-            {isLoading && <Loading cancelReady={() => toggleLoading(false)} />}
+            <ModalBinding active={!trump && isOKtoPlay} />
+            <ModalGiveUp active={!isOKtoPlay} />
+            <ModalResult
+                active={modalType === 'result'}
+                openLoadingWindow={() => toggleLoading(true)} winTeam={isGotWinner} />
+            <ModalSendAdvice 
+                active={modalType === 'advice'} 
+                closeModal={closeModal} />
+            <ModalConfirmLeave 
+                active={modalType === 'cofirm-leave'} 
+                closeModal={closeModal} />
+            <Loading
+                active={modalType === 'countdown-leave'}
+                type={modalType}
+                countdown={3}
+                action={backToWaitRoom}
+                actionText="回到等待室"
+                text="有人離開嚕！"
+            />
+            <Loading
+                active={modalType === 'countdown-change-mate'}
+                type={modalType}
+                countdown={3}
+                action={backToWaitRoom}
+                actionText="回到等待室"
+                text="有人要換隊友唷！"
+            />
+            <Loading
+                active={modalType === 'countdown-restart'}
+                type={modalType}
+                countdown={3}
+                action={refreshGame}
+                actionText="重新牌局"
+                text="倒牌啦！"
+                noOpacity
+            />
+            <Loading
+                active={isLoading}
+                cancelReady={() => toggleLoading(false)}
+            />
         </Root>
     )
 }

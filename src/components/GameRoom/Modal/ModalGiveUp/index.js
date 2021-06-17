@@ -107,9 +107,10 @@ const Content = () => {
     )
 }
 
-const ModalGiveUp = () => {
+const ModalGiveUp = ({active}) => {
     return (
         <Modal
+            active={active}
             className="give_up_modal">
             <Content />
         </Modal >

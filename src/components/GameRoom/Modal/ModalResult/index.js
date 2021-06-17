@@ -347,11 +347,12 @@ const Content = ({ winTeam, isUserWin, openLoadingWindow }) => {
     )
 };
 
-const ModalResult = ({ winTeam, openLoadingWindow }) => {
+const ModalResult = ({ active, winTeam, openLoadingWindow }) => {
     const userTeam = useRecoilValue(userTeamState);
     const isUserWin = winTeam === `team${userTeam}`;
     return (
         <Modal
+            active={active}
             className="result_modal">
             <Content openLoadingWindow={openLoadingWindow} winTeam={winTeam} isUserWin={isUserWin} />
             {isUserWin && <Animations />}

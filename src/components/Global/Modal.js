@@ -1,9 +1,14 @@
 import React from "react";
-import { animated } from "react-spring";
+import { useTransition, animated } from "react-spring";
 import { useRecoilValue } from 'recoil';
 import { color } from 'style/theme';
 import { themeState } from 'store/theme';
 import styled from 'styled-components';
+
+const themeData = {
+    light: { bg: '#f3e9e9' },
+    dark: { bg: color.$dark_bg_color },
+}
 
 const StyledModalPage = styled(animated.div)`
     background-color: rgba(0, 0, 0, 0.25);
@@ -18,7 +23,7 @@ const StyledModalPage = styled(animated.div)`
     z-index: 20;
 
     &.no-opacity {
-        background-color: ${({theme}) => themeData[theme].bg};
+        background-color: ${({ theme }) => themeData[theme].bg};
     }
 
 
@@ -31,23 +36,29 @@ const StyledModalPage = styled(animated.div)`
     }
 `
 
-const ModalPage = ({children, className, onDeactive, style}) => {
+const ModalPage = ({ active, children, className, onDeactive }) => {
     const theme = useRecoilValue(themeState);
-    return (
-        <StyledModalPage
-            style={style}
-            onClick={onDeactive}
-            theme={theme}
-            className={className}
-        >
-            {children}
-        </StyledModalPage>
-    )
-}
 
-const themeData = {
-    light: { bg: '#f3e9e9'},
-    dark: { bg: color.$dark_bg_color},
+    const transitions = useTransition(active, {
+        from: { opacity: 0, transform: "translateY(-15px)" },
+        enter: { opacity: 1, transform: "translateY(0px)" },
+        leave: { opacity: 0, transform: "translateY(-15px)" }
+    });
+
+    return (
+        <>
+            {transitions((props, item) => item && (
+                <StyledModalPage
+                    style={props}
+                    onClick={onDeactive}
+                    theme={theme}
+                    className={className}
+                >
+                    {children}
+                </StyledModalPage>))
+            }
+        </>
+    )
 }
 
 export default ModalPage

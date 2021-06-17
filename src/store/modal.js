@@ -4,5 +4,5 @@ import {
 
 export const modalState = atom({
     key: 'modalState',
-    default: null,
+    default: '',
 });

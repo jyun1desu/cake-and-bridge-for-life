@@ -105,9 +105,10 @@ const Content = () => {
     )
 }
 
-const ModalConfirmLeave = () => {
+const ModalConfirmLeave = ({ active }) => {
     return (
         <Modal
+            active={active}
             className="confirm_leave_modal">
             <Content />
         </Modal >

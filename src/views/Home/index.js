@@ -117,7 +117,7 @@ const HomePage = styled.div`
 const Home = () => {
 	const [showRoomDialog, toggleRoomDialog] = useState(false);
 	const [roomList, setRoomList] = useState([]);
-	const [,{ initGameData }] = useInitData();
+	const [, { initGameData }] = useInitData();
 	const theme = useRecoilValue(themeState);
 
 	React.useEffect(() => {
@@ -126,12 +126,6 @@ const Home = () => {
 		return () => removeListeners();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
-
-	const transitions = useTransition(showRoomDialog, {
-		from: { opacity: 0, transform: "translateY(-15px)" },
-		enter: { opacity: 1, transform: "translateY(0px)" },
-		leave: { opacity: 0, transform: "translateY(-15px)" }
-	});
 
 	const subscribeRooms = () => {
 		const Firebase = db.database().ref("/");
@@ -160,17 +154,12 @@ const Home = () => {
 			<ThemeToggler className="on_page" />
 			<Logo className="logo" />
 			<NameFillIn openRoomList={() => toggleRoomDialog(true)} />
-			{transitions(
-				(props, item) =>
-					item && (
-						<RoomDialog
-							style={props}
-							roomList={roomList}
-							className="room_list_dialog"
-							closeRoomList={() => toggleRoomDialog(false)}
-						/>
-					)
-			)}
+			<RoomDialog
+				active={showRoomDialog}
+				roomList={roomList}
+				className="room_list_dialog"
+				closeRoomList={() => toggleRoomDialog(false)}
+			/>
 		</HomePage>
 	);
 };

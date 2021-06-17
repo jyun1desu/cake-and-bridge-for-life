@@ -189,7 +189,7 @@ const RoomButton = ({ onClick, className, roomName }) => {
 		</Button>)
 }
 
-const RoomDialog = ({ className, closeRoomList, style, roomList }) => {
+const RoomDialog = ({ active, className, closeRoomList, roomList }) => {
 	const history = useHistory();
 	const [theme] = useRecoilState(themeState);
 	const [
@@ -227,7 +227,7 @@ const RoomDialog = ({ className, closeRoomList, style, roomList }) => {
 
 	return (
 		<Modal
-			style={style}
+			active={active}
 			onDeactive={(e) => {
 				closeRoomList(e);
 			}}

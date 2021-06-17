@@ -147,16 +147,15 @@ const Content = styled.div`
 	}
 `
 
-const CreateButton = ({onClick, className, inputLength}) => {
+const CreateButton = ({onClick, className, isValid}) => {
 	const [theme] = useRecoilState(themeState);
 	const getButtonColor = () =>  {
-		const isVaild = inputLength > 2
 		switch(theme){
 			case 'light':
 			default:
-				return isVaild ? color.$highlight_color:color.$unable_color;
+				return isValid ? color.$highlight_color:color.$unable_color;
 			case 'dark':
-				return isVaild ? color.$fluorescent_pink_color:color.$dark_dim_border_color;
+				return isValid ? color.$fluorescent_pink_color:color.$dark_dim_border_color;
 		}
 	};
 	return (
@@ -269,12 +268,12 @@ const RoomDialog = ({ active, className, closeRoomList, roomList }) => {
 										setRoomName(e.target.value)
 									}}
 									type="text"
-									maxLength="8"
-									placeholder="請輸入3-8字元"
+									maxLength="20"
+									placeholder="請輸入3-20字元"
 								/>
 								<CreateButton
 									className='create_button'
-									inputLength={gameRoomName.length}
+									isValid={gameRoomName.length > 2}
 									onClick={e => createRoom(e)}
 								>建立</CreateButton>
 							</form>

@@ -204,23 +204,29 @@ const RoomDialog = ({ active, className, closeRoomList, roomList }) => {
 		const isValid = validateRoomName();
 
 		if (isValid) {
-			setLocalRoom(gameRoomName);
-			updateDbRoomData(gameRoomName);
+			const roomID = uuidv4();
+			setLocalRoom(roomID);
+			updateDbRoomData(roomID, gameRoomName);
 		}
 	}
 
-	const pickExistRoom = (roomName) => {
-		setLocalRoom(roomName);
-		updateDbRoomData(roomName);
+	const pickExistRoom = roomID => {
+		setLocalRoom(roomID);
+		updateDbRoomData(roomID);
 	}
 
-	const updateDbRoomData = async (roomName) => {
-		const roomRef = db.database().ref(`/${roomName}`);
+	const updateDbRoomData = async (roomID, roomName) => {
+		const roomRef = db.database().ref(`/${roomID}`);
 		const userID = uuidv4();
 		const timestamp = Date.parse(new Date());
 		setUserID(userID);
-		await roomRef.child('playersInfo').child(userID).update({ timestamp, userID, player: userName });
-		const toPath = `/${roomName}/waiting_room/${userID}`
+		await roomRef.child('playersInfo')
+			.child(userID)
+			.update({ timestamp, userID, player: userName });
+		if(roomName) {
+			await roomRef.update({ timestamp, roomName });
+		}
+		const toPath = `/${roomID}/waiting_room/${userID}`
 		history.push(toPath);
 	}
 
@@ -248,10 +254,10 @@ const RoomDialog = ({ active, className, closeRoomList, roomList }) => {
 								{roomList.map(room => {
 									return (
 										<RoomButton
-											key={room}
-											onClick={() => pickExistRoom(room)}
+											key={room.roomID}
+											onClick={() => pickExistRoom(room.roomID)}
 											className="room"
-											roomName={room} />)
+											roomName={room.roomName} />)
 								})}
 							</div>
 						}

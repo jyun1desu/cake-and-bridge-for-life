@@ -1,10 +1,8 @@
 import { useState } from 'react';
-import { useRecoilState } from "recoil";
-import { userRoomState } from "store/user";
 
 
 const useGameRoomName = () => {
-    const [gameRoomName, setRoomName] = useRecoilState(userRoomState);
+    const [gameRoomName, setRoomName] = useState('');
     const [warnMessage, setWarnMessage] = useState('');
 
     const validateRoomName = () => {

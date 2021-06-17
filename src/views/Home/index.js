@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useTransition } from "react-spring";
 import { useRecoilValue } from "recoil";
 import db from "database";
 
@@ -132,12 +131,18 @@ const Home = () => {
 		Firebase.on("value", (data) => {
 			const roomsData = data.val();
 			if (roomsData) {
-				let availibleRooms = [];
-				for (const [key, value] of Object.entries(roomsData)) {
-					const players = Object.values(value.playersInfo)
-					if (players.length < 4) availibleRooms.push(key);
-				}
-				setRoomList(availibleRooms);
+				const rooms = Object.entries(roomsData)
+					.map(room => ({
+						roomID: room[0],
+						...room[1]
+					}))
+					.filter(room => {
+						return Object.values(room.playersInfo).length < 4;
+					})
+					.sort((a, b) => {
+						return b.timestamp - a.timestamp;
+					})
+				setRoomList(rooms);
 			} else {
 				setRoomList([]);
 			}

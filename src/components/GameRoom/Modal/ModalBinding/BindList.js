@@ -135,7 +135,6 @@ const BindList = ({ theme }) => {
     },[]);
 
     useEffect(() => {
-        console.log(trump);
         if (isUserTurn && isUserPass && !trump) {
             roomRef.child('currentPlayer').set(nextPlayer);
         }

@@ -177,7 +177,7 @@ const PlayerList = ({className}) => {
         <div className={className}>
                 {playerList.map((player, index) => (
                     <PlayInfo 
-                        key={player}
+                        key={player+index}
                         name={player}
                         team={'team'+ (index%2)+1 }
                         calledList={calledList[player] || []}/>

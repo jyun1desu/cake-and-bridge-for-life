@@ -253,7 +253,7 @@ const ResultBox = styled.div`
     }
 `
 
-const Content = ({ winTeam, isUserWin, openLoadingWindow }) => {
+const Content = ({ winTeam, isUserWin, openLoadingWindow, openConfirmLeaveModal }) => {
     const theme = useRecoilValue(themeState);
     const userID = useRecoilValue(userIDState);
     const userName = useRecoilValue(userNameState);
@@ -303,12 +303,6 @@ const Content = ({ winTeam, isUserWin, openLoadingWindow }) => {
         openLoadingWindow();
     }
 
-    const leaveGame = async() => {
-        await roomRef.child('playersInfo').child(userID).remove();
-        await roomRef.child('someoneLeaveGame').set(true);
-        history.push('/');
-    }
-
     return (
         <ResultBox
             theme={theme}
@@ -339,7 +333,7 @@ const Content = ({ winTeam, isUserWin, openLoadingWindow }) => {
                         onClick={readyToNextRound}
                         color={buttonColor[theme].orange_button}>再玩一局</Button>
                     <Button
-                        onClick={leaveGame}
+                        onClick={openConfirmLeaveModal}
                         color={buttonColor[theme].green_button}>翻桌不玩</Button>
                 </div>
             </div >
@@ -347,14 +341,19 @@ const Content = ({ winTeam, isUserWin, openLoadingWindow }) => {
     )
 };
 
-const ModalResult = ({ active, winTeam, openLoadingWindow }) => {
+const ModalResult = ({ active, winTeam, openLoadingWindow, openConfirmLeaveModal }) => {
     const userTeam = useRecoilValue(userTeamState);
     const isUserWin = winTeam === `team${userTeam}`;
     return (
         <Modal
             active={active}
             className="result_modal">
-            <Content openLoadingWindow={openLoadingWindow} winTeam={winTeam} isUserWin={isUserWin} />
+            <Content 
+                openLoadingWindow={openLoadingWindow} 
+                winTeam={winTeam} 
+                isUserWin={isUserWin}
+                openConfirmLeaveModal={openConfirmLeaveModal} 
+            />
             {isUserWin && <Animations />}
         </Modal >
     );

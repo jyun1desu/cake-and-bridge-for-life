@@ -1,6 +1,8 @@
 import React from 'react';
-import { useRecoilValue, useSetRecoilState} from 'recoil';
-import { modalState } from 'store/modal';
+import db from "database";
+import { useHistory } from "react-router-dom";
+import { useRecoilValue} from 'recoil';
+import { userRoomState, userIDState } from 'store/user';
 import { themeState } from 'store/theme';
 import { color } from 'style/theme';
 import styled from 'styled-components';
@@ -88,9 +90,19 @@ const AskBox = styled.div`
     }
 `
 
-const Content = () => {
+const Content = ({ closeModal }) => {
+    const history = useHistory();
     const theme = useRecoilValue(themeState);
-    const setModalType = useSetRecoilState(modalState);
+    const userID = useRecoilValue(userIDState);
+    const roomName = useRecoilValue(userRoomState);
+    const roomRef = db.database().ref(`/${roomName}`);
+
+    const leaveGame = async() => {
+        await roomRef.child('playersInfo').child(userID).remove();
+        await roomRef.child('someoneLeaveGame').set(true);
+        history.push('/');
+    }
+
     return (
         <AskBox theme={theme}>
             <div className="content">
@@ -98,19 +110,19 @@ const Content = () => {
                 <p>確定要離開嗎？</p>
             </div >
             <div className="button_area">
-                <button>離開</button>
-                <button onClick={()=>setModalType(null)}>繼續玩</button>
+                <button onClick={leaveGame}>離開</button>
+                <button onClick={closeModal}>繼續玩</button>
             </div>
         </AskBox >
     )
 }
 
-const ModalConfirmLeave = ({ active }) => {
+const ModalConfirmLeave = ({ active, closeModal }) => {
     return (
         <Modal
             active={active}
             className="confirm_leave_modal">
-            <Content />
+            <Content closeModal={closeModal} />
         </Modal >
     );
 }

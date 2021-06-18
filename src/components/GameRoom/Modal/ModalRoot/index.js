@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useHistory } from "react-router-dom";
 import db from "database";
 import ModalBinding from 'components/GameRoom/Modal/ModalBinding';
-import ModalSendAdvice from 'components/GameRoom/Modal/ModalSendAdvice';
 import ModalGiveUp from 'components/GameRoom/Modal/ModalGiveUp';
 import ModalConfirmLeave from 'components/GameRoom/Modal/ModalConfirmLeave';
 import ModalResult from 'components/GameRoom/Modal/ModalResult';
@@ -12,7 +11,7 @@ import { trumpState, isGameEndState } from 'store/game';
 import { userRoomState, userIDState } from 'store/user';
 import { modalState } from 'store/modal';
 import { OKtoPlay } from 'store/deck';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 
 const Root = styled.div`
 `
@@ -26,19 +25,13 @@ const ModalRoot = ({ initGameData }) => {
     const isOKtoPlay = useRecoilValue(OKtoPlay);
     const isGotWinner = useRecoilValue(isGameEndState);
     const [modalType, setModalType] = useRecoilState(modalState);
+    const initModalType = useResetRecoilState(modalState);
     const roomRef = db.database().ref(`/${roomName}`);
-
-    useEffect(() => {
-        if (isGotWinner) {
-            setModalType('result');
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isGotWinner])
 
     const backToWaitRoom = () => {
         const toPath = `/${roomName}/waiting_room/${userID}`;
         history.push(toPath);
-        setModalType(null);
+        initModalType();
         roomRef.child('changeMate').remove();
         roomRef.child('someoneLeaveGame').remove();
     }
@@ -48,18 +41,16 @@ const ModalRoot = ({ initGameData }) => {
         roomRef.child('restart').remove();
     }
 
-    const closeModal = () => setModalType('');
+    const closeModal = () => initModalType();
 
     return (
         <Root className="modal_root">
             <ModalBinding active={!trump && isOKtoPlay} />
             <ModalGiveUp active={!isOKtoPlay} />
             <ModalResult
-                active={modalType === 'result'}
+                active={isGotWinner}
+                openConfirmLeaveModal={()=>setModalType('cofirm-leave')}
                 openLoadingWindow={() => toggleLoading(true)} winTeam={isGotWinner} />
-            <ModalSendAdvice 
-                active={modalType === 'advice'} 
-                closeModal={closeModal} />
             <ModalConfirmLeave 
                 active={modalType === 'cofirm-leave'} 
                 closeModal={closeModal} />

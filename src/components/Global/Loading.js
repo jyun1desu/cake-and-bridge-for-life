@@ -179,7 +179,7 @@ const Loading = ({
 
         return () => clearInterval(countdownInterval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [timeLeft])
+    }, [timeLeft, active])
 
     return (
         <Modal 

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import db from "database";
 import classnames from 'classnames';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { color } from 'style/theme';
 import { suitInPoker } from 'util/suit';
@@ -111,7 +111,7 @@ const BindList = ({ theme }) => {
     const [isUserPass, setUserPass] = useRecoilState(userPassState);
     const [nowBind, setNowBind] = useRecoilState(nowBindState);
     const playerList = useRecoilValue(OrderedStartFromTeamOne);
-    const setTrump = useSetRecoilState(trumpState);
+    const [trump, setTrump] = useRecoilState(trumpState);
     const { nextPlayer } = useRecoilValue(relationWithUser);
     const availibleTricks = useRecoilValue(availibleTricksState);
     const isUserTurn = useRecoilValue(isUserTurnState);
@@ -135,10 +135,11 @@ const BindList = ({ theme }) => {
     },[]);
 
     useEffect(() => {
-        if (isUserTurn && isUserPass) {
+        console.log(trump);
+        if (isUserTurn && isUserPass && !trump) {
             roomRef.child('currentPlayer').set(nextPlayer);
         }
-    }, [isUserTurn, isUserPass, nextPlayer, roomRef]);
+    }, [isUserTurn, isUserPass, nextPlayer, roomRef, trump]);
 
     const buttonMessage = useMemo(() => {
         const noBind = nowBind.number === 0;

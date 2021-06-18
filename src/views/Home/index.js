@@ -40,7 +40,7 @@ const NameForm = styled.form`
 		font-size: 22px;
 		letter-spacing: 3px;
 		margin: 0 0 25px 0;
-		transition: .5s all;
+		transition: .3s all;
 		color: ${({ theme }) => themeData[theme].fg};
 	}
 
@@ -109,7 +109,7 @@ const HomePage = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
-	transition: .5s background-color;
+	transition: .3s background-color;
     background-color: ${({ theme }) => themeData[theme].bg};
 `;
 

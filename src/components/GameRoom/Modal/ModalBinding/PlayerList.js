@@ -76,7 +76,7 @@ const Player = styled.div`
         padding: 6px;
         box-sizing: border-box;
         letter-spacing: 1px;
-        transition: 0.5s all;
+        transition: 0.3s all;
         border-bottom: ${({theme}) => themeData[theme].border };
 
         &  > p {

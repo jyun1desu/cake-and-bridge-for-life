@@ -17,7 +17,7 @@ const Box = styled.div`
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    transition: 0.5s all;
+    transition: 0.3s all;
     background-color: ${({ theme }) => themeData[theme].bg};
     border-width: ${({ theme }) => theme === 'light' ? 0 : '1px'};
     border-style: solid;
@@ -29,7 +29,7 @@ const Box = styled.div`
         text-align: center;
         letter-spacing: 1px;
         margin-bottom: 5px;
-        transition: 0.5s all;
+        transition: 0.3s all;
         border-bottom: 1px solid ${({ theme }) => themeData[theme].border};
         background-color: ${({ theme }) => themeData[theme].status_unable_bg};
         color: ${({ theme }) => themeData[theme].status_unable_fg};
@@ -41,7 +41,7 @@ const Box = styled.div`
         font-size: 16px;
         line-height: 16px;
         letter-spacing: 2px;
-        transition: 0.5s all;
+        transition: 0.3s all;
         border-top: 1px solid ${({ theme }) => themeData[theme].border};
         background-color: ${({ theme }) => themeData[theme].call_unable_bg};
         color: ${({ theme }) => themeData[theme].call_unable_fg};
@@ -69,7 +69,7 @@ const Hint = styled.p`
     margin-top: 4px;
     letter-spacing: 1px;
     font-size: 12px;
-    transition: 0.5s all;
+    transition: 0.3s all;
     color: ${({ theme }) => themeData[theme].hint};
 `
 

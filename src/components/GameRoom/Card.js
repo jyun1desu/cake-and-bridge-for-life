@@ -32,7 +32,7 @@ const PokerCard = styled.div`
     border-radius: 3px;
     box-sizing: border-box;
     padding: 2px;
-    transition: all .5s;
+    transition: all .3s;
     border: 1px solid ${({ theme }) => themeData[theme].border};
     background-color: ${({ theme }) => themeData[theme].front_bg};
 
@@ -49,7 +49,7 @@ const PokerCard = styled.div`
         .suit {
             font-size: 12px;
             text-align: center;
-            transition: all .5s;
+            transition: all .3s;
             color: ${({suitColor, theme}) => themeData[theme].suit[suitColor]};
 
             &.suit {
@@ -61,7 +61,7 @@ const PokerCard = styled.div`
     .pattern {
         flex: 1 1 100%;
         margin: 10px 4px;
-        transition: all .5s;
+        transition: all .3s;
         background-color: ${({ theme }) => themeData[theme].pattern};
     }
 

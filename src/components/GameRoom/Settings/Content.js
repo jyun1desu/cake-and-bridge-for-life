@@ -16,7 +16,7 @@ const Item = styled.div`
     padding: 6px 0;
     
     &:not(:last-child) {
-        transition: 0.5s border-bottom; 
+        transition: 0.3s border-bottom; 
         border-bottom: 1px solid ${({ theme }) => themeData[theme].b_bottom};
     }
 

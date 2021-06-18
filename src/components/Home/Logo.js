@@ -27,7 +27,7 @@ const StyledLogo = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: .5s all;
+    transition: .3s all;
     background-color: ${({theme}) => themeData[theme].bg };
 
     .image {

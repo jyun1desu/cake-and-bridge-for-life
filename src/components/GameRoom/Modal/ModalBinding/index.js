@@ -18,7 +18,7 @@ const Box = styled.div`
     justify-content: stretch;
     border-radius: 6px;
     overflow: hidden;
-    transition: 0.5s all;
+    transition: 0.3s all;
     border: ${({theme}) => themeData[theme].border };
 
     .title {
@@ -28,14 +28,14 @@ const Box = styled.div`
         font-size: 18px;
         letter-spacing: 2px;
         color: white;
-        transition: 0.5s all;
+        transition: 0.3s all;
         border-bottom: ${({theme}) => themeData[theme].border };
         background-color: ${({theme}) => themeData[theme].title_bg };
     }
 
     .content {
         padding: 10px;
-        transition: 0.5s all;
+        transition: 0.3s all;
         background-color: ${({theme}) => themeData[theme].content_bg };
 
         .player_list {

@@ -31,7 +31,7 @@ const Room = styled.div`
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        transition: .5s background-color;
+        transition: .3s background-color;
         background-color: ${({ theme }) => themeData[theme].bg};
 
         .start_game {

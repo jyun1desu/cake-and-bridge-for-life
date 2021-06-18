@@ -16,7 +16,7 @@ const List = styled.div`
         justify-content: space-between;
         padding: 6px 0;
         & + .trick {
-            transition: 0.5s all;
+            transition: 0.3s all;
             border-top: 1px solid ${({ theme }) => themeData[theme].b_bottom};
         }
 

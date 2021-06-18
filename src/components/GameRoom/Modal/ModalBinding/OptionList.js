@@ -23,14 +23,14 @@ const OptionRow = styled.div`
     padding: 10px;
 
     &:not(:last-child) {
-        transition: 0.5s all;
+        transition: 0.3s all;
         border-bottom: 1px solid ${({theme}) => themeData[theme].border };
     }
 
     .number {
         flex: 0 1 25%;
         margin-right: 15px;
-        transition: 0.5s all;
+        transition: 0.3s all;
         color: ${({theme}) => themeData[theme].number_c };
     }
     .suits {

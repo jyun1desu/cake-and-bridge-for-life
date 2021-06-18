@@ -60,7 +60,7 @@ const LoadingModal = styled.div`
             width: 6px;
             height: 6px;
             border-radius: 50%;
-            animation: lds-default 1.5s linear infinite;
+            animation: lds-default 1.3s linear infinite;
             background: ${({ theme }) => themeData[theme].dot};
 
             &:nth-child(1) {
@@ -76,7 +76,7 @@ const LoadingModal = styled.div`
             }
 
             &:nth-child(3) {
-                animation-delay: -0.2s;
+                animation-delay: -0.3s;
                 top: 11px;
                 left: 52px;
             }
@@ -94,7 +94,7 @@ const LoadingModal = styled.div`
             }
 
             &:nth-child(6) {
-                animation-delay: -0.5s;
+                animation-delay: -0.3s;
                 top: 22px;
                 left: 11px;
             }

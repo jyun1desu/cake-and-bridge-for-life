@@ -13,14 +13,14 @@ const Toggler = styled.div`
     height: 17px;
     padding: 2px;
     border-radius: 40px;
-    transition: .3s all;
+    transition: 0.3s all;
 
     .toggle_button {
         background-color: white;
         width: 17px;
         height: 17px;
         border-radius: 100%;
-        transition: .3s all;
+        transition: 0.3s all;
     }
 
     &.on_page {

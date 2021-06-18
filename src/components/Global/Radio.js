@@ -25,7 +25,7 @@ const StyledRadio = styled.span`
     width: ${(props) => (`${props.size}px`)};
     height: ${(props) => (`${props.size}px`)};
     margin-right: ${(props) => (`${props.marginRight}px`)};
-    transition: 0.5s all;
+    transition: 0.3s all;
     background-color: ${({theme}) => themeData[theme].bg };
     border: ${({border}) => border};
 

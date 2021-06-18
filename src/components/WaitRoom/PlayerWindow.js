@@ -56,7 +56,7 @@ const Window = styled.div`
         letter-spacing: 1px;
         justify-content: flex-end;
         align-items: stretch;
-        transition: all 0.2s;
+        transition: all 0.3s;
         position: relative;
         padding: 15px;
         box-sizing: border-box;
@@ -100,7 +100,7 @@ const Window = styled.div`
             padding: 7px 10px;
             margin: 0;
             position: relative;
-            transition: 0.5s all;
+            transition: 0.3s all;
             background-color: ${({theme}) => themeData[theme].name_bg };
         }
     }    

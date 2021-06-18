@@ -7,7 +7,7 @@ const Box = styled.div`
     display: flex;
     border-radius: 5px;
     overflow: hidden;
-    transition: .5s all;
+    transition: .3s all;
     border: ${({ theme }) => themeData[theme].border}; 
 
     .title {
@@ -18,7 +18,7 @@ const Box = styled.div`
         font-size: 14px;
         letter-spacing: 2px;
         writing-mode: vertical-lr;
-        transition: .5s all;
+        transition: .3s all;
         color: ${({ theme }) => themeData[theme].fc};
         border-right: ${({ theme }) => themeData[theme].border};
         background-color: ${({ theme }) => themeData[theme].title_bg};
@@ -31,7 +31,7 @@ const Box = styled.div`
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        transition: .5s all;
+        transition: .3s all;
         background-color: ${({ theme }) => themeData[theme].bg};
     }
 `

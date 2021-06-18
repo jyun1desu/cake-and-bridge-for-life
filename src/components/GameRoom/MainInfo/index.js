@@ -30,7 +30,7 @@ const Board = styled.div`
 const Point = styled.div`
         &.team1 {
             .team__name {
-                transition: .5s all;
+                transition: .3s all;
                 background-color: ${({ theme }) => themeData[theme].team1color};
             }
         }
@@ -44,7 +44,7 @@ const Point = styled.div`
             margin: 5px 0;
             }
             .team__name {
-                transition: .5s all;
+                transition: .3s all;
                 background-color: ${({ theme }) => themeData[theme].team2color};
             }
         }
@@ -62,7 +62,7 @@ const Point = styled.div`
         .now_win {
             font-size: 14px;
             margin-right: 3px;
-            transition: .5s all;
+            transition: .3s all;
             color: ${({theme}) => themeData[theme].fc};
         }
         .should_win {
@@ -74,7 +74,7 @@ const Point = styled.div`
 
 const Suit = styled.span`
     font-size: 20px;
-    transition: .5s all;
+    transition: .3s all;
     color: ${({suitColor, theme}) => themeData[theme].suit[suitColor]};
 `
 

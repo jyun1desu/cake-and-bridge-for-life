@@ -53,7 +53,7 @@ const Tag = styled.div`
         background-color: white;
         overflow: hidden;
         padding-right: 10px;
-        transition: .5s all;
+        transition: .3s all;
         border-style: solid;
         border-width: ${({ theme }) => themeData[theme].bw};
         border-color: ${({ theme, team }) => (theme === 'light' ? 'transparent' : themeData[theme].team[team])};
@@ -62,7 +62,7 @@ const Tag = styled.div`
 
         .team {
             padding: 5px 10px;
-            transition: .5s all;
+            transition: .3s all;
             background-color: ${({ theme, team }) => themeData[theme].team[team]};
         }
 

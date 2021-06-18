@@ -16,7 +16,7 @@ const Icon = styled.div`
         display: block;
         width: 13px;
         position: absolute;
-        transition: 0.4s all, 0.5s border-top;
+        transition: 0.4s all, 0.3s border-top;
         transform-origin: center;
         border-top: 1px solid ${({ theme }) => themeData[theme].line};
 

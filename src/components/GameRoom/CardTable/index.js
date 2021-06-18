@@ -11,7 +11,7 @@ const Table = styled.div`
     height: 60vw;
     border-radius: 10px;
     position: relative;
-    transition: all .5s;
+    transition: all .3s;
     border: 1px solid ${({theme}) => themeData[theme].border_color };
     background-color: ${({theme}) => themeData[theme].bg };
 `

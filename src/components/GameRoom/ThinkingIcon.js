@@ -58,7 +58,7 @@ const Icon = styled.div`
             }
 
             &:nth-child(3) {
-                animation-delay: 0.5s;
+                animation-delay: 0.3s;
             }
         }
     }

@@ -36,7 +36,7 @@ const AskBox = styled.div`
     justify-content: center;
     border-radius: 5px;
     overflow: hidden;
-    transition: .5s all;
+    transition: .3s all;
     background-color: ${({theme}) => themeData[theme].bg };
     border: ${({theme}) => themeData[theme].border };
 
@@ -53,7 +53,7 @@ const AskBox = styled.div`
 
         p {
             letter-spacing: 1px;
-            transition: .5s all;
+            transition: .3s all;
             color: ${({theme}) => themeData[theme].fg };
         }
     }
@@ -65,7 +65,7 @@ const AskBox = styled.div`
             font-size: 15px;
             letter-spacing: 2px;
             flex: 1 1 50%;
-            transition: .5s all;
+            transition: .3s all;
 
             &:first-child {
                 background-color: ${({theme}) => themeData[theme].yes_button_bg };

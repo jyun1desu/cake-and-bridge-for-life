@@ -24,7 +24,7 @@ const SideNav = styled.div`
     position: absolute;
     left: 100%;
     height: ${({ height }) => height};
-    transition: .5s all ease-in-out;
+    transition: .3s all ease-in-out;
 
     &.won_tricks {
         bottom: 7vw;
@@ -54,7 +54,7 @@ const SideNav = styled.div`
         border-bottom-left-radius: 6px;
         border-top-left-radius: 6px;
         overflow-y: scroll;
-        transition:  0.5s all;
+        transition:  0.3s all;
         color: ${({ theme }) => themeData[theme].fg};
         border: 1px solid ${({ theme }) => themeData[theme].border};
         border-right: none;

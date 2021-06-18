@@ -127,7 +127,7 @@ const ContactForm = styled.form`
     border-radius: 5px;
     flex-direction: column;
     z-index: 40;
-    transition: .5s all;
+    transition: .3s all;
     background-color: ${({theme}) => themeData[theme].bg };
     border: ${({theme}) => themeData[theme].border };
 
@@ -136,14 +136,14 @@ const ContactForm = styled.form`
         padding-bottom: 10px;
         letter-spacing: 1px;
         &.title {
-            transition: .5s all;
+            transition: .3s all;
             color: ${({theme}) => themeData[theme].title_fg };
             border-bottom: 1px solid ${color.$under_line_color};
         }
         &.success{
             font-size: 18px;
             letter-spacing: 2px;
-            transition: .5s all;
+            transition: .3s all;
             color: ${({theme}) => themeData[theme].title_fg };
         }
     }

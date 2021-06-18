@@ -5,10 +5,10 @@ import styled from 'styled-components';
 import { color } from "style/theme";
 import { generateNewDeck } from 'util/deck';
 import useInitData from "util/hook/useInitData";
-import { userIndexState, userRoomState } from 'store/user';
+import { userIndexState, userRoomState, userIDState } from 'store/user';
 import { modalState } from 'store/modal';
 import { userDeckState, otherPlayerDeckState } from 'store/deck';
-import { themeState  } from 'store/theme';
+import { themeState } from 'store/theme';
 import { relationWithUser } from 'store/players';
 import { currentPlayerName, thisRoundSuitState } from 'store/game';
 import ModalRoot from 'components/GameRoom/Modal/ModalRoot';
@@ -24,18 +24,19 @@ const Room = styled.div`
         justify-content: center;
 
         transition: .3s background-color;
-        background-color: ${({theme}) => themeData[theme].bg };
+        background-color: ${({ theme }) => themeData[theme].bg};
 `
 
 const themeData = {
-    light: { bg: '#f3e9e9'},
-    dark: { bg: color.$dark_bg_color},
+    light: { bg: '#f3e9e9' },
+    dark: { bg: color.$dark_bg_color },
 }
 
 const GameRoom = () => {
     const [theme] = useRecoilState(themeState);
-    const [,{ initGameRoomData }] = useInitData();
+    const [, { initGameRoomData }] = useInitData();
     const userIndex = useRecoilValue(userIndexState);
+    const userID = useRecoilValue(userIDState);
     const setUserDeck = useSetRecoilState(userDeckState);
     const setOtherPlayerDeck = useSetRecoilState(otherPlayerDeckState);
     const { nextPlayer, teammate, previousPlayer } = useRecoilValue(relationWithUser);
@@ -45,40 +46,42 @@ const GameRoom = () => {
     const roomName = useRecoilValue(userRoomState);
     const roomRef = db.database().ref(`/${roomName}`);
 
-    useEffect(()=>{
+    useEffect(() => {
         initGameData();
         listenOnCurrentPlayer();
         listenOnThisRoundSuit();
         listenOnChangeRouteEvent();
+        detectUserDisConnect();
 
         return () => {
             removeListeners();
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const initGameData = async () => {
         const gameInfoRef = roomRef.child('gameInfo');
-        await gameInfoRef.remove();
+        await gameInfoRef.remove()
         initGameRoomData();
         await dealDeck();
     }
 
     const dealDeck = async () => {
         const gameInfoRef = roomRef.child('gameInfo');
-        if(userIndex === 1) {
-            const newDeck = generateNewDeck();
-            await gameInfoRef.update({deck: newDeck});
-        }
 
-        gameInfoRef.child('deck').on("value",(data) => {
+        // if (userIndex === 0) {
+            const newDeck = generateNewDeck();
+            await gameInfoRef.update({ deck: newDeck });
+        // }
+
+        gameInfoRef.child('deck').on("value", (data) => {
             const deck = data.val();
             setOtherPlayerDeck({
                 [nextPlayer]: 13,
                 [teammate]: 13,
                 [previousPlayer]: 13,
             })
-            if(deck){
+            if (deck) {
                 setUserDeck(deck[userIndex]);
             }
         })
@@ -86,7 +89,7 @@ const GameRoom = () => {
 
     const listenOnCurrentPlayer = () => {
         const currentPlayerRef = roomRef.child('currentPlayer');
-        currentPlayerRef.on("value",(data) => {
+        currentPlayerRef.on("value", (data) => {
             const nowPlayerID = data.val();
             setNowPlayerState(nowPlayerID);
         })
@@ -94,7 +97,7 @@ const GameRoom = () => {
 
     const listenOnThisRoundSuit = () => {
         const roundSuitRef = roomRef.child('gameInfo').child('thisRoundSuit');
-        roundSuitRef.on("value",(data) => {
+        roundSuitRef.on("value", (data) => {
             const roundSuit = data.val();
             setThisRoundSuit(roundSuit)
         })
@@ -104,25 +107,43 @@ const GameRoom = () => {
         const changeMateRef = roomRef.child('changeMate');
         const leaveRef = roomRef.child('someoneLeaveGame');
         const restartRef = roomRef.child('restart');
-        changeMateRef.on("value",(data) => {
+        const disconnectedRef = roomRef.child('someoneDisconnected')
+
+        changeMateRef.on("value", (data) => {
             const isTrigger = data.val();
-            if(isTrigger) {
+            if (isTrigger) {
                 setModalType('countdown-change-mate')
             }
         });
-        leaveRef.on("value",(data) => {
+        leaveRef.on("value", (data) => {
             const isTrigger = data.val();
-            if(isTrigger) {
+            if (isTrigger) {
                 setModalType('countdown-leave')
             }
         });
-        restartRef.on("value",(data) => {
+        restartRef.on("value", (data) => {
             const isTrigger = data.val();
-            if(isTrigger) {
+            if (isTrigger) {
                 setModalType('countdown-restart')
             }
         });
+
+        disconnectedRef.on("value", async (data) => {
+            const isTrigger = data.val();
+            if (isTrigger) {
+                setModalType('countdown-destroy');
+            }
+        });
     }
+
+    const detectUserDisConnect = () => {
+        roomRef.onDisconnect().update({ someoneLeaveGame: true });
+        roomRef
+            .child('playersInfo')
+            .child(userID)
+            .onDisconnect()
+            .remove();
+    };
 
     const removeListeners = () => {
         const gameInfoRef = roomRef.child('gameInfo');
@@ -132,6 +153,7 @@ const GameRoom = () => {
         const changeMateRef = roomRef.child('changeMate');
         const leaveRef = roomRef.child('someoneLeaveGame');
         const restartRef = roomRef.child('restart');
+        const disconnectedRef = roomRef.child('someoneDisconnected')
         currentPlayerRef.off();
         deckInfo.off();
         roundSuitRef.off();
@@ -139,16 +161,23 @@ const GameRoom = () => {
         leaveRef.off();
         restartRef.off();
         gameInfoRef.remove();
+        disconnectedRef.remove();
+        roomRef.onDisconnect().cancel();
+        roomRef
+            .child('playersInfo')
+            .child(userID)
+            .onDisconnect()
+            .cancel();
     }
 
     return (
-    <Room theme={theme} className="game_room">
-        <Cards />
-        <CardTable />
-        <MainInfo />
-        <ModalRoot initGameData={initGameData} />
-        <Navbar />
-    </Room>)
+        <Room theme={theme} className="game_room">
+            <Cards />
+            <CardTable />
+            <MainInfo />
+            <ModalRoot initGameData={initGameData} />
+            <Navbar />
+        </Room>)
 }
 
 export default GameRoom;

@@ -130,22 +130,34 @@ const Home = () => {
 		const Firebase = db.database().ref("/");
 		Firebase.on("value", (data) => {
 			const roomsData = data.val();
-			if (roomsData) {
-				const rooms = Object.entries(roomsData)
-					.map(room => ({
-						roomID: room[0],
-						...room[1]
-					}))
-					.filter(room => {
-						return Object.values(room.playersInfo).length < 4;
-					})
-					.sort((a, b) => {
-						return b.timestamp - a.timestamp;
-					})
-				setRoomList(rooms);
-			} else {
+			if (!roomsData) {
 				setRoomList([]);
+				return;
 			}
+
+			const filterOutAbandonedRoom = Object.entries(roomsData)
+				.filter(data => data[1].playersInfo)
+				.reduce((obj, data) => {
+					return {
+						...obj,
+						[data[0]]: data[1]
+					};
+				}, {});
+
+			Firebase.set(filterOutAbandonedRoom);
+
+			const rooms = Object.entries(roomsData)
+				.map(room => ({
+					roomID: room[0],
+					...room[1]
+				}))
+				.filter(room => {
+					return room.playersInfo && Object.values(room.playersInfo).length < 4;
+				})
+				.sort((a, b) => {
+					return b.timestamp - a.timestamp;
+				})
+			setRoomList(rooms);
 		});
 	};
 

@@ -61,6 +61,7 @@ const ModalRoot = ({ initGameData }) => {
                 action={backToWaitRoom}
                 actionText="回到等待室"
                 text="有人離開嚕！"
+                noOpacity
             />
             <Loading
                 active={modalType === 'countdown-change-mate'}
@@ -69,6 +70,7 @@ const ModalRoot = ({ initGameData }) => {
                 action={backToWaitRoom}
                 actionText="回到等待室"
                 text="有人要換隊友唷！"
+                noOpacity
             />
             <Loading
                 active={modalType === 'countdown-restart'}

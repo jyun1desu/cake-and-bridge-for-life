@@ -86,6 +86,7 @@ const WaitRoom = () => {
 
     useEffect(async () => {
         await initWaitRoomData();
+        detectUserDisConnect();
         await playersInfo.once("value", (data) => {
             const playersData = Object.values(data.val());
             const sortedByTimestamp = playersData.sort((a, b) => a.timestamp - b.timestamp);
@@ -97,6 +98,7 @@ const WaitRoom = () => {
         });
 
         playersInfo.on("value", async (data) => {
+            if(!data.val()) return;
             const playersData = Object.values(data.val());
             const sortedByTimestamp = playersData.sort((a, b) => a.timestamp - b.timestamp);
             setPlayersData(sortedByTimestamp);
@@ -110,6 +112,15 @@ const WaitRoom = () => {
                 isAllReady.remove();
             }
         });
+
+        return () => {
+            playersInfo.off();
+            roomRef
+                .child('playersInfo')
+                .child(userID)
+                .onDisconnect()
+                .cancel();
+        }
     }, []);
 
     useEffect(() => {
@@ -123,6 +134,14 @@ const WaitRoom = () => {
         }
         return setButtonMessage('開打！');
     }, [team])
+
+    const detectUserDisConnect = () => {
+        roomRef
+            .child('playersInfo')
+            .child(userID)
+            .onDisconnect()
+            .remove();
+    };
 
     const initWaitRoomData = async () => {
         const playersInfo = roomRef.child('playersInfo');

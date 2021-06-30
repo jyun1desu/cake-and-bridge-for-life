@@ -1,7 +1,0 @@
-{
-	"compilerOptions": {
-		"baseUrl": "src",
-		"maxNodeModuleJsDepth": 1
-	},
-	"include": ["src/**/*"]
-}

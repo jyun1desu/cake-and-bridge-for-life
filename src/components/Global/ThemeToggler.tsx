@@ -15,6 +15,7 @@ const Toggler = styled.div`
     padding: 2px;
     border-radius: 40px;
     transition: 0.3s all;
+    cursor: pointer;
 
     .toggle_button {
         background-color: white;
@@ -22,6 +23,7 @@ const Toggler = styled.div`
         height: 17px;
         border-radius: 100%;
         transition: 0.3s all;
+        cursor: pointer;
     }
 
     &.on_page {

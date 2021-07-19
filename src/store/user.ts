@@ -34,8 +34,8 @@ export const userTeamState = selector({
     get:  ({get}) => {
         const userName = get(userNameState);
         const playerList = get(playersData);
-        if(!playerList.length) return TeamTypes.TeamOne
-        return playerList.find(data=>data.player===userName)?.team as TeamTypes;
+        if(!playerList.length) return null
+        return playerList.find(data=>data.player===userName)?.team as TeamTypes | null;
     }
 })
 

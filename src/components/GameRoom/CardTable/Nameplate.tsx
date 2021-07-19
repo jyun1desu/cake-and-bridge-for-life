@@ -164,7 +164,7 @@ const Nameplate = () => {
                     className={`tag_${order[index]}`}
                     player={player}
                     isCurrentPlayer={currentPlayer === player}
-                    team={teamArray[index]}
+                    team={teamArray[index] || TeamTypes.TeamOne}
                 />
             )
             )}

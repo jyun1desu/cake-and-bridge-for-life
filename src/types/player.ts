@@ -7,7 +7,7 @@ export type Team = TeamTypes.TeamOne | TeamTypes.TeamTwo;
 
 export interface PlayerData {
     player: string;
-    team: Team;
+    team: TeamTypes;
     timestamp: number;
     userID: string;
     ready?: boolean;

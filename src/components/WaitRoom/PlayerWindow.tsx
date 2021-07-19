@@ -118,8 +118,9 @@ enum PlayerOrders {
 const PlayerBox = (props: PlayerBoxProperty) => {
     const { order, playerData } = props;
     const playerName = playerData ? playerData.player : '';
+
     const defaultTeam =
-        order === PlayerOrders.First || PlayerOrders.Fourth
+        order === PlayerOrders.First || order === PlayerOrders.Fourth
             ? TeamTypes.TeamOne
             : TeamTypes.TeamTwo;
     const playerTeam = playerData ? playerData.team : defaultTeam
@@ -144,13 +145,18 @@ const PlayerBox = (props: PlayerBoxProperty) => {
 const PlayerWindow = () => {
     const [theme] = useRecoilState(themeState);
     const playerList = useRecoilValue(playersData);
+    console.log(playerList);
     const playersOrder = [PlayerOrders.First, PlayerOrders.Second, PlayerOrders.Third, PlayerOrders.Fourth];
     return (
         <Window
             theme={themeData[theme]}
             className="player_window">
             {playersOrder.map((order, index) => (
-                <PlayerBox key={order} order={order} playerData={playerList[index]} />))}
+                <PlayerBox 
+                    key={order} 
+                    order={order}
+                    playerData={playerList[index]} 
+                />))}
         </Window >
     )
 };

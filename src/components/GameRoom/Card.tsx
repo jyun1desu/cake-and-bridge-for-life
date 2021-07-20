@@ -76,7 +76,7 @@ const PokerCard = styled.div<PokerCardProperty>`
             font-size: 12px;
             text-align: center;
             transition: all .3s;
-            color: ${({ suitColor, theme }) => theme[`suit${suitColor}`]};
+            color: ${({ suitColor, theme }) => theme[`suit_${suitColor}`]};
 
             &.suit {
                 margin-top: 1px;

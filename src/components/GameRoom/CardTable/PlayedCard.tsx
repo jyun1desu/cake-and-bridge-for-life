@@ -141,8 +141,8 @@ const PlayedCard = () => {
         if(!cards.length) return [];
         const orderedPlayers = [teammate, nextPlayer, previousPlayer, user];
         const result = orderedPlayers.map(playerName => {
-            const card = cards.find(card => card.player === playerName) as PlayedCard;
-            return card.card;
+            const card = cards.find(card => card.player === playerName) as PlayedCard | null;
+            return card?.card;
         })
         return result as CardInterface[];
     }

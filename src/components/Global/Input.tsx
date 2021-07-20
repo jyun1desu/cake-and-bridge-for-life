@@ -36,6 +36,7 @@ const styledInput = styled(Input)`
     user-select: auto;
     width: 50%;
     display: block;
+    font-size: 13px;
     text-align: center;
     color: ${color.$title_font_color};
     background-color: transparent;

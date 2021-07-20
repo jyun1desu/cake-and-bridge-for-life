@@ -40,6 +40,7 @@ const StyledButton = styled.button<StyledButtonProperty>`
     letter-spacing: 1px;
     text-align: center;
     transition: 0.3s all;
+    font-size: 13px;
     ${({themeType, color}) => getButtonStyle(themeType, color)}
 
     &.enter_button {

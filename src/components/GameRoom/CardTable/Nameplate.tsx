@@ -91,7 +91,6 @@ const Tag = styled.div<TagProperty>`
         background-color: white;
         overflow: hidden;
         padding-right: 10px;
-        transition: .3s all;
         border-style: solid;
         border-width: ${({ theme }) => theme.bw};
         border-color: ${({ themeType, theme, team }) => (themeType === ThemeTypes.Light ? 'transparent' : theme.team[team])};

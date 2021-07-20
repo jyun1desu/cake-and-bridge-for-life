@@ -7,7 +7,7 @@ import { ThemeTypes } from 'types/theme';
 import { themeState } from 'store/theme';
 import { relationWithUser } from 'store/players';
 import { userNameState, userTeamState } from 'store/user';
-import { currentPlayerName } from 'store/game';
+import { currentPlayerName, trumpState } from 'store/game';
 import ThinkingIcon from 'components/GameRoom/ThinkingIcon';
 import { color } from 'style/theme'
 
@@ -150,6 +150,7 @@ const Nameplate = () => {
     const players = useRecoilValue(relationWithUser);
     const user = useRecoilValue(userNameState);
     const currentPlayer = useRecoilValue(currentPlayerName);
+    const trump = useRecoilValue(trumpState);
     const userTeam = useRecoilValue(userTeamState);
     const order = ['cross', 'left', 'right', 'user'];
     const orderedPlayers = [players.teammate, players.nextPlayer, players.previousPlayer, user];
@@ -163,7 +164,7 @@ const Nameplate = () => {
                     key={order[index]}
                     className={`tag_${order[index]}`}
                     player={player}
-                    isCurrentPlayer={currentPlayer === player}
+                    isCurrentPlayer={!!trump && (currentPlayer === player)}
                     team={teamArray[index] || TeamTypes.TeamOne}
                 />
             )

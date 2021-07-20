@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import classnames from 'classnames';
 import { suitColor, suitInPoker } from 'util/suit'
-import { Suits, SuitColor } from 'types/card';
+import { SuitColor, CardSuitType } from 'types/card';
 import { color } from "style/theme";
 import { themeState } from 'store/theme';
 
@@ -117,6 +117,7 @@ const PokerCard = styled.div<PokerCardProperty>`
             margin-left: -7vw !important;
         }
     }
+
     &.isNotPicked{
         &:last-child {
             flex: 0 0 auto;
@@ -124,13 +125,13 @@ const PokerCard = styled.div<PokerCardProperty>`
     }
 `
 
-interface CardProperty {
+export interface CardProperty {
     number?: number;
-    suit?: Suits;
+    suit?: CardSuitType;
     className?: string;
     onClick?: (e: React.MouseEvent<HTMLElement>) => void;
     hasDetail?: Boolean;
-    nowPickSuit?: Suits | null;
+    nowPickSuit?: CardSuitType | null;
 }
 
 const Card = (props: CardProperty) => {

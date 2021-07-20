@@ -152,25 +152,28 @@ const Content = styled.div`
 interface CreateButtonProperty {
 	onClick: (e: React.MouseEvent<HTMLElement>) => void;
 	className: string;
-	isValid: boolean;
+	isLengthValid: boolean;
 	children: React.ReactNode;
 }
 const CreateButton = (props: CreateButtonProperty) => {
-	const { onClick, className, isValid } = props;
+	const { onClick, className, isLengthValid } = props;
 	const [theme] = useRecoilState(themeState);
 	const getButtonColor = () => {
 		switch (theme) {
 			case 'light':
 			default:
-				return isValid ? color.$highlight_color : color.$unable_color;
+				return isLengthValid ? color.$highlight_color : color.$unable_color;
 			case 'dark':
-				return isValid ? color.$fluorescent_pink_color : color.$dark_dim_border_color;
+				return isLengthValid ? color.$fluorescent_pink_color : color.$dark_dim_border_color;
 		}
 	};
 	return (
 		<Button
 			color={getButtonColor()}
-			onClick={onClick}
+			onClick={(e) => {
+				if (!isLengthValid) return;
+				onClick(e)
+			}}
 			className={className}
 		>建立</Button>
 	)
@@ -183,7 +186,7 @@ interface RoomButtonProperty {
 }
 
 const RoomButton = (props: RoomButtonProperty) => {
-	const  { onClick, className, roomName } = props;
+	const { onClick, className, roomName } = props;
 	const [theme] = useRecoilState(themeState);
 	const getButtonColor = () => {
 		switch (theme) {
@@ -302,7 +305,7 @@ const RoomDialog = (props: RoomDialogProperty) => {
 								/>
 								<CreateButton
 									className='create_button'
-									isValid={gameRoomName.length > 2}
+									isLengthValid={gameRoomName.length > 2}
 									onClick={e => createRoom(e)}
 								>建立</CreateButton>
 							</form>

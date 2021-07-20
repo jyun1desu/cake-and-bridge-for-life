@@ -92,7 +92,7 @@ const TeamOption = (props: TeamOptionProperty) => {
         <StyledRadio
             theme={themeData[theme]}
             onClick={onClick}
-            className={classnames('option', `team${teamIndex}`, {
+            className={classnames('option', teamIndex, {
                 'chosen': isChosen,
             })}>
             <Radio

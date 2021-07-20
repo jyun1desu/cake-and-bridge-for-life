@@ -145,7 +145,6 @@ const PlayerBox = (props: PlayerBoxProperty) => {
 const PlayerWindow = () => {
     const [theme] = useRecoilState(themeState);
     const playerList = useRecoilValue(playersData);
-    console.log(playerList);
     const playersOrder = [PlayerOrders.First, PlayerOrders.Second, PlayerOrders.Third, PlayerOrders.Fourth];
     return (
         <Window

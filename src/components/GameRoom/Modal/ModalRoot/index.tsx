@@ -36,6 +36,7 @@ const ModalRoot = (props: ModalRootProperty) => {
     const backToWaitRoom = () => {
         const toPath = `/${roomName}/waiting_room/${userID}`;
         history.push(toPath);
+        initGameData();
         initModalType();
         roomRef.child('changeMate').remove();
         roomRef.child('someoneLeaveGame').remove();

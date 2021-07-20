@@ -5,6 +5,7 @@ import {
 import { CardSuitType, Card } from 'types/card';
 import { CalledBind } from 'types/bind';
 import { playersData } from './players';
+import { TeamTypes } from 'types/player';
 
 export const userPickBindState = atom({
     key: 'userPickBind',
@@ -53,8 +54,8 @@ export const teamShouldWinState = selector({
             }
         }
         const players = get(playersData);
-        const calledTeam = 'team' + players.find(p => p.player === calledPlayer)?.team;
-        const anotherTeam = ['team1','team2'].filter(team=> team !== calledTeam)[0];
+        const calledTeam = players.find(p => p.player === calledPlayer)?.team || TeamTypes.TeamOne;
+        const anotherTeam = [TeamTypes.TeamOne,TeamTypes.TeamTwo].filter(team=> team !== calledTeam)[0];
         const calledTeamShouldWin = 6 + number;
         const anotherTeamShouldWin = 14 - calledTeamShouldWin;
         return {

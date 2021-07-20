@@ -42,9 +42,9 @@ const ModalRoot = (props: ModalRootProperty) => {
         roomRef.child('someoneLeaveGame').remove();
     }
 
-    const refreshGame = async () => {
+    const refreshGame = async (type: 'restart'|'oneMoreGame' = 'restart') => {
         await initGameData();
-        roomRef.child('restart').remove();
+        roomRef.child(type).remove();
     }
 
     const closeModal = () => initModalType();
@@ -55,8 +55,11 @@ const ModalRoot = (props: ModalRootProperty) => {
             <ModalGiveUp active={!isOKtoPlay} />
             <ModalResult
                 active={!!isGotWinner}
+                refreshGame={()=>refreshGame('oneMoreGame')}
                 openConfirmLeaveModal={()=>setModalType('cofirm-leave')}
-                openLoadingWindow={() => toggleLoading(true)} winTeam={isGotWinner} />
+                toggleLoadingWindow={toggleLoading}
+                winTeam={isGotWinner}
+            />
             <ModalConfirmLeave 
                 active={modalType === 'cofirm-leave'} 
                 closeModal={closeModal} />
@@ -82,7 +85,7 @@ const ModalRoot = (props: ModalRootProperty) => {
                 active={modalType === 'countdown-restart'}
                 type={modalType}
                 countdown={3}
-                action={refreshGame}
+                action={()=>refreshGame('restart')}
                 actionText="重新牌局"
                 text="倒牌啦！"
                 noOpacity

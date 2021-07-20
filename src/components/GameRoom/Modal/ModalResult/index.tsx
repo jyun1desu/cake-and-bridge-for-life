@@ -256,17 +256,19 @@ const ResultBox = styled.div`
 
 interface ContentProperty {
     isUserWin: boolean;
+    refreshGame: () => void;
     winTeam: TeamTypes | null;
-    openLoadingWindow: () => void;
+    toggleLoadingWindow: React.Dispatch<React.SetStateAction<boolean>>;
     openConfirmLeaveModal: () => void;
 }
 
 const Content = (props: ContentProperty) => {
-    const { winTeam, isUserWin, openLoadingWindow, openConfirmLeaveModal } = props;
+    const { winTeam, isUserWin, toggleLoadingWindow, openConfirmLeaveModal, refreshGame } = props;
     const theme = useRecoilValue(themeState);
     const userID = useRecoilValue(userIDState);
     const userName = useRecoilValue(userNameState);
     const roomName = useRecoilValue(userRoomState);
+    const teamName = winTeam === TeamTypes.TeamOne ? '草莓糕' : '可麗露';
     const initModalType = useResetRecoilState(modalState);
     const history = useHistory();
     const roomRef = db.database().ref(`/${roomName}`);
@@ -283,7 +285,33 @@ const Content = (props: ContentProperty) => {
         }
     }
 
-    const teamName = winTeam === TeamTypes.TeamOne ? '草莓糕' : '可麗露';
+    useEffect(()=>{
+        listenOnOneMoreGame();
+        return () => removeOneMoreGameListener();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[]);
+
+    const startNewGame = () => {
+        refreshGame();
+        roomRef.child('playersInfo').child(userID).update({ ready: false });
+        toggleLoadingWindow(false);
+    }
+
+    const listenOnOneMoreGame = () => {
+        const oneMoreGameRef = roomRef.child('oneMoreGame');
+
+        oneMoreGameRef.on("value", async data => {
+            const isTrigger = data.val();
+            if (isTrigger) {
+                startNewGame();
+            }
+        });
+    }
+
+    const removeOneMoreGameListener = () => {
+        const oneMoreGameRef = roomRef.child('oneMoreGame');
+        oneMoreGameRef.off();
+    }
 
     const backToWaitRoom = () => {
         const toPath = `/${roomName}/waiting_room/${userID}`;
@@ -302,6 +330,7 @@ const Content = (props: ContentProperty) => {
                 const allReady = playersData.filter(data => data.ready).length === 4;
                 if (allReady) {
                     await roomRef.child('currentPlayer').set(userName);
+                    await roomRef.child('oneMoreGame').set(true);
                 }
             })
         }
@@ -309,7 +338,7 @@ const Content = (props: ContentProperty) => {
 
     const readyToNextRound = async () => {
         setReady(true);
-        openLoadingWindow();
+        toggleLoadingWindow(true);
     }
 
     return (
@@ -353,22 +382,25 @@ const Content = (props: ContentProperty) => {
 interface ModalResultProperty {
     active: boolean;
     winTeam: TeamTypes | null;
-    openLoadingWindow: () => void;
+    refreshGame: () => void;
+    toggleLoadingWindow: React.Dispatch<React.SetStateAction<boolean>>;
     openConfirmLeaveModal: () => void;
 }
 
 const ModalResult = (props: ModalResultProperty) => {
-    const { active, winTeam, openLoadingWindow, openConfirmLeaveModal } = props;
+    const { active, winTeam, toggleLoadingWindow, openConfirmLeaveModal, refreshGame } = props;
     const userTeam = useRecoilValue(userTeamState);
     const isUserWin = winTeam === userTeam;
+    
     return (
         <Modal
             active={active}
             className="result_modal">
             <Content
-                openLoadingWindow={openLoadingWindow}
                 winTeam={winTeam}
                 isUserWin={isUserWin}
+                refreshGame={refreshGame}
+                toggleLoadingWindow={toggleLoadingWindow}
                 openConfirmLeaveModal={openConfirmLeaveModal}
             />
             {isUserWin && <Animations />}

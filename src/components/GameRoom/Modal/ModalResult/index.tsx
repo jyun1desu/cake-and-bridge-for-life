@@ -360,7 +360,7 @@ interface ModalResultProperty {
 const ModalResult = (props: ModalResultProperty) => {
     const { active, winTeam, openLoadingWindow, openConfirmLeaveModal } = props;
     const userTeam = useRecoilValue(userTeamState);
-    const isUserWin = winTeam === `team${userTeam}`;
+    const isUserWin = winTeam === userTeam;
     return (
         <Modal
             active={active}

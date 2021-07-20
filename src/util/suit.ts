@@ -4,7 +4,7 @@ export const suitColor = (suit: Suits | undefined) => {
         case CardSuitType.Spade:
         case CardSuitType.Club:
         default:
-            return SuitColorType.Red;
+            return SuitColorType.Black;
         case CardSuitType.Heart:
         case CardSuitType.Diamond:
             return SuitColorType.Red;

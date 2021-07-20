@@ -13,7 +13,11 @@ import { isUserTurnState, trumpState } from 'store/game';
 import { relationWithUser, OrderedStartFromTeamOne } from 'store/players';
 import { userNameState, userRoomState } from 'store/user';
 
-const Box = styled.div`
+interface BoxProperty {
+    themeType: ThemeTypes;
+}
+
+const Box = styled.div<BoxProperty>`
     border-radius: 4px;
     margin-top: 8px;
     display: flex;
@@ -21,7 +25,7 @@ const Box = styled.div`
     overflow: hidden;
     transition: 0.3s all;
     background-color: ${({ theme }) => theme.bg};
-    border-width: ${({ theme }) => theme === 'light' ? 0 : '1px'};
+    border-width: ${({ themeType }) => themeType === ThemeTypes.Light ? 0 : '1px'};
     border-style: solid;
     border-color: ${({ theme }) => theme.border};
 
@@ -222,6 +226,7 @@ const BindList = (props: BindListProperty) => {
         <>
             <Box
                 theme={themeData[theme]}
+                themeType={theme}
                 className={classnames("bind_list", { "is_user_turn": isUserTurn })}>
                 <p>{isUserTurn ? '' : 'NOT '}YOUR TURN</p>
                 <OptionList

@@ -24,6 +24,7 @@ const Toggler = styled.div`
         border-radius: 100%;
         transition: 0.3s all;
         cursor: pointer;
+        padding: 0;
     }
 
     &.on_page {

@@ -1,6 +1,5 @@
 import React from 'react';
 import db from "database";
-import { v4 as uuidv4 } from 'uuid';
 import styled from 'styled-components';
 import { color } from 'style/theme'
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
@@ -12,6 +11,7 @@ import Input from 'components/Global/Input';
 
 import { RoomList } from 'types/room';
 import userGameRoomName from "util/hook/useGameRoomName";
+import generateUniqueId from "util/generateUniqueId";
 import { userNameState, userRoomState, userIDState } from "store/user";
 import { themeState } from 'store/theme';
 
@@ -227,7 +227,7 @@ const RoomDialog = (props: RoomDialogProperty) => {
 		const isValid = validateRoomName();
 
 		if (isValid) {
-			const roomID = uuidv4();
+			const roomID = generateUniqueId();
 			setLocalRoom(roomID);
 			updateDbRoomData(roomID, gameRoomName);
 		}
@@ -240,7 +240,7 @@ const RoomDialog = (props: RoomDialogProperty) => {
 
 	const updateDbRoomData = async (roomID: string, roomName?: string) => {
 		const roomRef = db.database().ref(`/${roomID}`);
-		const userID = uuidv4() as string;
+		const userID = generateUniqueId() as string;
 		const current = new Date();
 		const timestamp = Date.parse(current.toString()) as number;
 		setUserID(userID);

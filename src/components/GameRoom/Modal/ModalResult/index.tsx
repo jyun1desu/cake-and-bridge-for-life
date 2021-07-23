@@ -314,7 +314,7 @@ const Content = (props: ContentProperty) => {
     }
 
     const backToWaitRoom = () => {
-        const toPath = `/${roomName}/waiting_room/${userID}`;
+        const toPath = `/w/${roomName}/${userID}`;
         history.push(toPath);
         initModalType();
         roomRef.child('changeMate').set(true);

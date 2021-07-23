@@ -161,7 +161,7 @@ const WaitRoom = () => {
 
     const enterGame = async () => {
         await initWaitRoomData();
-        history.push(`/${roomName}/game_room/${userID}`);
+        history.push(`/g/${roomName}/${userID}`);
     }
 
     const setReady = async (isReady: boolean) => {

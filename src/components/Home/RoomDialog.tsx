@@ -253,7 +253,7 @@ const RoomDialog = (props: RoomDialogProperty) => {
 		if (roomName) {
 			await roomRef.update({ timestamp, roomName });
 		}
-		const toPath = `/${roomID}/waiting_room/${userID}`
+		const toPath = `/w/${roomID}/${userID}`
 		history.push(toPath);
 	}
 

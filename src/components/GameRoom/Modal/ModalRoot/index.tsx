@@ -34,7 +34,7 @@ const ModalRoot = (props: ModalRootProperty) => {
     const roomRef = db.database().ref(`/${roomName}`);
 
     const backToWaitRoom = () => {
-        const toPath = `/${roomName}/waiting_room/${userID}`;
+        const toPath = `/w/${roomName}/${userID}`;
         history.push(toPath);
         initGameData();
         initModalType();

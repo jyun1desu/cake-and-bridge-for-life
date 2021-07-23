@@ -14,8 +14,8 @@ const App = () => (
     <Router>
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route path="/:roomName/waiting_room/:userID" component={WaitRoom} />
-        <Route path="/:roomName/game_room/:userID" component={GameRoom} />
+        <Route path="/w/:roomName/:userID" component={WaitRoom} />
+        <Route path="/g/:roomName/:userID" component={GameRoom} />
       </Switch>
     </Router>
     </>

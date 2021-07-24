@@ -60,10 +60,12 @@ const NameForm = styled.form`
 
 interface NameFillInProperty {
 	onEnter: () => void;
+    buttonText: string;
+    actionText?: string;
 }
 
 const NameFillIn = (props: NameFillInProperty) => {
-	const { onEnter } = props;
+	const { onEnter, actionText, buttonText } = props;
 	const [
 		{ userName, warnMessage },
 		{ setUserName, validateUserName, setWarnMessage }
@@ -81,7 +83,7 @@ const NameFillIn = (props: NameFillInProperty) => {
 
 	return (
 		<NameForm theme={themeData[theme]} id="name" className="user_input">
-			<p>請輸入名字</p>
+			{actionText && <p>{actionText}</p>}
 			<Input
 				className="name_space"
 				onFocus={() => setWarnMessage('')}
@@ -96,7 +98,7 @@ const NameFillIn = (props: NameFillInProperty) => {
 				onClick={handleButtonClick}
 				type="submit"
 			>
-				加入遊戲
+				{buttonText}
 			</Button>
 		</NameForm>
 	);

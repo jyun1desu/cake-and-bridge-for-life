@@ -12,6 +12,7 @@ export interface FirebaseRoom {
     changeMate?: boolean;
     someoneLeaveGame?: boolean;
     restart?: boolean;
+    oneMoreGame?: boolean;
 }
 
 export interface Room extends FirebaseRoom  {
@@ -20,15 +21,6 @@ export interface Room extends FirebaseRoom  {
 
 export type FirebaseRoomsData = {
     [key: string]: FirebaseRoom
-}
-
-export interface Room {
-    timestamp: number;
-    roomName:  string;
-    playersInfo: PlayersInfo;
-    changeMate?: boolean;
-    someoneLeaveGame?: boolean;
-    restart?: boolean;
 }
 
 export type RoomList = Room[];

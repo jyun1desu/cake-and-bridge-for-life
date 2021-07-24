@@ -88,7 +88,11 @@ const Home = () => {
 		<HomePage theme={themeData[theme]}>
 			<ThemeToggler className="on_page" />
 			<Logo className="logo" />
-			<NameFillIn onEnter={() => toggleRoomDialog(true)} />
+			<NameFillIn
+				actionText="請輸入名字"
+				buttonText="加入遊戲"
+				onEnter={() => toggleRoomDialog(true)}
+			/>
 			<RoomDialog
 				active={showRoomDialog}
 				roomList={roomList}

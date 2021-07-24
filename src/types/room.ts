@@ -6,7 +6,6 @@ export type PlayersInfo = {
 }
 
 export interface FirebaseRoom {
-    timestamp: number;
     roomName:  string;
     playersInfo: PlayersInfo;
     changeMate?: boolean;

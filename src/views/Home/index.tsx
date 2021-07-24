@@ -71,10 +71,8 @@ const Home = () => {
 				}))
 				.filter(room => {
 					return room.playersInfo && Object.values(room.playersInfo).length < 4;
-				})
-				.sort((a, b) => {
-					return b.timestamp - a.timestamp;
-				})
+				});
+
 			setRoomList(rooms as RoomList);
 		});
 	};

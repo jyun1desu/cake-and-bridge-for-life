@@ -251,7 +251,7 @@ const RoomDialog = (props: RoomDialogProperty) => {
 			.child(userID)
 			.update({ timestamp, userID, player: userName });
 		if (roomName) {
-			await roomRef.update({ timestamp, roomName });
+			await roomRef.update({ roomName });
 		}
 		const toPath = `/w/${roomID}/${userID}`
 		history.push(toPath);

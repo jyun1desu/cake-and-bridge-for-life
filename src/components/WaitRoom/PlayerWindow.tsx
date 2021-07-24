@@ -117,7 +117,7 @@ enum PlayerOrders {
 }
 const PlayerBox = (props: PlayerBoxProperty) => {
     const { order, playerData } = props;
-    const playerName = playerData ? playerData.player : '';
+    const playerName = playerData ? playerData.name : '';
 
     const defaultTeam =
         order === PlayerOrders.First || order === PlayerOrders.Fourth

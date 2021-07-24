@@ -6,9 +6,9 @@ export enum TeamTypes {
 export type Team = TeamTypes.TeamOne | TeamTypes.TeamTwo;
 
 export interface PlayerData {
-    player: string;
+    name: string;
     team: TeamTypes;
     timestamp: number;
-    userID: string;
+    id: string;
     ready?: boolean;
 }

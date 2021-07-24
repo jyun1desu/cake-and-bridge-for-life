@@ -87,7 +87,7 @@ const InvitePage = ({ match }: RouteComponentProps<Params>) => {
             const roomRef = db.database().ref("/").child(roomId);
             roomRef.on('value', d => {
                 const roomData = d.val() as FirebaseRoom;
-                const currentPlayers = Object.values(roomData.playersInfo).map(p => p.player)
+                const currentPlayers = Object.values(roomData.playersInfo).map(p => p.name)
                 setPlayers([...currentPlayers, 'jyunyi'])
                 setRoomName(roomData.roomName);
             })

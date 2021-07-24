@@ -54,7 +54,7 @@ export const teamShouldWinState = selector({
             }
         }
         const players = get(playersData);
-        const calledTeam = players.find(p => p.player === calledPlayer)?.team || TeamTypes.TeamOne;
+        const calledTeam = players.find(p => p.name === calledPlayer)?.team || TeamTypes.TeamOne;
         const anotherTeam = [TeamTypes.TeamOne,TeamTypes.TeamTwo].filter(team=> team !== calledTeam)[0];
         const calledTeamShouldWin = 6 + number;
         const anotherTeamShouldWin = 14 - calledTeamShouldWin;

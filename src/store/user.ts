@@ -25,7 +25,7 @@ export const userIndexState = selector({
     get: ({get}) => {
         const userName = get(userNameState);
         const playerList = get(playersData);
-        return playerList.findIndex(data=>data.player===userName) as number;
+        return playerList.findIndex(data=>data.name===userName) as number;
     }
 })
 
@@ -35,7 +35,7 @@ export const userTeamState = selector({
         const userName = get(userNameState);
         const playerList = get(playersData);
         if(!playerList.length) return null
-        return playerList.find(data=>data.player===userName)?.team as TeamTypes | null;
+        return playerList.find(data=>data.name===userName)?.team as TeamTypes | null;
     }
 })
 
@@ -45,7 +45,7 @@ export const userReadyState = selector({
         const userName = get(userNameState);
         const playerList = get(playersData);
         if(!playerList.length) return false;
-        return playerList.find(data=>data.player===userName)?.ready as boolean;
+        return playerList.find(data=>data.name===userName)?.ready as boolean;
     }
 })
 

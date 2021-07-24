@@ -27,7 +27,7 @@ export const OrderedStartFromTeamOne = selector({
         const thirdPlayer = playerDataState.filter(player=>player.team === TeamTypes.TeamOne)[1];
         const lastPlayer = playerDataState.filter(player=>player.team === TeamTypes.TeamTwo)[1];
         const result = [firstPlayer,secondPlayer,thirdPlayer,lastPlayer]
-            .map(playerData=>playerData.player);
+            .map(playerData=>playerData.name);
         return result
     }
 })

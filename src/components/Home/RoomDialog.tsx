@@ -249,7 +249,7 @@ const RoomDialog = (props: RoomDialogProperty) => {
 		setUserID(userID);
 		await roomRef.child('playersInfo')
 			.child(userID)
-			.update({ timestamp, userID, player: userName });
+			.update({ timestamp, id: userID, name: userName });
 		if (roomName) {
 			await roomRef.update({ roomName });
 		}

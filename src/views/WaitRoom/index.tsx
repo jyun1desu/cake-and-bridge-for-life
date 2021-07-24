@@ -97,7 +97,7 @@ const WaitRoom = () => {
             await playersInfo.once("value", (data) => {
                 const playersData = Object.values(data.val()) as PlayerData[];
                 const sortedByTimestamp = playersData.sort((a, b) => a.timestamp - b.timestamp);
-                const userOrder = sortedByTimestamp.findIndex(data => data.userID === userID);
+                const userOrder = sortedByTimestamp.findIndex(data => data.id === userID);
                 const userDefaultTeam = userOrder === 0 || userOrder === 3
                     ? TeamTypes.TeamOne
                     : TeamTypes.TeamTwo;

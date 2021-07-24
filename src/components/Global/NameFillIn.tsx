@@ -55,6 +55,9 @@ const NameForm = styled.form`
 
 	.enter_button {
 		margin-top: 20px;
+        min-width: 50%;
+        font-size: 18px;
+        letter-spacing: 3px;
 	}
 `;
 

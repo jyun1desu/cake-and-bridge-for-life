@@ -165,13 +165,13 @@ const PlayInfo = (props: PlayInfoProperty) => {
             <div className="called_bind">
                 {calledList.map((called, index) => {
                     const isPassed = called === 'pass';
-                    const bind = called === 'pass' ? {number: 0, suit: CardSuitType.Club} : called;
+                    const bind = called === 'pass' ? { number: 0, suit: CardSuitType.Club } : called;
                     if (isPassed) {
                         return (<span key={'pass' + index} className={classnames("bind", "pass")}>PASS</span>)
                     }
                     return (
-                        <span 
-                            key={'called' + index} 
+                        <span
+                            key={'called' + index}
                             className={classnames("bind", suitColor(bind.suit))}
                         >
                             {bind.number} {suitInPoker(bind.suit)}
@@ -190,11 +190,13 @@ interface PlayerListProperty {
 const PlayerList = (props: PlayerListProperty) => {
     const { className } = props;
     const playerList = useRecoilValue(OrderedStartFromTeamOne);
-    const roomName = useRecoilValue(userRoomState);
+    const roomId = useRecoilValue(userRoomState);
     const [calledList, setCalledList] = useRecoilState(playersCalledListState);
 
     useEffect(() => {
-        const calledBindsRef = db.database().ref(`/${roomName}`).child('gameInfo').child('calledBinds');
+        const calledBindsRef = db.database().ref(`/${roomId}`)
+            .child('gameInfo')
+            .child('calledBinds');
         calledBindsRef.on("value", (data) => {
             const allCalledBinds = data.val();
             setCalledList(allCalledBinds || {});
@@ -209,13 +211,14 @@ const PlayerList = (props: PlayerListProperty) => {
         <div className={className}>
             {playerList.map((player, index) => {
                 const team = 'team' + (index % 2) + 1 as TeamTypes;
-                return(
-                <PlayInfo
-                    key={player + index}
-                    name={player}
-                    team={team}
-                    calledList={calledList[player] || []} />
-            )})}
+                return (
+                    <PlayInfo
+                        key={player + index}
+                        name={player}
+                        team={team}
+                        calledList={calledList[player] || []} />
+                )
+            })}
         </div>
     )
 }

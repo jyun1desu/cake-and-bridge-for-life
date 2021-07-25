@@ -43,8 +43,8 @@ const GameRoom = () => {
     const setModalType = useSetRecoilState(modalState);
     const setNowPlayerState = useSetRecoilState(currentPlayerName);
     const setThisRoundSuit = useSetRecoilState(thisRoundSuitState);
-    const roomName = useRecoilValue(userRoomState);
-    const roomRef = db.database().ref(`/${roomName}`);
+    const roomId = useRecoilValue(userRoomState);
+    const roomRef = db.database().ref(`/${roomId}`);
 
     useEffect(() => {
         initGameData();

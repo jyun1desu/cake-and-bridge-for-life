@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import db from "database";
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { RouteComponentProps } from "react-router-dom";
-import { useRecoilState } from 'recoil';
 import NameFillIn from 'components/Global/NameFillIn';
 import { FirebaseRoom } from 'types/room';
+import { ThemeTypes } from 'types/theme';
 import { themeState } from 'store/theme';
 import { userRoomState } from 'store/user';
 import { color } from 'style/theme'
-import { ThemeTypes } from 'types/theme';
+import useFirebaseRoom from "util/hook/useFirebaseRoom";
 
 type Params = { roomId: string };
 
@@ -123,7 +123,8 @@ const Page = styled.div<PageProperty>`
 const InvitePage = ({ match }: RouteComponentProps<Params>) => {
     const roomId = match.params.roomId;
     const theme = useRecoilValue(themeState);
-    const [roomName, setRoomName] = useRecoilState(userRoomState);
+    const [,{ updateDbRoomData }] = useFirebaseRoom();
+    const [roomName, setRoomName] = useState('')
     const [currentPlayer, setPlayers] = useState<string[]>([]);
 
     useEffect(() => {
@@ -141,8 +142,8 @@ const InvitePage = ({ match }: RouteComponentProps<Params>) => {
     }, [])
 
     const enterGame = () => {
-        console.log('enter waiting room');
-    }
+        updateDbRoomData(roomId);
+    };
 
     return (
         <Page 

@@ -1,9 +1,7 @@
 import React from 'react';
-import db from "database";
 import styled from 'styled-components';
 import { color } from 'style/theme'
-import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
-import { useHistory } from "react-router-dom";
+import { useSetRecoilState, useRecoilState } from "recoil";
 
 import Modal from "components/Global/Modal";
 import Button from 'components/Global/Button';
@@ -11,8 +9,9 @@ import Input from 'components/Global/Input';
 
 import { RoomList } from 'types/room';
 import userGameRoomName from "util/hook/useGameRoomName";
+import useFirebaseRoom from "util/hook/useFirebaseRoom";
 import generateUniqueId from "util/generateUniqueId";
-import { userNameState, userRoomState, userIDState } from "store/user";
+import { userRoomState } from "store/user";
 import { themeState } from 'store/theme';
 
 const themeData = {
@@ -215,15 +214,13 @@ interface RoomDialogProperty {
 }
 const RoomDialog = (props: RoomDialogProperty) => {
 	const { active, className, closeRoomList, roomList } = props;
-	const history = useHistory();
 	const [theme] = useRecoilState(themeState);
 	const [
 		{ gameRoomName, warnMessage },
 		{ setRoomName, validateRoomName, setWarnMessage }
 	] = userGameRoomName();
-	const userName = useRecoilValue(userNameState);
+	const [,{ updateDbRoomData }] = useFirebaseRoom();
 	const setLocalRoom = useSetRecoilState(userRoomState);
-	const setUserID = useSetRecoilState(userIDState);
 
 	const createRoom = (e: React.MouseEvent<HTMLElement>) => {
 		e.preventDefault();
@@ -239,22 +236,6 @@ const RoomDialog = (props: RoomDialogProperty) => {
 	const pickExistRoom = (roomID: string) => {
 		setLocalRoom(roomID);
 		updateDbRoomData(roomID);
-	}
-
-	const updateDbRoomData = async (roomID: string, roomName?: string) => {
-		const roomRef = db.database().ref(`/${roomID}`);
-		const userID = generateUniqueId() as string;
-		const current = new Date();
-		const timestamp = Date.parse(current.toString()) as number;
-		setUserID(userID);
-		await roomRef.child('playersInfo')
-			.child(userID)
-			.update({ timestamp, id: userID, name: userName });
-		if (roomName) {
-			await roomRef.update({ roomName });
-		}
-		const toPath = `/w/${roomID}/${userID}`
-		history.push(toPath);
 	}
 
 	return (

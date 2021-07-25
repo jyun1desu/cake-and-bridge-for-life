@@ -46,7 +46,7 @@ const Home = () => {
 
 	const subscribeRooms = () => {
 		const Firebase = db.database().ref("/");
-		Firebase.on("value", (data) => {
+		Firebase.on("value", async (data) => {
 			const roomsData = data.val() as FirebaseRoomsData;
 			if (!roomsData) {
 				setRoomList([]);
@@ -55,15 +55,13 @@ const Home = () => {
 
 			const filterOutAbandonedRoom = Object.entries(roomsData)
 				.filter(data => data[1].playersInfo)
-				.reduce((obj, data) => {
-					return {
-						...obj,
-						[data[0]]: data[1]
-					};
-				}, {});
+				.reduce((obj, data) => ({
+					...obj,
+					[data[0]]: data[1]
+				}), {});
 
-			Firebase.set(filterOutAbandonedRoom);
-
+			await Firebase.set(filterOutAbandonedRoom);
+	
 			const rooms = Object.entries(roomsData)
 				.map(room => ({
 					roomID: room[0],

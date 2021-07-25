@@ -267,11 +267,11 @@ const Content = (props: ContentProperty) => {
     const theme = useRecoilValue(themeState);
     const userID = useRecoilValue(userIDState);
     const userName = useRecoilValue(userNameState);
-    const roomName = useRecoilValue(userRoomState);
+    const roomId = useRecoilValue(userRoomState);
     const teamName = winTeam === TeamTypes.TeamOne ? '草莓糕' : '可麗露';
     const initModalType = useResetRecoilState(modalState);
     const history = useHistory();
-    const roomRef = db.database().ref(`/${roomName}`);
+    const roomRef = db.database().ref(`/${roomId}`);
     const buttonColor = {
         light: {
             yellow_button: color.$highlight_color,
@@ -314,7 +314,7 @@ const Content = (props: ContentProperty) => {
     }
 
     const backToWaitRoom = () => {
-        const toPath = `/w/${roomName}/${userID}`;
+        const toPath = `/w/${roomId}/${userID}`;
         history.push(toPath);
         initModalType();
         roomRef.child('changeMate').set(true);

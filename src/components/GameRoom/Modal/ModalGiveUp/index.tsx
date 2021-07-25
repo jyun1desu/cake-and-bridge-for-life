@@ -85,11 +85,11 @@ const AskBox = styled.div`
 
 const Content = () => {
     const [theme] = useRecoilState(themeState);
-    const roomName = useRecoilValue(userRoomState);
+    const roomId = useRecoilValue(userRoomState);
     const setResponseToBadDeck = useSetRecoilState(responseToBadDeck);
 
     const restartGame = () => {
-        const roomRef = db.database().ref(`/${roomName}`);
+        const roomRef = db.database().ref(`/${roomId}`);
         roomRef.child('restart').set(true);
     }
 

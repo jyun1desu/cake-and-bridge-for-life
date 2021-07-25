@@ -26,15 +26,15 @@ const ModalRoot = (props: ModalRootProperty) => {
     const [isLoading, toggleLoading] = useState(false);
     const trump = useRecoilValue(trumpState);
     const userID = useRecoilValue(userIDState);
-    const roomName = useRecoilValue(userRoomState);
+    const roomId = useRecoilValue(userRoomState);
     const isOKtoPlay = useRecoilValue(OKtoPlay);
     const isGotWinner = useRecoilValue(isGameEndState);
     const [modalType, setModalType] = useRecoilState(modalState);
     const initModalType = useResetRecoilState(modalState);
-    const roomRef = db.database().ref(`/${roomName}`);
+    const roomRef = db.database().ref(`/${roomId}`);
 
     const backToWaitRoom = () => {
-        const toPath = `/w/${roomName}/${userID}`;
+        const toPath = `/w/${roomId}/${userID}`;
         history.push(toPath);
         initGameData();
         initModalType();

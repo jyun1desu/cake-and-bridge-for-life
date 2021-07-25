@@ -126,9 +126,9 @@ const BindList = (props: BindListProperty) => {
     const { nextPlayer } = useRecoilValue(relationWithUser);
     const availibleTricks = useRecoilValue(availibleTricksState);
     const isUserTurn = useRecoilValue(isUserTurnState);
-    const roomName = useRecoilValue(userRoomState);
+    const roomId = useRecoilValue(userRoomState);
     const userName = useRecoilValue(userNameState);
-    const roomRef = db.database().ref(`/${roomName}`);
+    const roomRef = db.database().ref(`/${roomId}`);
 
     useEffect(() => {
         const nowBindRef = roomRef.child('gameInfo').child('nowBind');

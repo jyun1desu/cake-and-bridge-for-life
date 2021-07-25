@@ -98,8 +98,8 @@ const Content = (props: ContentProperty) => {
     const history = useHistory();
     const theme = useRecoilValue(themeState);
     const userID = useRecoilValue(userIDState);
-    const roomName = useRecoilValue(userRoomState);
-    const roomRef = db.database().ref(`/${roomName}`);
+    const roomId = useRecoilValue(userRoomState);
+    const roomRef = db.database().ref(`/${roomId}`);
 
     const leaveGame = async() => {
         await roomRef.child('playersInfo').child(userID).remove();

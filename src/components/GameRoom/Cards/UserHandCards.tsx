@@ -13,7 +13,7 @@ interface UserHandCardsProperty {
 }
 const UserHandCards = (props: UserHandCardsProperty) => {
     const { className } = props;
-    const roomName = useRecoilValue(userRoomState);
+    const roomId = useRecoilValue(userRoomState);
     const userName = useRecoilValue(userNameState);
     const isUserTurn = useRecoilValue(isUserTurnState);
     const thisRoundSuit = useRecoilValue(thisRoundSuitState);
@@ -21,7 +21,7 @@ const UserHandCards = (props: UserHandCardsProperty) => {
     const { nextPlayer } = useRecoilValue(relationWithUser);
     const [userDeck, setUserDeck] = useRecoilState(userDeckState);
     const [nowPickSuit, setNowPickSuit] = React.useState<Suits | null>(null);
-    const roomRef = db.database().ref(`/${roomName}`);
+    const roomRef = db.database().ref(`/${roomId}`);
     const gameInfoRef = roomRef.child('gameInfo');
 
     const handlePickCard = async (e: React.MouseEvent<HTMLElement>, card: Card) => {

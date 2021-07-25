@@ -3,7 +3,7 @@ import db from "database";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import classnames from 'classnames';
-import { Team} from 'types/player';
+import { Team } from 'types/player';
 import { Card as CardInterface, CardSuitType } from 'types/card';
 import { userRoomState, userNameState } from 'store/user';
 import { teamScoresState } from 'store/score';
@@ -49,7 +49,7 @@ const CardGroup = styled.div`
 `
 
 const PlayedCard = () => {
-    const roomName = useRecoilValue(userRoomState);
+    const roomId = useRecoilValue(userRoomState);
     const user = useRecoilValue(userNameState);
     const { teammate, nextPlayer, previousPlayer } = useRecoilValue(relationWithUser);
     const teamArray = useRecoilValue(OrderedStartFromTeamOne);
@@ -60,18 +60,20 @@ const PlayedCard = () => {
     const isThisRoundEnd = useRecoilValue(isThisRoundEndState);
     const setOtherPlayerDeck = useSetRecoilState(otherPlayerDeckState);
     const setUserWinTricks = useSetRecoilState(userWinTricksState);
-    const roomRef = db.database().ref(`/${roomName}`);
+    const roomRef = db.database().ref(`/${roomId}`);
 
-    useEffect(()=>{
-        const cardsRef = db.database().ref(`/${roomName}`).child('gameInfo').child('thisRoundCards');
+    useEffect(() => {
+        const cardsRef = db.database().ref(`/${roomId}`)
+            .child('gameInfo')
+            .child('thisRoundCards');
         cardsRef.on("value", d => {
             const cards = d.val() || [];
             updateThisRoundCards(orderCards(cards));
 
-            const playedPlayer = cards[ cards.length - 1 ]?.player;
+            const playedPlayer = cards[cards.length - 1]?.player;
             if (playedPlayer && playedPlayer !== user) {
                 setOtherPlayerDeck(pre => ({
-                    ...pre, 
+                    ...pre,
                     [playedPlayer]: pre[playedPlayer] - 1
                 }))
             }
@@ -80,15 +82,15 @@ const PlayedCard = () => {
         return () => {
             cardsRef.off();
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-    useEffect(()=>{
-        if(isThisRoundEnd){
+    useEffect(() => {
+        if (isThisRoundEnd) {
             handleRoundEnded();
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[isThisRoundEnd])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isThisRoundEnd])
 
     const handleRoundEnded = async () => {
         const currentPlayerRef = roomRef.child('currentPlayer');
@@ -96,7 +98,7 @@ const PlayedCard = () => {
         await sleep(2000);
         const winner = getRoundWinner();
         updatePoints(winner);
-        if(winner === user) {
+        if (winner === user) {
             collectThisTrick();
         }
         await currentPlayerRef.set(winner);
@@ -110,10 +112,10 @@ const PlayedCard = () => {
         thisRoundCardsRef.remove();
     }
 
-    const getRoundWinner = () => { 
+    const getRoundWinner = () => {
         const winnerIndex = getBiggestCard(
-            trump?.suit as CardSuitType, 
-            currentSuit as CardSuitType, 
+            trump?.suit as CardSuitType,
+            currentSuit as CardSuitType,
             thisRoundCards);
         const playersOrder = [teammate, nextPlayer, previousPlayer, user];
         return playersOrder[winnerIndex];
@@ -124,7 +126,7 @@ const PlayedCard = () => {
             .map((player, i) => ({ player, team: `team${i % 2 + 1}` }))
             .find(p => p.player === winner)?.team as Team;
 
-        if(winnerTeam) {
+        if (winnerTeam) {
             updateTeamScores({
                 ...teamScores,
                 [winnerTeam]: teamScores[winnerTeam] + 1
@@ -138,7 +140,7 @@ const PlayedCard = () => {
     }
 
     const orderCards = (cards: PlayedCard[]) => {
-        if(!cards.length) return [];
+        if (!cards.length) return [];
         const orderedPlayers = [teammate, nextPlayer, previousPlayer, user];
         const result = orderedPlayers.map(playerName => {
             const card = cards.find(card => card.player === playerName) as PlayedCard | null;
@@ -153,17 +155,18 @@ const PlayedCard = () => {
 
     return (
         <CardGroup className="played_cards_group">
-            {thisRoundCards.map((card,index) => {
+            {thisRoundCards.map((card, index) => {
                 const order = ['cross', 'left', 'right', 'user'];
                 return card && (
-                <Card
-                    key={order[index]}
-                    className={classnames("played_card",order[index])}
-                    number={card.number}
-                    suit={card.suit}
-                    hasDetail
-                />
-            )})}
+                    <Card
+                        key={order[index]}
+                        className={classnames("played_card", order[index])}
+                        number={card.number}
+                        suit={card.suit}
+                        hasDetail
+                    />
+                )
+            })}
         </CardGroup>
     )
 }

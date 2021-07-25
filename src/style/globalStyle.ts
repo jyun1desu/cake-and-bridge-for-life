@@ -33,8 +33,15 @@ export const GlobalStyle = createGlobalStyle`
         }
     }
 
+    div {
+        padding: 0;
+        margin: 0;
+    }
+
     button {
         border: none;
+        margin: 0;
+        padding: 0;
         
         &:active,
         &:focus {

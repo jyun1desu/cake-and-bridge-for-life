@@ -2,7 +2,8 @@ import React from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import classnames from 'classnames';
-import { suitColor, suitInPoker } from 'util/suit'
+import Suit from 'components/Global/Suit';
+import { suitColor } from 'util/suit'
 import { SuitColor, CardSuitType } from 'types/card';
 import { color } from "style/theme";
 import { themeState } from 'store/theme';
@@ -138,7 +139,6 @@ const Card = (props: CardProperty) => {
     const { number, suit, className, hasDetail = false, onClick = () => { }, nowPickSuit } = props;
     const theme = useRecoilValue(themeState);
     const numberOnCard = number ? numberInPoker(number) : null;
-    const suitOnCard = suit ? suitInPoker(suit) : null;
     const sameSuit = nowPickSuit && (suit === nowPickSuit);
     const isNotPicked = nowPickSuit && (suit !== nowPickSuit);
 
@@ -156,13 +156,13 @@ const Card = (props: CardProperty) => {
             {hasDetail && (
                 <>
                     <div className="card_info">
-                        <span className={`number`}>{numberOnCard}</span>
-                        <span className={`suit`}>{suitOnCard}&#xFE0E;</span>
+                        <span className="number">{numberOnCard}</span>
+                        <Suit className="suit" suit={suit} />
                     </div>
                     <div className="pattern"></div>
                     <div className="card_info reverse">
-                        <span className={`number`}>{numberOnCard}</span>
-                        <span className={`suit`}>{suitOnCard}&#xFE0E;</span>
+                        <span className="number">{numberOnCard}</span>
+                        <Suit className="suit" suit={suit} />
                     </div>
                 </>
             )}

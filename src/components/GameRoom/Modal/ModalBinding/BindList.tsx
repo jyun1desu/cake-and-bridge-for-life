@@ -3,15 +3,16 @@ import db from "database";
 import classnames from 'classnames';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
+import Suit from 'components/Global/Suit';
 import { color } from 'style/theme';
 import { suitInPoker } from 'util/suit';
-import OptionList from './OptionList';
 import { ThemeTypes } from 'types/theme';
 import { CalledBind } from 'types/bind';
 import { userPickBindState, nowBindState, availibleTricksState, userPassState } from 'store/bind';
 import { isUserTurnState, trumpState } from 'store/game';
 import { relationWithUser, OrderedStartFromTeamOne } from 'store/players';
 import { userNameState, userRoomState } from 'store/user';
+import OptionList from './OptionList';
 
 interface BoxProperty {
     themeType: ThemeTypes;
@@ -156,7 +157,12 @@ const BindList = (props: BindListProperty) => {
         if (isUserTurn) {
             if (noBind && !userPickBind) return '不能PASS!';
             if (userPickBind) {
-                return '喊 ' + userPickBind.number + suitInPoker(userPickBind.suit);
+                return (
+                    <>
+                    {`喊${userPickBind.number}`}
+                    <Suit suit={userPickBind.suit} />
+                    </>
+                )
             } else {
                 return 'PASS';
             }
@@ -235,7 +241,8 @@ const BindList = (props: BindListProperty) => {
                     tricks={availibleTricks} />
                 <button
                     onClick={callBind}
-                    className={classnames({ "has_pick_bind": userPickBind })}>{buttonMessage}
+                    className={classnames({ "has_pick_bind": userPickBind })}>
+                        {buttonMessage}
                 </button>
             </Box>
             { userPickBind && <Hint theme={themeData[theme]}>再次點擊相同選項可以取消選擇</Hint>}

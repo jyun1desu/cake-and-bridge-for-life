@@ -1,5 +1,5 @@
 import { CardSuitType, Suits, SuitColorType } from 'types/card';
-export const suitColor = (suit: Suits | undefined) => {
+export const suitColor = (suit: Suits | undefined | null) => {
     switch (suit) {
         case CardSuitType.Spade:
         case CardSuitType.Club:

@@ -2,6 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
+import Suit from 'components/Global/Suit';
 import { themeState } from 'store/theme';
 import { ThemeTypes } from 'types/theme';
 import { color } from 'style/theme';
@@ -92,9 +93,10 @@ const OptionButton = (props: OptionButtonProperty) => {
                 size={12}
                 marginRight={5}
             />
-            <span
+            <Suit 
                 className={classnames("pattern", suitColor(suit))}
-            >{suitInPoker(suit)}&#xFE0E;</span>
+                suit={suit}
+            />
         </Button>
     )
 }

@@ -10,6 +10,7 @@ import { OrderedStartFromTeamOne } from 'store/players';
 import { currentPlayerName } from 'store/game';
 import { playersCalledListState } from 'store/bind';
 import { userRoomState } from 'store/user';
+import Suit from 'components/Global/Suit';
 import ThinkingIcon from 'components/GameRoom/ThinkingIcon';
 import { TeamTypes } from 'types/player';
 import { CalledBind } from 'types/bind';
@@ -174,7 +175,8 @@ const PlayInfo = (props: PlayInfoProperty) => {
                             key={'called' + index}
                             className={classnames("bind", suitColor(bind.suit))}
                         >
-                            {bind.number} {suitInPoker(bind.suit)}
+                            <span>{bind.number}</span> 
+                            <Suit suit={bind.suit} />
                         </span>
                     )
                 })

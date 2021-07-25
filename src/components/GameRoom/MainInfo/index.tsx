@@ -2,14 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 import classnames from 'classnames';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import Suit from 'components/Global/Suit';
 import { themeState } from 'store/theme';
 import { trumpState } from 'store/game';
 import { teamShouldWinState } from 'store/bind';
 import { teamScoresState } from 'store/score';
 import { color } from 'style/theme';
 import { suitColor, suitInPoker } from 'util/suit'
-import InfoBox from './InfoBox';
 import { TeamTypes } from 'types/player';
+import InfoBox from './InfoBox';
 
 const Board = styled.div`
     display: flex;
@@ -77,7 +78,7 @@ interface SuitProperty {
     suitColor: string;
 }
 
-const Suit = styled.span<SuitProperty>`
+const StyledSuit = styled(Suit)<SuitProperty>`
     font-size: 20px;
     transition: .3s all;
     color: ${({suitColor, theme}) => theme.suit[suitColor]};
@@ -134,10 +135,12 @@ const MainInfo = () => {
                 theme={theme}
                 title="王牌"
                 className="trump">
-                <Suit theme={themeData[theme]}
-                    className="suit"
+                <StyledSuit 
+                    theme={themeData[theme]}
                     suitColor={suitColor(trump?.suit)}
-                >{trump?.suit ? suitInPoker(trump?.suit) : ''}&#xFE0E;</Suit>
+                    suit={trump?.suit ? trump.suit : null}
+                    className="suit"
+                />
             </InfoBox>
             <InfoBox theme={theme} title="戰況" className="team">
                 <PointInfo team={TeamTypes.TeamOne} />

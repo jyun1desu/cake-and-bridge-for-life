@@ -30,6 +30,7 @@ const StyledButton = styled.button<StyledButtonProperty>`
     cursor: pointer;
     border-radius: 50px;
     padding: 10px 20px;
+    margin: 0;
     letter-spacing: 1px;
     text-align: center;
     transition: 0.3s all;

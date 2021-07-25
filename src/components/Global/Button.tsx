@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 import { Theme } from 'types/theme';
@@ -21,16 +22,8 @@ const getButtonStyle = (theme: string, color: string) => {
     }
 }
 
-interface ButtonProperty {
-    className?: string;
-    onClick: (e: React.MouseEvent<HTMLElement>) => void;
-    children: React.ReactNode;
-    color: string;
-    type?: 'submit' | 'button';
-}
-
 interface StyledButtonProperty extends ButtonProperty {
-    themeType: Theme; 
+    themeType: Theme;
 }
 
 const StyledButton = styled.button<StyledButtonProperty>`
@@ -43,12 +36,19 @@ const StyledButton = styled.button<StyledButtonProperty>`
     font-size: 13px;
     ${({themeType, color}) => getButtonStyle(themeType, color)}
 
-    &.enter_button {
-        min-width: 50%;
-        font-size: 18px;
-        letter-spacing: 3px;
+    &.small {
+        padding: 5px 8px;
     }
 `
+
+interface ButtonProperty {
+    className?: string;
+    onClick: (e: React.MouseEvent<HTMLElement>) => void;
+    children: React.ReactNode;
+    color: string;
+    type?: 'submit' | 'button';
+    size?: 'normal' | 'small';
+}
 
 const Button = (props: ButtonProperty ) => {
     const [theme] = useRecoilState(themeState);
@@ -58,6 +58,7 @@ const Button = (props: ButtonProperty ) => {
         onClick = () => {},
         color,
         type = 'button',
+        size = 'normal'
     } = props
 
     return (
@@ -65,7 +66,7 @@ const Button = (props: ButtonProperty ) => {
         type={type}
         themeType={theme}
         color={color}
-        className={className}
+        className={classnames(className, size)}
         onClick={onClick}
     >
         {children}

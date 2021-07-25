@@ -43,8 +43,8 @@ const Window = styled.div`
     flex-wrap: wrap;
     width: 90vw;
     height: 90vw;
-    margin-bottom: 30px;
     border: ${({ theme }) => theme.w_border};
+    margin-bottom: 10px;
 
     .player {
         flex-basis: 50%;

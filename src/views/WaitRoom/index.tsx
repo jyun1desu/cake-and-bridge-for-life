@@ -13,6 +13,7 @@ import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import { TeamTypes, PlayerData } from 'types/player';
 
 import PlayerWindow from 'components/WaitRoom/PlayerWindow';
+import SendInviteLinkButton from 'components/WaitRoom/SendInviteLinkButton';
 import TeamRadios from 'components/WaitRoom/TeamRadios';
 import Button from 'components/Global/Button';
 import Loading from 'components/Global/Loading';
@@ -31,14 +32,18 @@ const Room = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: space-around;
         transition: .3s background-color;
         background-color: ${({ theme }) => theme.bg};
+        position: relative;
 
         .start_game {
             letter-spacing: 2px;
-            font-size: 20px;
-            margin-top: 30px;
+            font-size: 16px;
+        }
+
+        .copy_link_button {
+            margin-left: auto;
         }
 `
 interface ReadyButtonProperty {
@@ -185,6 +190,7 @@ const WaitRoom = () => {
     return (
         <Room
             theme={themeData[theme]}>
+            <SendInviteLinkButton className="copy_link_button"/>   
             <PlayerWindow />
             <TeamRadios roomName={roomName} userID={userID} />
             <ReadyButton

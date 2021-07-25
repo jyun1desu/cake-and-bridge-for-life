@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/cake-and-bridge-for-life/static/js/main.32e449c8.chunk.js",
-    "main.js.map": "/cake-and-bridge-for-life/static/js/main.32e449c8.chunk.js.map",
+    "main.js": "/cake-and-bridge-for-life/static/js/main.6bd453c2.chunk.js",
+    "main.js.map": "/cake-and-bridge-for-life/static/js/main.6bd453c2.chunk.js.map",
     "runtime-main.js": "/cake-and-bridge-for-life/static/js/runtime-main.a93cabbb.js",
     "runtime-main.js.map": "/cake-and-bridge-for-life/static/js/runtime-main.a93cabbb.js.map",
     "static/js/2.209ba6fe.chunk.js": "/cake-and-bridge-for-life/static/js/2.209ba6fe.chunk.js",
@@ -17,6 +17,6 @@
   "entrypoints": [
     "static/js/runtime-main.a93cabbb.js",
     "static/js/2.209ba6fe.chunk.js",
-    "static/js/main.32e449c8.chunk.js"
+    "static/js/main.6bd453c2.chunk.js"
   ]
 }

@@ -6,7 +6,7 @@ import Suit from 'components/Global/Suit';
 import { themeState } from 'store/theme';
 import { ThemeTypes } from 'types/theme';
 import { color } from 'style/theme';
-import { suitInPoker, suitColor } from 'util/suit';
+import { suitColor } from 'util/suit';
 import Radio from 'components/Global/Radio';
 import { CardSuitType } from 'types/card';
 

@@ -5,7 +5,6 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import Suit from 'components/Global/Suit';
 import { color } from 'style/theme';
-import { suitInPoker } from 'util/suit';
 import { ThemeTypes } from 'types/theme';
 import { CalledBind } from 'types/bind';
 import { userPickBindState, nowBindState, availibleTricksState, userPassState } from 'store/bind';

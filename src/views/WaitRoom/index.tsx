@@ -96,9 +96,6 @@ const WaitRoom = () => {
     const isAllReady = roomRef.child('enterGame');
 
     useEffect(() => {
-        console.log(playersInfo);
-        console.log(userName);
-        console.log(roomName);
         const prepareWaitRoom = async () => {
             await initWaitRoomData();
             detectUserDisConnect();

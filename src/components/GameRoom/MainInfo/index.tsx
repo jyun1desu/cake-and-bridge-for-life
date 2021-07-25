@@ -8,7 +8,7 @@ import { trumpState } from 'store/game';
 import { teamShouldWinState } from 'store/bind';
 import { teamScoresState } from 'store/score';
 import { color } from 'style/theme';
-import { suitColor, suitInPoker } from 'util/suit'
+import { suitColor } from 'util/suit'
 import { TeamTypes } from 'types/player';
 import InfoBox from './InfoBox';
 

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { themeState } from 'store/theme';
 import { color } from 'style/theme';
-import { suitInPoker, suitColor } from 'util/suit';
+import { suitColor } from 'util/suit';
 import { OrderedStartFromTeamOne } from 'store/players';
 import { currentPlayerName } from 'store/game';
 import { playersCalledListState } from 'store/bind';

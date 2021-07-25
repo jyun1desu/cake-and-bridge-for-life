@@ -43,6 +43,7 @@ const Window = styled.div`
     flex-wrap: wrap;
     width: 90vw;
     height: 90vw;
+    background-color: ${({ theme }) => theme.st_bg};
     border: ${({ theme }) => theme.w_border};
     margin-bottom: 10px;
 

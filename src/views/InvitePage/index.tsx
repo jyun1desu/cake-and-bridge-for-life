@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import db from "database";
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
+import { useHistory } from 'react-router';
 import { RouteComponentProps } from "react-router-dom";
 import NameFillIn from 'components/Global/NameFillIn';
+import Button from "components/Global/Button";
 import { FirebaseRoom } from 'types/room';
 import { ThemeTypes } from 'types/theme';
 import { themeState } from 'store/theme';
@@ -22,7 +24,8 @@ const themeData = {
         title_block_2: color.$green_color,
         title_block_3: color.$orange_color,
         title_fg: 'white',
-        amount_fg: color.$default_font_color,
+        button_color: '#f7cbca',
+        fg: color.$default_font_color,
     },
     dark: {
         stripes_1: '#151615',
@@ -33,7 +36,8 @@ const themeData = {
         title_block_2: color.$fluorescent_green_color,
         title_block_3: color.$fluorescent_yellow_color,
         title_fg: color.$default_font_color,
-        amount_fg: color.$dark_default_font_color,
+        button_color: color.$fluorescent_pink_color,
+        fg: color.$dark_default_font_color,
     },
 }
 
@@ -47,13 +51,13 @@ const Page = styled.div<PageProperty>`
     justify-content: center;
     background-image: 
         linear-gradient(39deg, 
-            ${({theme})=>theme.stripes_1} 22.22%, 
-            ${({theme})=>theme.stripes_2} 22.22%, 
-            ${({theme})=>theme.stripes_2} 50%, 
-            ${({theme})=>theme.stripes_1} 50%, 
-            ${({theme})=>theme.stripes_1} 72.22%, 
-            ${({theme})=>theme.stripes_2} 72.22%, 
-            ${({theme})=>theme.stripes_2} 100%);
+            ${({ theme }) => theme.stripes_1} 22.22%, 
+            ${({ theme }) => theme.stripes_2} 22.22%, 
+            ${({ theme }) => theme.stripes_2} 50%, 
+            ${({ theme }) => theme.stripes_1} 50%, 
+            ${({ theme }) => theme.stripes_1} 72.22%, 
+            ${({ theme }) => theme.stripes_2} 72.22%, 
+            ${({ theme }) => theme.stripes_2} 100%);
     background-size: 42.90px 34.74px;
 
     .content {
@@ -63,7 +67,7 @@ const Page = styled.div<PageProperty>`
         align-items: center;
         padding: 40px 0 20px;
         box-sizing: border-box;
-        background-color: ${({theme})=>theme.content_bg};
+        background-color: ${({ theme }) => theme.content_bg};
         border: 1px solid ${color.$fluorescent_pink_color};
         border-radius: 10px;
         position: relative;
@@ -77,12 +81,12 @@ const Page = styled.div<PageProperty>`
         span {
             display: inline-block;
             position: relative;
-            color: ${({theme})=>theme.title_fg};
+            color: ${({ theme }) => theme.title_fg};
 
             &:first-child {
                 font-size: 16px;
                 padding: 3px;
-                background-color: ${({theme})=>theme.title_block_1};
+                background-color: ${({ theme }) => theme.title_block_1};
                 transform: rotate(-1deg);
             }
 
@@ -90,14 +94,14 @@ const Page = styled.div<PageProperty>`
                 z-index: 10;
                 font-size: 26px;
                 padding: 5px;
-                background-color: ${({theme})=>theme.title_block_2};
+                background-color: ${({ theme }) => theme.title_block_2};
                 transform: rotate(-4deg);
             }
     
             &:last-child {
                 font-size: 18px;
                 padding: 2px;
-                background-color: ${({theme})=>theme.title_block_3};
+                background-color: ${({ theme }) => theme.title_block_3};
                 transform: rotate(3deg);
             }
         }
@@ -109,20 +113,35 @@ const Page = styled.div<PageProperty>`
         span {
             display: block;
             transform: rotate(90deg);
-            color: ${({theme})=>theme.decoration_arrows};
+            color: ${({ theme }) => theme.decoration_arrows};
         }
     }
 
     .players_amount {
         font-size: 13px;
         margin-top: 10px;
-        color: ${({theme})=>theme.amount_fg};
+        color: ${({ theme }) => theme.fg};
+    }
+
+    .unable_content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        p {
+            color: ${({ theme }) => theme.fg};
+        }
+
+        button {
+            margin-top: 10px;
+        }
     }
 `
 const InvitePage = ({ match }: RouteComponentProps<Params>) => {
     const roomId = match.params.roomId;
     const theme = useRecoilValue(themeState);
-    const [,{ updateDbRoomData }] = useFirebaseRoom();
+    const history = useHistory();
+    const [, { updateDbRoomData }] = useFirebaseRoom();
     const [roomName, setRoomName] = useState('')
     const [currentPlayer, setPlayers] = useState<string[]>([]);
 
@@ -145,7 +164,7 @@ const InvitePage = ({ match }: RouteComponentProps<Params>) => {
     };
 
     return (
-        <Page 
+        <Page
             theme={themeData[theme]}
             themeType={theme}
             className="invite_page"
@@ -156,21 +175,40 @@ const InvitePage = ({ match }: RouteComponentProps<Params>) => {
                     <span>{roomName}</span>
                     <span>的橋牌戰帖</span>
                 </div>
-                <div className="decoration">
-                    <span>&#62;</span>
-                    <span>&#62;</span>
-                    <span>&#62;</span>
-                </div>
-                <NameFillIn
-                    actionText="立即加入戰局"
-                    buttonText="GO"
-                    onEnter={enterGame}
-                />
-                <p className="players_amount">🍰 {
-                    currentPlayer.length > 1
-                        ? `${currentPlayer[0]} 跟其他 ${currentPlayer.length - 1} 位橋牌友`
-                        : `${currentPlayer[0]} `
-                }已經加入 🍰</p>
+
+                {currentPlayer.length > 3 ? (
+                    <div className="unable_content">
+                        <p>🤯🤯🤯🤯🤯🤯🤯🤯🤯🤯</p>
+                        <p>遲來一歩！已經客滿了</p>
+                        <p>🤯🤯🤯🤯🤯🤯🤯🤯🤯🤯</p>
+                        <Button
+                            className="back_to_home_button"
+                            color={themeData[theme].button_color}
+                            onClick={() => { history.push('/') }}
+                            type="button"
+                        >
+                            回到首頁
+                        </Button>
+                    </div>
+                ) : (
+                    <>
+                        <div className="decoration">
+                            <span>&#62;</span>
+                            <span>&#62;</span>
+                            <span>&#62;</span>
+                        </div>
+                        <NameFillIn
+                            actionText="立即加入戰局"
+                            buttonText="GO"
+                            onEnter={enterGame}
+                        />
+                        <p className="players_amount">🍰 {
+                            currentPlayer.length > 1
+                                ? `${currentPlayer[0]} 跟其他 ${currentPlayer.length - 1} 位橋牌友`
+                                : `${currentPlayer[0]} `
+                        }已經加入 🍰</p>
+                    </>
+                )}
             </section>
         </Page>
     )

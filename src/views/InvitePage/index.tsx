@@ -169,7 +169,7 @@ const InvitePage = ({ match }: RouteComponentProps<Params>) => {
                 <p className="players_amount">🍰 {
                     currentPlayer.length > 1
                         ? `${currentPlayer[0]} 跟其他 ${currentPlayer.length - 1} 位橋牌友`
-                        : currentPlayer[0]
+                        : `${currentPlayer[0]} `
                 }已經加入 🍰</p>
             </section>
         </Page>

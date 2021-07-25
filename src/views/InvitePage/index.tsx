@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import db from "database";
-import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { RouteComponentProps } from "react-router-dom";
 import NameFillIn from 'components/Global/NameFillIn';
 import { FirebaseRoom } from 'types/room';
 import { ThemeTypes } from 'types/theme';
 import { themeState } from 'store/theme';
-import { userRoomState } from 'store/user';
 import { color } from 'style/theme'
 import useFirebaseRoom from "util/hook/useFirebaseRoom";
 

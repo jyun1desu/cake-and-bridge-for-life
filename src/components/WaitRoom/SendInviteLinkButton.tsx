@@ -1,8 +1,7 @@
 import React from "react";
 import { useTransition, animated } from "react-spring";
 import styled from 'styled-components';
-import db from "database";
-import { useRecoilValue, useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import { themeState } from 'store/theme';
 import { userRoomState } from 'store/user';

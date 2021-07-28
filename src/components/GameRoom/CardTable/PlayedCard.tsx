@@ -101,15 +101,17 @@ const PlayedCard = () => {
         if (winner === user) {
             collectThisTrick();
         }
-        await currentPlayerRef.set(winner);
-        initRoundData();
+        await initRoundData();
+        currentPlayerRef.set(winner);
     }
 
-    const initRoundData = () => {
+    const initRoundData = async () => {
         const thisRoundSuitRef = roomRef.child('gameInfo').child('thisRoundSuit');
         const thisRoundCardsRef = roomRef.child('gameInfo').child('thisRoundCards');
-        thisRoundSuitRef.remove();
-        thisRoundCardsRef.remove();
+        await Promise.allSettled([
+            thisRoundSuitRef.remove(),
+            thisRoundCardsRef.remove()
+        ]);
     }
 
     const getRoundWinner = () => {

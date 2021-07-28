@@ -106,9 +106,15 @@ const WaitRoom = () => {
                 const userDefaultTeam = userOrder === 0 || userOrder === 3
                     ? TeamTypes.TeamOne
                     : TeamTypes.TeamTwo;
+
+                let userData: {ready: boolean; team?: TeamTypes} = { ready: false };
                 if (!userTeam) {
-                    playersInfo.child(userID).update({ team: userDefaultTeam })
+                    userData = {
+                        ...userData,
+                        team: userDefaultTeam,
+                    }
                 }
+                playersInfo.child(userID).update(userData)
             });
 
             playersInfo.on("value", async (data) => {

@@ -177,14 +177,10 @@ const BindList = (props: BindListProperty) => {
         const nextPlayerRef = roomRef.child('currentPlayer');
 
         await userBindListRef.once("value", (data) => {
-            const userCalledBinds = data.val();
+            const userCalledBinds = data.val() || [];
             const calledBind = userPickBind || 'pass';
-            if (!userCalledBinds) {
-                userBindListRef.set([calledBind]);
-            } else {
-                const newUserBinds = [...userCalledBinds, calledBind];
-                userBindListRef.set(newUserBinds);
-            }
+            const newUserBinds = [...userCalledBinds, calledBind];
+            userBindListRef.set(newUserBinds);
 
             if (userPickBind) {
                 bindRef.set({ ...userPickBind , player: userName });

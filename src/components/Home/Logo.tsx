@@ -20,11 +20,10 @@ const themeData = {
 }
 
 const StyledLogo = styled.div`
-    margin: 30px auto 0;
     border-radius: 100%;
     text-align: center;
-    width: 240px;
-    height: 240px;
+    width: 220px;
+    height: 220px;
     padding: 30px;
     box-sizing: border-box;
     display: flex;

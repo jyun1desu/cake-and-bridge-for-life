@@ -29,6 +29,16 @@ const HomePage = styled.div`
 	justify-content: space-around;
 	transition: .3s background-color;
     background-color: ${({ theme }) => theme.bg};
+
+	.toggler {
+		position: absolute;
+		right: 20px;
+		top: 20px;
+	}
+
+	.logo {
+		margin: 0 auto;
+	}
 `;
 
 const Home = () => {
@@ -82,7 +92,7 @@ const Home = () => {
 
 	return (
 		<HomePage theme={themeData[theme]}>
-			<ThemeToggler className="on_page" />
+			<ThemeToggler className="toggler"/>
 			<Logo className="logo" />
 			<NameFillIn
 				actionText="請輸入名字"

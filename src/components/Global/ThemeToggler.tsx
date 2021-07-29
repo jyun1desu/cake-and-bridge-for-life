@@ -27,12 +27,6 @@ const Toggler = styled.div`
         padding: 0;
     }
 
-    &.on_page {
-		position: absolute;
-		top: 20px;
-		right: 20px;
-	}
-
     &.light_mode {
         background-color: ${color.$pink_color};
         border: 1px solid transparent;

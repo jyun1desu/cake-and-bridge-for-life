@@ -1,7 +1,7 @@
 import {
     atom
 } from 'recoil';
-import { Theme, ThemeTypes } from 'types/theme';
+import { ThemeTypes } from 'types/theme';
 
 const defaultTheme = () => {
     const existingChosenTheme = JSON.parse(localStorage.getItem('cake-and-bridge-theme') || '{}');
@@ -13,5 +13,5 @@ const defaultTheme = () => {
 
 export const themeState = atom({
     key: 'themeState',
-    default: defaultTheme() as Theme,
+    default: defaultTheme() as ThemeTypes,
 });

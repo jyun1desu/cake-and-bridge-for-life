@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import { color } from 'style/theme';
 import classnames from 'classnames';
 import { themeState } from 'store/theme';
-import { Theme, ThemeTypes } from 'types/theme';
+import { ThemeTypes } from 'types/theme';
 import { useRecoilState } from 'recoil';
+import { useEffect } from 'react';
 
 
 const Toggler = styled.div`
@@ -52,26 +53,22 @@ const ThemeToggler = (props: ThemeTogglerProperty) => {
     const { className } = props;
     const [theme, toggleTheme] = useRecoilState(themeState);
 
-    const setTheme = (theme: Theme) => {
-        toggleTheme(theme);
+    useEffect(() => {
         localStorage.setItem('cake-and-bridge-theme', JSON.stringify(theme));
-    }
-
-    const handleToggleTheme = () => {
-        theme === ThemeTypes.Light
-            ? setTheme(ThemeTypes.Dark)
-            : setTheme(ThemeTypes.Light);
-    };
+    }, [theme]);
 
     return (
         <Toggler
-            onClick={handleToggleTheme}
+            onClick={() => toggleTheme((pre) => {
+                return pre === ThemeTypes.Light
+                    ? ThemeTypes.Dark
+                    : ThemeTypes.Light;
+            })}
             className={classnames("theme_toggler", className, {
                 'light_mode': theme === ThemeTypes.Light,
                 'dark_mode': theme === ThemeTypes.Dark,
             })}>
-            <button
-                className="toggle_button" />
+            <button className="toggle_button" />
         </Toggler>
     )
 }

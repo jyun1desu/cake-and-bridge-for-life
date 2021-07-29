@@ -12,5 +12,3 @@ export interface ThemeData {
     [ThemeTypes.Light]: ThemeDataDetail;
     [ThemeTypes.Dark]: ThemeDataDetail;
 }
-
-export type Theme = ThemeTypes.Light | ThemeTypes.Dark;

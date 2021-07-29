@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { Theme } from 'types/theme';
+import { ThemeTypes } from 'types/theme';
 import { themeState  } from 'store/theme';
 
 const getButtonStyle = (theme: string, color: string) => {
@@ -23,7 +23,7 @@ const getButtonStyle = (theme: string, color: string) => {
 }
 
 interface StyledButtonProperty extends ButtonProperty {
-    themeType: Theme;
+    themeType: ThemeTypes;
 }
 
 const StyledButton = styled.button<StyledButtonProperty>`

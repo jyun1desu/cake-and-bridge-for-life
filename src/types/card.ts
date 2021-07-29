@@ -12,8 +12,6 @@ export enum SuitColorType {
 
 export type SuitColor =  SuitColorType.Black | SuitColorType.Red;
 
-export type Suits = CardSuitType.Spade | CardSuitType.Heart | CardSuitType.Diamond | CardSuitType.Club;
-
 export type OtherPlayerDeck = {
 	[key: string]: number;
 }

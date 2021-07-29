@@ -1,7 +1,7 @@
 import {
     atom, selector,
 } from 'recoil';
-import { Suits, Card } from 'types/card'
+import { CardSuitType, Card } from 'types/card'
 import { userNameState } from './user';
 import { teamShouldWinState } from './bind';
 import { teamScoresState } from './score';
@@ -14,7 +14,7 @@ export const currentPlayerName = atom({
 
 export const thisRoundSuitState = atom({
     key: 'thisRoundSuit',
-    default: null as null | Suits,
+    default: null as null | CardSuitType,
 });
 
 export const thisRoundCardsState = atom({

@@ -5,7 +5,7 @@ import { userDeckState } from 'store/deck';
 import { isUserTurnState, thisRoundSuitState, isUserLastPlayerState } from 'store/game';
 import { userNameState, userRoomState } from 'store/user';
 import { relationWithUser } from 'store/players';
-import { Card, Suits } from 'types/card';
+import { Card, CardSuitType } from 'types/card';
 import CardLayout from '../Card'
 
 interface UserHandCardsProperty {
@@ -20,7 +20,7 @@ const UserHandCards = (props: UserHandCardsProperty) => {
     const isUserLastPlayer = useRecoilValue(isUserLastPlayerState);
     const { nextPlayer } = useRecoilValue(relationWithUser);
     const [userDeck, setUserDeck] = useRecoilState(userDeckState);
-    const [nowPickSuit, setNowPickSuit] = React.useState<Suits | null>(null);
+    const [nowPickSuit, setNowPickSuit] = React.useState<CardSuitType | null>(null);
     const roomRef = db.database().ref(`/${roomId}`);
     const gameInfoRef = roomRef.child('gameInfo');
 
@@ -42,7 +42,7 @@ const UserHandCards = (props: UserHandCardsProperty) => {
         }
     }
 
-    const isValidCard = (pickedSuit: Suits) => {
+    const isValidCard = (pickedSuit: CardSuitType) => {
         if (!thisRoundSuit) return true;
         if (thisRoundSuit && pickedSuit !== thisRoundSuit) {
             if (userDeck.some(card => card.suit === thisRoundSuit)) {

@@ -140,24 +140,28 @@ const Page = styled.div<PageProperty>`
 const InvitePage = ({ match }: RouteComponentProps<Params>) => {
     const roomId = match.params.roomId;
     const theme = useRecoilValue(themeState);
-    const history = useHistory();
+    const { push } = useHistory();
     const [, { updateDbRoomData }] = useFirebaseRoom();
-    const [roomName, setRoomName] = useState('')
+    const [roomName, setRoomName] = useState('');
     const [currentPlayer, setPlayers] = useState<string[]>([]);
 
     useEffect(() => {
         const getRoom = () => {
             const roomRef = db.database().ref("/").child(roomId);
             roomRef.on('value', d => {
-                const roomData = d.val() as FirebaseRoom;
-                const currentPlayers = Object.values(roomData.playersInfo).map(p => p.name)
-                setPlayers([...currentPlayers])
+                const roomData = d.val() as FirebaseRoom | null;
+                if (!roomData) {
+                    push('/');
+                    return;
+                }
+                const currentPlayers = Object.values(roomData.playersInfo).map(p => p.name);
                 setRoomName(roomData.roomName);
+                setPlayers([...currentPlayers])
             })
         }
         getRoom();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [roomId]);
 
     const enterGame = () => {
         updateDbRoomData(roomId);
@@ -175,7 +179,6 @@ const InvitePage = ({ match }: RouteComponentProps<Params>) => {
                     <span>{roomName}</span>
                     <span>的橋牌戰帖</span>
                 </div>
-
                 {currentPlayer.length > 3 ? (
                     <div className="unable_content">
                         <p>🤯🤯🤯🤯🤯🤯🤯🤯🤯🤯</p>
@@ -184,7 +187,7 @@ const InvitePage = ({ match }: RouteComponentProps<Params>) => {
                         <Button
                             className="back_to_home_button"
                             color={themeData[theme].button_color}
-                            onClick={() => { history.push('/') }}
+                            onClick={() => { push('/') }}
                             type="button"
                         >
                             回到首頁
@@ -202,11 +205,11 @@ const InvitePage = ({ match }: RouteComponentProps<Params>) => {
                             buttonText="GO"
                             onEnter={enterGame}
                         />
-                        <p className="players_amount">🍰 {
-                            currentPlayer.length > 1
-                                ? `${currentPlayer[0]} 跟其他 ${currentPlayer.length - 1} 位橋牌友`
-                                : `${currentPlayer[0]} `
-                        }已經加入 🍰</p>
+                        <p className="players_amount">🍰
+                            {currentPlayer[0]}
+                            {currentPlayer.length > 1 && ` 跟其他 ${currentPlayer.length - 1} 位橋牌友`}
+                            已經加入 🍰
+                        </p>
                     </>
                 )}
             </section>

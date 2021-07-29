@@ -4,6 +4,9 @@ import { useRecoilState } from "recoil";
 import { themeState } from 'store/theme';
 import { color } from "style/theme";
 import LogoSVG from 'assets/logo.svg';
+import NameLightIcon from 'assets/name-light.svg';
+import NameDarkIcon from 'assets/name-dark.svg';
+import { ThemeTypes } from 'types/theme';
 
 const themeData = {
     light: { 
@@ -20,8 +23,8 @@ const StyledLogo = styled.div`
     margin: 30px auto 0;
     border-radius: 100%;
     text-align: center;
-    width: 270px;
-    height: 270px;
+    width: 240px;
+    height: 240px;
     padding: 30px;
     box-sizing: border-box;
     display: flex;
@@ -31,15 +34,12 @@ const StyledLogo = styled.div`
     background-color: ${({theme}) => theme.bg };
 
     .image {
-        width: 60%;
+        width: 65%;
         margin-bottom: 20px;
     }
 
     .name {
-        font-size: 18px;
-        letter-spacing: 2px;
-        line-height: 28px;
-        color:  ${({theme}) => theme.fg };
+        width: 70%;
     }
 `
 
@@ -50,16 +50,13 @@ interface LogoProperty {
 const Logo = (props: LogoProperty) => {
     const { className } = props;
     const [theme] = useRecoilState(themeState);
+    const nameIcon = theme === ThemeTypes.Light ? NameLightIcon :  NameDarkIcon;
     return (
         <StyledLogo 
             theme={themeData[theme]}
             className={className}>
                 <img className="image" src={LogoSVG} alt="logo" />
-                <p className="name">
-                    Cake-Bridge
-                    <br/>
-                    for-Life
-                </p>
+                <img className="name" src={nameIcon} alt="logo" />
         </StyledLogo>
     );
 }

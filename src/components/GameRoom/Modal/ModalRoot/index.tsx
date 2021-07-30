@@ -12,14 +12,14 @@ import { trumpState, isGameEndState } from 'store/game';
 import { userRoomState, userIDState } from 'store/user';
 import { modalState } from 'store/modal';
 import { OKtoPlay } from 'store/deck';
-import { ReadyTypes } from 'types/ready';
+import { ReadyTypes, GameStatusTypes, RefreshGameTypes } from 'types/types';
 import useUserReadyStatus from 'util/hook/useUserReadyStatus';
 
 const Root = styled.div`
 `
 
 interface ModalRootProperty {
-    initGameData: () => void;
+    initGameData: () => Promise<void>;
 }
 
 const ModalRoot = (props: ModalRootProperty) => {
@@ -41,11 +41,11 @@ const ModalRoot = (props: ModalRootProperty) => {
         history.push(toPath);
         initGameData();
         initModalType();
-        roomRef.child('changeMate').remove();
-        roomRef.child('someoneLeaveGame').remove();
+        roomRef.child(GameStatusTypes.ChangeMate).remove();
+        roomRef.child(GameStatusTypes.SomeoneLeaveGame).remove();
     }
 
-    const refreshGame = async (type: 'restart'|'oneMoreGame' = 'restart') => {
+    const refreshGame = async (type: RefreshGameTypes = GameStatusTypes.Restart) => {
         await initGameData();
         roomRef.child(type).remove();
     }
@@ -59,7 +59,7 @@ const ModalRoot = (props: ModalRootProperty) => {
             <ModalResult
                 setReadyStatus={setReadyStatus}
                 active={!!isGotWinner}
-                refreshGame={()=>refreshGame('oneMoreGame')}
+                refreshGame={()=>refreshGame(GameStatusTypes.OneMoreGame)}
                 openConfirmLeaveModal={()=>setModalType('cofirm-leave')}
                 winTeam={isGotWinner}
             />
@@ -88,7 +88,7 @@ const ModalRoot = (props: ModalRootProperty) => {
                 active={modalType === 'countdown-restart'}
                 type={modalType}
                 countdown={3}
-                action={()=>refreshGame('restart')}
+                action={()=>refreshGame(GameStatusTypes.Restart)}
                 actionText="重新牌局"
                 text="倒牌啦！"
                 noOpacity

@@ -5,7 +5,7 @@ import WonTricks from 'components/GameRoom/WonTricks';
 import { color } from 'style/theme';
 import { navState } from 'store/user';
 import { useRecoilValue } from 'recoil';
-import { NavigatorTypes } from 'types/navigator';
+import { NavigatorTypes } from 'types/types';
 
 interface BackgroundProperty  {
     nowNav: string | null;

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { userNameState, userRoomState, userIDState } from "store/user";
 import { PlayerData } from 'types/player';
-import { ReadyTypes } from 'types/ready';
+import { ReadyTypes } from 'types/types';
 
 type Values = {
     userReadyStatus: boolean

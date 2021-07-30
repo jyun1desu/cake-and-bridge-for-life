@@ -11,7 +11,7 @@ import { themeState } from 'store/theme';
 import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 
 import { TeamTypes, PlayerData } from 'types/player';
-import { ReadyTypes } from 'types/ready';
+import { ReadyTypes } from 'types/types';
 
 import PlayerWindow from 'components/WaitRoom/PlayerWindow';
 import SendInviteLinkButton from 'components/WaitRoom/SendInviteLinkButton';

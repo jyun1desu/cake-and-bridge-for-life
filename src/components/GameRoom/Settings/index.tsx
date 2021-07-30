@@ -6,7 +6,7 @@ import { themeState } from 'store/theme';
 import { color } from 'style/theme';
 import SideInfo from 'components/GameRoom/SideInfo';
 import Content from './Content';
-import { NavigatorTypes } from 'types/navigator';
+import { NavigatorTypes } from 'types/types';
 
 
 const Icon = styled.div`

@@ -1,22 +1,24 @@
 {
   "files": {
-    "main.js": "/cake-and-bridge-for-life/static/js/main.2a202fac.chunk.js",
-    "main.js.map": "/cake-and-bridge-for-life/static/js/main.2a202fac.chunk.js.map",
+    "main.js": "/cake-and-bridge-for-life/static/js/main.5d11cd5a.chunk.js",
+    "main.js.map": "/cake-and-bridge-for-life/static/js/main.5d11cd5a.chunk.js.map",
     "runtime-main.js": "/cake-and-bridge-for-life/static/js/runtime-main.a93cabbb.js",
     "runtime-main.js.map": "/cake-and-bridge-for-life/static/js/runtime-main.a93cabbb.js.map",
-    "static/js/2.be7ca333.chunk.js": "/cake-and-bridge-for-life/static/js/2.be7ca333.chunk.js",
-    "static/js/2.be7ca333.chunk.js.map": "/cake-and-bridge-for-life/static/js/2.be7ca333.chunk.js.map",
+    "static/js/2.d9672846.chunk.js": "/cake-and-bridge-for-life/static/js/2.d9672846.chunk.js",
+    "static/js/2.d9672846.chunk.js.map": "/cake-and-bridge-for-life/static/js/2.d9672846.chunk.js.map",
     "static/js/3.bde0dc6b.chunk.js": "/cake-and-bridge-for-life/static/js/3.bde0dc6b.chunk.js",
     "static/js/3.bde0dc6b.chunk.js.map": "/cake-and-bridge-for-life/static/js/3.bde0dc6b.chunk.js.map",
     "index.html": "/cake-and-bridge-for-life/index.html",
-    "static/js/2.be7ca333.chunk.js.LICENSE.txt": "/cake-and-bridge-for-life/static/js/2.be7ca333.chunk.js.LICENSE.txt",
+    "static/js/2.d9672846.chunk.js.LICENSE.txt": "/cake-and-bridge-for-life/static/js/2.d9672846.chunk.js.LICENSE.txt",
     "static/media/bumpintowindow.fd5eab02.gif": "/cake-and-bridge-for-life/static/media/bumpintowindow.fd5eab02.gif",
     "static/media/kanaheiclap.23b0e19f.gif": "/cake-and-bridge-for-life/static/media/kanaheiclap.23b0e19f.gif",
-    "static/media/logo.ba38e50a.svg": "/cake-and-bridge-for-life/static/media/logo.ba38e50a.svg"
+    "static/media/logo.ba38e50a.svg": "/cake-and-bridge-for-life/static/media/logo.ba38e50a.svg",
+    "static/media/name-dark.f17fa7b4.svg": "/cake-and-bridge-for-life/static/media/name-dark.f17fa7b4.svg",
+    "static/media/name-light.5c6afb25.svg": "/cake-and-bridge-for-life/static/media/name-light.5c6afb25.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.a93cabbb.js",
-    "static/js/2.be7ca333.chunk.js",
-    "static/js/main.2a202fac.chunk.js"
+    "static/js/2.d9672846.chunk.js",
+    "static/js/main.5d11cd5a.chunk.js"
   ]
 }

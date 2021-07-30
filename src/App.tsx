@@ -15,20 +15,24 @@ import {
 const App = () => {
   const roomId = useRecoilValue(userRoomState);
   const userName = useRecoilValue(userNameState);
-  
+
   return (
     <Router>
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route path="/w/:roomId/:userID">
+        <Route exact path="/w/:roomId/:userID">
           {roomId && userName ? <WaitRoom /> : <Redirect to="/" />}
         </Route>
-        <Route path="/g/:roomId/:userID">
+        <Route exact path="/g/:roomId/:userID">
           {roomId && userName ? <GameRoom /> : <Redirect to="/" />}
         </Route>
-        <Route path="/i/:roomId" component={InvitePage} />
+        <Route exact path="/i/:roomId" component={InvitePage} />
+        <Route path="*">
+          <Redirect to="/" />
+        </Route>
       </Switch>
     </Router>
-)};
+  )
+};
 
 export default App;

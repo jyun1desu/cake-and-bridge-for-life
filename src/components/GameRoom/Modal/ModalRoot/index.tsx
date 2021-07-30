@@ -1,12 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useHistory } from "react-router-dom";
 import db from "database";
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import ModalBinding from 'components/GameRoom/Modal/ModalBinding';
 import ModalGiveUp from 'components/GameRoom/Modal/ModalGiveUp';
-import ModalConfirmLeave from 'components/GameRoom/Modal/ModalConfirmLeave';
 import ModalResult from 'components/GameRoom/Modal/ModalResult';
+import ModalConfirm from 'components/Global/ModalConfirm';
 import Loading from 'components/Global/Loading';
 import { trumpState, isGameEndState } from 'store/game';
 import { userRoomState, userIDState } from 'store/user';
@@ -15,8 +14,7 @@ import { OKtoPlay } from 'store/deck';
 import { ReadyTypes, GameStatusTypes, RefreshGameTypes } from 'types/types';
 import useUserReadyStatus from 'util/hook/useUserReadyStatus';
 
-const Root = styled.div`
-`
+import Kanahei from 'assets/bumpintowindow.gif';
 
 interface ModalRootProperty {
     initGameData: () => Promise<void>;
@@ -45,6 +43,12 @@ const ModalRoot = (props: ModalRootProperty) => {
         roomRef.child(GameStatusTypes.SomeoneLeaveGame).remove();
     }
 
+    const leaveGame = async() => {
+        await roomRef.child('playersInfo').child(userID).remove();
+        await roomRef.child('someoneLeaveGame').set(true);
+        history.push('/');
+    }
+
     const refreshGame = async (type: RefreshGameTypes = GameStatusTypes.Restart) => {
         await initGameData();
         roomRef.child(type).remove();
@@ -53,7 +57,7 @@ const ModalRoot = (props: ModalRootProperty) => {
     const closeModal = () => initModalType();
 
     return (
-        <Root className="modal_root">
+        <div className="modal_root">
             <ModalBinding active={!trump && isOKtoPlay} />
             <ModalGiveUp active={!isOKtoPlay} />
             <ModalResult
@@ -63,9 +67,16 @@ const ModalRoot = (props: ModalRootProperty) => {
                 openConfirmLeaveModal={()=>setModalType('cofirm-leave')}
                 winTeam={isGotWinner}
             />
-            <ModalConfirmLeave 
-                active={modalType === 'cofirm-leave'} 
-                closeModal={closeModal} />
+            <ModalConfirm 
+                active={modalType === 'cofirm-leave'}
+                className="confirm_leave_modal"
+                description="確定要離開嗎？"
+                onConfirmText="確定"
+                onCancelText="繼續玩"
+                imageUrl={Kanahei}
+                onConfirm={leaveGame}
+                onCancel={closeModal}
+            />
             <Loading
                 active={modalType === 'countdown-leave'}
                 type={modalType}
@@ -97,7 +108,7 @@ const ModalRoot = (props: ModalRootProperty) => {
                 active={userReadyStatus}
                 cancelReady={() => setReadyStatus(false)}
             />
-        </Root>
+        </div>
     )
 }
 

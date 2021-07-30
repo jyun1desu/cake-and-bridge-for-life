@@ -2,12 +2,12 @@ import React from 'react';
 import classnames from 'classnames';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import Suit from 'components/Global/Suit';
+import Suit from 'components/Global/atoms/Suit';
 import { themeState } from 'store/theme';
 import { ThemeTypes } from 'types/theme';
 import { color } from 'style/theme';
 import { suitColor } from 'util/suit';
-import Radio from 'components/Global/Radio';
+import Radio from 'components/Global/atoms/Radio';
 import { CardSuitType } from 'types/card';
 
 const themeData = {

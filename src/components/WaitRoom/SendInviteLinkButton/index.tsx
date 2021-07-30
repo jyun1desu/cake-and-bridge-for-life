@@ -5,8 +5,8 @@ import { useRecoilValue } from 'recoil';
 
 import { themeState } from 'store/theme';
 import { userRoomState } from 'store/user';
-import ShareIcon from "components/Global/ShareIcon";
-import Button from "components/Global/Button";
+import ShareIcon from "components/Global/atoms/ShareIcon";
+import Button from "components/Global/atoms/Button";
 import { color } from 'style/theme';
 import { useState } from "react";
 import { ThemeTypes } from "types/theme";

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import classnames from 'classnames';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import Suit from 'components/Global/Suit';
+import Suit from 'components/Global/atoms/Suit';
 import { themeState } from 'store/theme';
 import { trumpState } from 'store/game';
 import { teamShouldWinState } from 'store/bind';

@@ -16,8 +16,8 @@ import { ReadyTypes } from 'types/types';
 import PlayerWindow from 'components/WaitRoom/PlayerWindow';
 import SendInviteLinkButton from 'components/WaitRoom/SendInviteLinkButton';
 import TeamRadios from 'components/WaitRoom/TeamRadios';
-import Button from 'components/Global/Button';
-import Loading from 'components/Global/Loading';
+import Button from 'components/Global/atoms/Button';
+import Loading from 'components/Global/molecules/Loading';
 import useUserReadyStatus from 'util/hook/useUserReadyStatus';
 
 const themeData = {

@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-
-
 const Icon = styled.span<ShareIconProperty>`
     display: inline-flex;
     align-items: center;

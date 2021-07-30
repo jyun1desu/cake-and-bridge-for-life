@@ -1,8 +1,8 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
 
-import Input from "components/Global/Input";
-import Button from "components/Global/Button";
+import Input from "components/Global/atoms/Input";
+import Button from "components/Global/atoms/Button";
 
 import useUserName from "util/hook/useUserName";
 import { themeState } from 'store/theme';

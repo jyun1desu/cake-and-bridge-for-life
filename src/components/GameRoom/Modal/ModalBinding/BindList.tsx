@@ -3,7 +3,7 @@ import db from "database";
 import classnames from 'classnames';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import Suit from 'components/Global/Suit';
+import Suit from 'components/Global/atoms/Suit';
 import { color } from 'style/theme';
 import { ThemeTypes } from 'types/theme';
 import { CalledBind } from 'types/bind';

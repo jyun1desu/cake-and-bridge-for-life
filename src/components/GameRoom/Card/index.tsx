@@ -2,7 +2,7 @@ import React from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import classnames from 'classnames';
-import Suit from 'components/Global/Suit';
+import Suit from 'components/Global/atoms/Suit';
 import { suitColor } from 'util/suit'
 import { SuitColor, CardSuitType } from 'types/card';
 import { color } from "style/theme";

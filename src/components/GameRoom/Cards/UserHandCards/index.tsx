@@ -6,7 +6,7 @@ import { isUserTurnState, thisRoundSuitState, isUserLastPlayerState } from 'stor
 import { userNameState, userRoomState } from 'store/user';
 import { relationWithUser } from 'store/players';
 import { Card, CardSuitType } from 'types/card';
-import CardLayout from '../Card'
+import CardLayout from '../../Card'
 
 interface UserHandCardsProperty {
     className: string;

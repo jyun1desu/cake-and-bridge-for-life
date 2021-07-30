@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { color } from 'style/theme'
 import { useSetRecoilState, useRecoilState } from "recoil";
 
-import Modal from "components/Global/Modal";
-import Button from 'components/Global/Button';
-import Input from 'components/Global/Input';
+import Modal from "components/Global/atoms/Modal";
+import Button from 'components/Global/atoms/Button';
+import Input from 'components/Global/atoms/Input';
 
 import { RoomList } from 'types/room';
 import userGameRoomName from "util/hook/useGameRoomName";

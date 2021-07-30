@@ -4,8 +4,8 @@ import db from "database";
 
 import Logo from "components/Home/Logo";
 import RoomDialog from "components/Home/RoomDialog";
-import NameFillIn from "components/Global/NameFillIn";
-import ThemeToggler from 'components/Global/ThemeToggler';
+import NameFillIn from "components/Global/molecules/NameFillin";
+import ThemeToggler from 'components/Global/atoms/ThemeToggler';
 
 import { RoomList, FirebaseRoomsData } from 'types/room';
 

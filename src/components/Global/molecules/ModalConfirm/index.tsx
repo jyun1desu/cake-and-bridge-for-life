@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 import { themeState } from 'store/theme';
 import { color } from 'style/theme';
-import Modal from 'components/Global/Modal';
+import Modal from 'components/Global/atoms/Modal';
 
 const themeData = {
     light: {

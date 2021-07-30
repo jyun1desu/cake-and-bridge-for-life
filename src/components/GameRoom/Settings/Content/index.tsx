@@ -5,8 +5,8 @@ import { themeState } from 'store/theme';
 import { modalState } from 'store/modal';
 import { navState } from 'store/user';
 import { color } from 'style/theme';
-import Button from 'components/Global/Button';
-import ThemeToggler from 'components/Global/ThemeToggler';
+import Button from 'components/Global/atoms/Button';
+import ThemeToggler from 'components/Global/atoms/ThemeToggler';
 
 const Item = styled.div`
     display: flex;

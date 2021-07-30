@@ -8,7 +8,7 @@ import { Team, TeamTypes } from 'types/player';
 import { themeState } from 'store/theme';
 import { userTeamState } from 'store/user';
 import { color } from 'style/theme';
-import Radio from 'components/Global/Radio'
+import Radio from 'components/Global/atoms/Radio'
 
 const themeData = {
     light: {

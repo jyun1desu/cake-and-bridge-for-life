@@ -3,7 +3,7 @@ import db from "database";
 import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { userRoomState } from 'store/user';
 import { responseToBadDeck } from 'store/deck';
-import ModalConfirm from 'components/Global/ModalConfirm';
+import ModalConfirm from 'components/Global/molecules/ModalConfirm';
 import Kanahei from 'assets/kanaheiclap.gif';
 
 interface ModalGiveUpProperty  {

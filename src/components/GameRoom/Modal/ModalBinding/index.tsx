@@ -4,7 +4,7 @@ import { color } from 'style/theme';
 import { useRecoilState } from 'recoil';
 import { themeState } from 'store/theme';
 
-import Modal from 'components/Global/Modal';
+import Modal from 'components/Global/atoms/Modal';
 import PlayerList from './PlayerList'
 import BindList from './BindList'
 

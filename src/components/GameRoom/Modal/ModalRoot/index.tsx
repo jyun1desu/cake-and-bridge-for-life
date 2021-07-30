@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useHistory } from "react-router-dom";
 import db from "database";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import ModalBinding from 'components/GameRoom/Modal/ModalBinding';
 import ModalGiveUp from 'components/GameRoom/Modal/ModalGiveUp';
 import ModalConfirmLeave from 'components/GameRoom/Modal/ModalConfirmLeave';
@@ -11,7 +12,8 @@ import { trumpState, isGameEndState } from 'store/game';
 import { userRoomState, userIDState } from 'store/user';
 import { modalState } from 'store/modal';
 import { OKtoPlay } from 'store/deck';
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
+import { ReadyTypes } from 'types/ready';
+import useUserReadyStatus from 'util/hook/useUserReadyStatus';
 
 const Root = styled.div`
 `
@@ -23,7 +25,6 @@ interface ModalRootProperty {
 const ModalRoot = (props: ModalRootProperty) => {
     const { initGameData } = props;
     const history = useHistory();
-    const [isLoading, toggleLoading] = useState(false);
     const trump = useRecoilValue(trumpState);
     const userID = useRecoilValue(userIDState);
     const roomId = useRecoilValue(userRoomState);
@@ -31,7 +32,9 @@ const ModalRoot = (props: ModalRootProperty) => {
     const isGotWinner = useRecoilValue(isGameEndState);
     const [modalType, setModalType] = useRecoilState(modalState);
     const initModalType = useResetRecoilState(modalState);
+    const [{ userReadyStatus } ,{ setReadyStatus }] = useUserReadyStatus(ReadyTypes.OneMoreGame);
     const roomRef = db.database().ref(`/${roomId}`);
+    
 
     const backToWaitRoom = () => {
         const toPath = `/w/${roomId}/${userID}`;
@@ -54,10 +57,10 @@ const ModalRoot = (props: ModalRootProperty) => {
             <ModalBinding active={!trump && isOKtoPlay} />
             <ModalGiveUp active={!isOKtoPlay} />
             <ModalResult
+                setReadyStatus={setReadyStatus}
                 active={!!isGotWinner}
                 refreshGame={()=>refreshGame('oneMoreGame')}
                 openConfirmLeaveModal={()=>setModalType('cofirm-leave')}
-                toggleLoadingWindow={toggleLoading}
                 winTeam={isGotWinner}
             />
             <ModalConfirmLeave 
@@ -91,8 +94,8 @@ const ModalRoot = (props: ModalRootProperty) => {
                 noOpacity
             />
             <Loading
-                active={isLoading}
-                cancelReady={() => toggleLoading(false)}
+                active={userReadyStatus}
+                cancelReady={() => setReadyStatus(false)}
             />
         </Root>
     )

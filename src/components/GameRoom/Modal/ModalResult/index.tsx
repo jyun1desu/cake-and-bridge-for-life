@@ -6,9 +6,9 @@ import { useHistory } from "react-router-dom";
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { themeState } from 'store/theme';
 import { modalState } from 'store/modal';
-import { userTeamState, userRoomState, userIDState, userNameState } from 'store/user';
+import { userTeamState, userRoomState, userIDState } from 'store/user';
 import { color } from 'style/theme';
-import { PlayerData, TeamTypes } from 'types/player';
+import { TeamTypes } from 'types/player';
 import Modal from 'components/Global/Modal';
 import Button from 'components/Global/Button';
 import mainFireWork from 'assets/fireworks/16764-firework-animaiton.json';
@@ -258,15 +258,21 @@ interface ContentProperty {
     isUserWin: boolean;
     refreshGame: () => void;
     winTeam: TeamTypes | null;
-    toggleLoadingWindow: React.Dispatch<React.SetStateAction<boolean>>;
     openConfirmLeaveModal: () => void;
+    setReadyStatus: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Content = (props: ContentProperty) => {
-    const { winTeam, isUserWin, toggleLoadingWindow, openConfirmLeaveModal, refreshGame } = props;
+    const {
+        winTeam,
+        isUserWin,
+        openConfirmLeaveModal,
+        refreshGame,
+        setReadyStatus
+    } = props;
+
     const theme = useRecoilValue(themeState);
     const userID = useRecoilValue(userIDState);
-    const userName = useRecoilValue(userNameState);
     const roomId = useRecoilValue(userRoomState);
     const teamName = winTeam === TeamTypes.TeamOne ? '草莓糕' : '可麗露';
     const initModalType = useResetRecoilState(modalState);
@@ -285,16 +291,15 @@ const Content = (props: ContentProperty) => {
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         listenOnOneMoreGame();
         return () => removeOneMoreGameListener();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const startNewGame = () => {
         refreshGame();
-        roomRef.child('playersInfo').child(userID).update({ ready: false });
-        toggleLoadingWindow(false);
+        setReadyStatus(false);
     }
 
     const listenOnOneMoreGame = () => {
@@ -318,27 +323,6 @@ const Content = (props: ContentProperty) => {
         history.push(toPath);
         initModalType();
         roomRef.child('changeMate').set(true);
-    }
-
-    const setReady = async (isReady: boolean) => {
-        const userInfo = roomRef.child('playersInfo').child(userID);
-        await userInfo.update({ ready: isReady });
-
-        if (isReady) {
-            await roomRef.child('playersInfo').once("value", async (data) => {
-                const playersData = Object.values(data.val()) as PlayerData[];
-                const allReady = playersData.filter(data => data.ready).length === 4;
-                if (allReady) {
-                    await roomRef.child('currentPlayer').set(userName);
-                    await roomRef.child('oneMoreGame').set(true);
-                }
-            })
-        }
-    }
-
-    const readyToNextRound = async () => {
-        setReady(true);
-        toggleLoadingWindow(true);
     }
 
     return (
@@ -368,7 +352,7 @@ const Content = (props: ContentProperty) => {
                         onClick={backToWaitRoom}
                         color={buttonColor[theme].yellow_button}>更換隊友</Button>
                     <Button
-                        onClick={readyToNextRound}
+                        onClick={() => { setReadyStatus(true) }}
                         color={buttonColor[theme].orange_button}>再玩一局</Button>
                     <Button
                         onClick={openConfirmLeaveModal}
@@ -383,24 +367,30 @@ interface ModalResultProperty {
     active: boolean;
     winTeam: TeamTypes | null;
     refreshGame: () => void;
-    toggleLoadingWindow: React.Dispatch<React.SetStateAction<boolean>>;
     openConfirmLeaveModal: () => void;
+    setReadyStatus: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ModalResult = (props: ModalResultProperty) => {
-    const { active, winTeam, toggleLoadingWindow, openConfirmLeaveModal, refreshGame } = props;
+    const {
+        active,
+        winTeam,
+        openConfirmLeaveModal,
+        refreshGame,
+        setReadyStatus
+    } = props;
     const userTeam = useRecoilValue(userTeamState);
     const isUserWin = winTeam === userTeam;
-    
+
     return (
         <Modal
             active={active}
             className="result_modal">
             <Content
+                setReadyStatus={setReadyStatus}
                 winTeam={winTeam}
                 isUserWin={isUserWin}
                 refreshGame={refreshGame}
-                toggleLoadingWindow={toggleLoadingWindow}
                 openConfirmLeaveModal={openConfirmLeaveModal}
             />
             {isUserWin && <Animations />}

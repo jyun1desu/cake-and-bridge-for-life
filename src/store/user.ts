@@ -39,16 +39,6 @@ export const userTeamState = selector({
     }
 })
 
-export const userReadyState = selector({
-    key: 'userReadyState',
-    get:  ({get}) => {
-        const userName = get(userNameState);
-        const playerList = get(playersData);
-        if(!playerList.length) return false;
-        return playerList.find(data=>data.name===userName)?.ready as boolean;
-    }
-})
-
 export const navState = atom({
     key: 'navState',
     default: null as string | null,

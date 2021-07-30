@@ -6,17 +6,19 @@ import { color } from 'style/theme'
 import styled from 'styled-components';
 
 import { playersData, teamArray } from "store/players";
-import { userReadyState, userIDState, userRoomState, userTeamState, userNameState } from "store/user";
+import { userIDState, userRoomState, userTeamState } from "store/user";
 import { themeState } from 'store/theme';
 import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 
 import { TeamTypes, PlayerData } from 'types/player';
+import { ReadyTypes } from 'types/ready';
 
 import PlayerWindow from 'components/WaitRoom/PlayerWindow';
 import SendInviteLinkButton from 'components/WaitRoom/SendInviteLinkButton';
 import TeamRadios from 'components/WaitRoom/TeamRadios';
 import Button from 'components/Global/Button';
 import Loading from 'components/Global/Loading';
+import useUserReadyStatus from 'util/hook/useUserReadyStatus';
 
 const themeData = {
     light: {
@@ -86,11 +88,10 @@ const WaitRoom = () => {
     const [buttonMessage, setButtonMessage] = useState('');
     const setPlayerData = useSetRecoilState(playersData);
     const userID = useRecoilValue(userIDState);
-    const userName = useRecoilValue(userNameState);
     const userTeam = useRecoilValue(userTeamState);
     const roomName = useRecoilValue(userRoomState);
     const team = useRecoilValue(teamArray);
-    const isUserReady = useRecoilValue(userReadyState);
+    const [{ userReadyStatus }, { setReadyStatus }] = useUserReadyStatus(ReadyTypes.EnterGame);
     const roomRef = db.database().ref(`/${roomName}`);
     const playersInfo = roomRef.child('playersInfo');
     const isAllReady = roomRef.child('enterGame');
@@ -107,13 +108,11 @@ const WaitRoom = () => {
                     ? TeamTypes.TeamOne
                     : TeamTypes.TeamTwo;
 
-                let userData: {ready: boolean; team?: TeamTypes} = { ready: false };
-                if (!userTeam) {
-                    userData = {
-                        ...userData,
-                        team: userDefaultTeam,
-                    }
-                }
+                let userData: { ready: boolean; team: TeamTypes } = {
+                    ready: false,
+                    team: userTeam || userDefaultTeam
+                };
+
                 playersInfo.child(userID).update(userData)
             });
 
@@ -136,6 +135,7 @@ const WaitRoom = () => {
         prepareWaitRoom();
 
         return () => {
+            setReadyStatus(false);
             playersInfo.off();
             roomRef
                 .child('playersInfo')
@@ -175,38 +175,23 @@ const WaitRoom = () => {
         history.push(`/g/${roomName}/${userID}`);
     }
 
-    const setReady = async (isReady: boolean) => {
-        if (buttonMessage !== '開打！') return;
-        const roomRef = db.database().ref(`/${roomName}`);
-        const userInfo = roomRef.child('playersInfo').child(userID);
-        await userInfo.update({ ready: isReady });
-        if (isReady) {
-            await roomRef.child('playersInfo').once("value", async (data) => {
-                const playersData = Object.values(data.val()) as PlayerData[];
-                const allReady = playersData.filter(data => data.ready).length === 4;
-                if (allReady) {
-                    await roomRef.child('currentPlayer').set(userName);
-                    await roomRef.child('enterGame').set(true);
-                    roomRef.child('playersInfo').off();
-                }
-            })
-        }
-    }
-
     return (
         <Room
             theme={themeData[theme]}>
-            <SendInviteLinkButton className="copy_link_button"/>   
+            <SendInviteLinkButton className="copy_link_button" />
             <PlayerWindow />
             <TeamRadios roomName={roomName} userID={userID} />
             <ReadyButton
                 className="start_game"
                 buttonMessage={buttonMessage}
-                onClick={() => setReady(true)}
+                onClick={() => {
+                    if (buttonMessage !== '開打！') return;
+                    setReadyStatus(true);
+                }}
             />
             <Loading
-                active={isUserReady}
-                cancelReady={() => setReady(false)}
+                active={userReadyStatus}
+                cancelReady={() => setReadyStatus(false)}
             />
         </Room>
     )

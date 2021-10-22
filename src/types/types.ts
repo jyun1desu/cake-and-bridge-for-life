@@ -11,8 +11,6 @@ export enum GameStatusTypes {
 	Restart = 'restart',
 }
 
-export type RefreshGameTypes = GameStatusTypes.Restart | GameStatusTypes.OneMoreGame;
-
 export enum NavigatorTypes {
 	WonTricks = 'wintricks',
 	Settings = 'settings',

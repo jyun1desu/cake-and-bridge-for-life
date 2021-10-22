@@ -5,8 +5,9 @@
   "homepage": "https://jyun1desu.github.io/cake-and-bridge-for-life",
   "dependencies": {
     "@formspree/react": "^2.2.3",
+    "babel-loader": "8.1.0",
     "classnames": "^2.2.6",
-    "firebase": "^8.3.1",
+    "firebase": "^9.1.3",
     "gh-pages": "^3.2.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

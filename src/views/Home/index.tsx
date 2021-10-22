@@ -1,112 +1,117 @@
 import React, { useState } from "react";
 import { useRecoilValue } from "recoil";
-import db from "database";
+import db, { getFirebaseData } from "database";
+import { ref, set, off, onValue } from "firebase/database";
 
 import Logo from "components/Home/Logo";
 import RoomDialog from "components/Home/RoomDialog";
 import NameFillIn from "components/Global/molecules/NameFillin";
-import ThemeToggler from 'components/Global/atoms/ThemeToggler';
+import ThemeToggler from "components/Global/atoms/ThemeToggler";
 
-import { RoomList, FirebaseRoomsData } from 'types/room';
+import { RoomList, FirebaseRoomsData } from "types/room";
 
 import useInitData from "util/hook/useInitData";
-import { themeState } from 'store/theme';
+import { themeState } from "store/theme";
 import styled from "styled-components";
 import { color } from "style/theme";
 
 const themeData = {
-	light: {
-		bg: color.$theme_background,
-	},
-	dark: {
-		bg: color.$dark_bg_color,
-	},
-}
+  light: {
+    bg: color.$theme_background,
+  },
+  dark: {
+    bg: color.$dark_bg_color,
+  },
+};
 
 const HomePage = styled.div`
-	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-	transition: .3s background-color;
-    background-color: ${({ theme }) => theme.bg};
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  transition: 0.3s background-color;
+  background-color: ${({ theme }) => theme.bg};
 
-	.toggler {
-		position: absolute;
-		right: 20px;
-		top: 20px;
-	}
+  .toggler {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+  }
 
-	.logo {
-		margin: 0 auto;
-	}
+  .logo {
+    margin: 0 auto;
+  }
 `;
 
 const Home = () => {
-	const [showRoomDialog, toggleRoomDialog] = useState<boolean>(false);
-	const [roomList, setRoomList] = useState<RoomList>([]);
-	const [{ initGameData }] = useInitData();
-	const theme = useRecoilValue(themeState);
+  const [showRoomDialog, toggleRoomDialog] = useState<boolean>(false);
+  const [roomList, setRoomList] = useState<RoomList>([]);
+  const [{ initGameData }] = useInitData();
+  const theme = useRecoilValue(themeState);
+  const firebaseRef = ref(db, "/");
 
-	React.useEffect(() => {
-		initGameData();
-		subscribeRooms();
-		return () => removeListeners();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+  React.useEffect(() => {
+    getFirebaseData();
+    initGameData();
+    subscribeRooms();
+    return () => removeListeners();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-	const subscribeRooms = () => {
-		const Firebase = db.database().ref("/");
-		Firebase.on("value", async (data) => {
-			const roomsData = data.val() as FirebaseRoomsData;
-			if (!roomsData) {
-				setRoomList([]);
-				return;
-			}
+  const subscribeRooms = () => {
+    onValue(firebaseRef, async (snapshot) => {
+      const roomsData = snapshot.val() as FirebaseRoomsData;
 
-			const filterOutAbandonedRoom = Object.entries(roomsData)
-				.filter(data => data[1].playersInfo)
-				.reduce((obj, data) => ({
-					...obj,
-					[data[0]]: data[1]
-				}), {});
+      if (!roomsData) {
+        setRoomList([]);
+        return;
+      }
 
-			await Firebase.set(filterOutAbandonedRoom);
-	
-			const rooms = Object.entries(roomsData)
-				.map(room => ({
-					roomID: room[0],
-					...room[1]
-				}))
-				.filter(room => {
-					return room.playersInfo && Object.values(room.playersInfo).length < 4;
-				});
+      const filterOutAbandonedRoom = Object.entries(roomsData)
+        .filter((data) => data[1].playersInfo)
+        .reduce(
+          (obj, data) => ({
+            ...obj,
+            [data[0]]: data[1],
+          }),
+          {}
+        );
 
-			setRoomList(rooms as RoomList);
-		});
-	};
+      await set(firebaseRef, filterOutAbandonedRoom);
 
-	const removeListeners = () => {
-		const Firebase = db.database().ref("/");
-		Firebase.off();
-	};
+      const rooms = Object.entries(roomsData)
+        .map((room) => ({
+          roomID: room[0],
+          ...room[1],
+        }))
+        .filter((room) => {
+          return room.playersInfo && Object.values(room.playersInfo).length < 4;
+        });
 
-	return (
-		<HomePage theme={themeData[theme]}>
-			<ThemeToggler className="toggler"/>
-			<Logo className="logo" />
-			<NameFillIn
-				actionText="請輸入名字"
-				buttonText="加入遊戲"
-				onEnter={() => toggleRoomDialog(true)}
-			/>
-			<RoomDialog
-				active={showRoomDialog}
-				roomList={roomList}
-				className="room_list_dialog"
-				closeRoomList={() => toggleRoomDialog(false)}
-			/>
-		</HomePage>
-	);
+      setRoomList(rooms as RoomList);
+    });
+  };
+
+  const removeListeners = () => {
+    off(firebaseRef);
+  };
+
+  return (
+    <HomePage theme={themeData[theme]}>
+      <ThemeToggler className="toggler" />
+      <Logo className="logo" />
+      <NameFillIn
+        actionText="請輸入名字"
+        buttonText="加入遊戲"
+        onEnter={() => toggleRoomDialog(true)}
+      />
+      <RoomDialog
+        active={showRoomDialog}
+        roomList={roomList}
+        className="room_list_dialog"
+        closeRoomList={() => toggleRoomDialog(false)}
+      />
+    </HomePage>
+  );
 };
 
 export default Home;

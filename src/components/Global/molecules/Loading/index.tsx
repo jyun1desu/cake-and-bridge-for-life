@@ -162,6 +162,7 @@ interface LoadingProperty {
     action?: ()=>void;
     text?: string;
     className?: string;
+	isCountdown?:boolean;
 }
 
 const Loading = (props: LoadingProperty) => {
@@ -174,6 +175,7 @@ const Loading = (props: LoadingProperty) => {
         noOpacity = false,
         action = () => {},
         cancelReady = () => {},
+		isCountdown,
     } = props;
 
     const [theme] = useRecoilState(themeState);
@@ -210,7 +212,7 @@ const Loading = (props: LoadingProperty) => {
                     {dots.map((dot)=>(<div key={`dot${dot}`}></div>))}
                 </div>
                 <p className="text">{text}</p>
-                {type && type.includes('countdown') &&
+                {type && isCountdown &&
                     <p className="countdown">{timeLeft} 秒後{actionText}</p>
                 }
                 {type === 'ready' &&

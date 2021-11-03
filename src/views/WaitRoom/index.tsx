@@ -101,7 +101,7 @@ const WaitRoom = () => {
   );
   const roomRef = ref(db, `/${roomName}`);
   const playersInfo = child(roomRef, `playersInfo`);
-  const isAllReady = child(roomRef, `enterGame`);
+  const isAllReady = child(roomRef, ReadyTypes.EnterGame);
 
   const handleUserData = async () => {
     const rawPlayersList = await getFirebaseData(`${roomName}/playersInfo`);

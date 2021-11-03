@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import db from "database";
-import { ref, child, onValue, off, set } from "firebase/database";
+import { ref, child, onValue, off, set, remove } from "firebase/database";
 import Lottie from "react-lottie";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
@@ -16,7 +16,7 @@ import mainFireWork from "assets/fireworks/16764-firework-animaiton.json";
 import subFireWork from "assets/fireworks/14438-fireworks.json";
 import thirdFireWork from "assets/fireworks/lf30_editor_he0cup9w.json";
 import sleep from "util/sleep";
-import { GameStatusTypes } from "types/types";
+import { GameStatusTypes, ReadyTypes } from "types/types";
 
 const AninimationBox = styled.div`
   position: absolute;
@@ -271,10 +271,11 @@ const Content = (props: ContentProperty) => {
   };
 
   const listenOnOneMoreGame = () => {
-    onValue(eventRef, async (data) => {
-      const type = data.val();
-      if (type === GameStatusTypes.OneMoreGame) {
+	const oneMoreGame = child(roomRef, ReadyTypes.OneMoreGame);
+    onValue(oneMoreGame, async (data) => {
+      if (data.val()) {
         startNewGame();
+		remove(oneMoreGame);
       }
     });
   };

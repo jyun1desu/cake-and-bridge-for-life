@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from "react";
 import db from "database";
 import { child, ref, set, onValue, off, get } from "firebase/database";
 import classnames from "classnames";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import Suit from "components/Global/atoms/Suit";
 import { color } from "style/theme";
@@ -127,10 +127,10 @@ interface BindListProperty {
 const BindList = (props: BindListProperty) => {
   const { theme } = props;
   const [userPickBind, setUserPickBind] = useRecoilState(userPickBindState);
-  const [isUserPass, setUserPass] = useRecoilState(userPassState);
   const [nowBind, setNowBind] = useRecoilState(nowBindState);
   const playerList = useRecoilValue(OrderedStartFromTeamOne);
-  const [trump, setTrump] = useRecoilState(trumpState);
+  const setUserPass = useSetRecoilState(userPassState);
+  const setTrump = useSetRecoilState(trumpState);
   const { nextPlayer, teammate, previousPlayer } = useRecoilValue(
     relationWithUser
   );

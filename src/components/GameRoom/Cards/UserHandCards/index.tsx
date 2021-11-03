@@ -45,7 +45,7 @@ const UserHandCards = (props: UserHandCardsProperty) => {
       removeCardFromDeck({ number, suit });
       setNowPickSuit(null);
       if (!isUserLastPlayer) {
-		  console.log('dd')
+        console.log("dd");
         // switchToNextPlayer();
       }
     } else {
@@ -93,7 +93,9 @@ const UserHandCards = (props: UserHandCardsProperty) => {
     }
 
     await set(cardsRef, [...cards, userPlayData]);
-	switchToNextPlayer();
+    if (cards.length < 3) {
+      switchToNextPlayer();
+    }
   };
 
   const removeCardFromDeck = (card: Card) => {
@@ -106,7 +108,7 @@ const UserHandCards = (props: UserHandCardsProperty) => {
   };
 
   const switchToNextPlayer = () => {
-    const nextPlayerRef = child(roomRef, 'currentPlayer');
+    const nextPlayerRef = child(roomRef, "currentPlayer");
     set(nextPlayerRef, nextPlayer);
   };
 

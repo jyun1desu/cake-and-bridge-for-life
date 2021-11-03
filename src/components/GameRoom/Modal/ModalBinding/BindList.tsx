@@ -16,6 +16,7 @@ import {
 } from "store/bind";
 import { isUserTurnState, trumpState } from "store/game";
 import { relationWithUser, OrderedStartFromTeamOne } from "store/players";
+import { playersCalledListState } from "store/bind";
 import { userNameState, userRoomState } from "store/user";
 import OptionList from "./OptionList";
 
@@ -130,7 +131,10 @@ const BindList = (props: BindListProperty) => {
   const [nowBind, setNowBind] = useRecoilState(nowBindState);
   const playerList = useRecoilValue(OrderedStartFromTeamOne);
   const [trump, setTrump] = useRecoilState(trumpState);
-  const { nextPlayer } = useRecoilValue(relationWithUser);
+  const { nextPlayer, teammate, previousPlayer } = useRecoilValue(
+    relationWithUser
+  );
+  const calledList = useRecoilValue(playersCalledListState);
   const availibleTricks = useRecoilValue(availibleTricksState);
   const isUserTurn = useRecoilValue(isUserTurnState);
   const roomId = useRecoilValue(userRoomState);
@@ -156,13 +160,6 @@ const BindList = (props: BindListProperty) => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    if (isUserTurn && isUserPass && !trump) {
-      switchToNextPlayer();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isUserTurn, isUserPass, trump]);
 
   const buttonMessage = useMemo(() => {
     const noBind = nowBind.number === 0;
@@ -208,12 +205,24 @@ const BindList = (props: BindListProperty) => {
       setUserPass(true);
     }
 
-	switchToNextPlayer();
+    switchToNextPlayer();
     setUserPickBind(null);
   };
 
   const switchToNextPlayer = () => {
-    set(nextPlayerRef, nextPlayer);
+    const passedPlayers = Object.entries(calledList)
+      .filter((v) => {
+        const calledBinds = v[1];
+
+        return calledBinds.includes("pass");
+      })
+      .map((v) => v[0]);
+
+	const playersOrder = [nextPlayer, teammate, previousPlayer];
+	const next = playersOrder.filter(player => {
+		return !passedPlayers.includes(player)
+	})[0];
+    set(nextPlayerRef, next);
   };
 
   const detectTrumpDecided = () => {

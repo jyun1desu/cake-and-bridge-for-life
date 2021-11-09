@@ -44,10 +44,6 @@ const UserHandCards = (props: UserHandCardsProperty) => {
       await playCard({ number, suit });
       removeCardFromDeck({ number, suit });
       setNowPickSuit(null);
-      if (!isUserLastPlayer) {
-        console.log("dd");
-        // switchToNextPlayer();
-      }
     } else {
       setNowPickSuit(suit);
     }

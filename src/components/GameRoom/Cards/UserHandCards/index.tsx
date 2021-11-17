@@ -89,7 +89,7 @@ const UserHandCards = (props: UserHandCardsProperty) => {
     }
 
     await set(cardsRef, [...cards, userPlayData]);
-    if (cards.length < 3) {
+    if (!isUserLastPlayer) {
       switchToNextPlayer();
     }
   };

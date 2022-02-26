@@ -1,6 +1,12 @@
 import React, { useEffect } from "react";
 import db from "database";
-import { child, ref, set, onValue, off, remove } from "firebase/database";
+import {
+  child,
+  ref,
+  onValue,
+  off,
+  update,
+} from "firebase/database";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import classnames from "classnames";
@@ -102,25 +108,19 @@ const PlayedCard = () => {
   }, [isThisRoundEnd]);
 
   const handleRoundEnded = async () => {
-    const currentPlayerRef = child(roomRef, "currentPlayer");
-    await remove(currentPlayerRef);
     await sleep(2000);
+
     const winner = getRoundWinner();
     updatePoints(winner);
     if (winner === user) {
       collectThisTrick();
     }
-    await initRoundData();
-    set(currentPlayerRef, winner);
-  };
 
-  const initRoundData = async () => {
-    const thisRoundSuitRef = child(gameInfoRef, "thisRoundSuit");
-    const thisRoundCardsRef = child(gameInfoRef, "thisRoundCards");
-    await Promise.allSettled([
-      remove(thisRoundSuitRef),
-      remove(thisRoundCardsRef),
-    ]);
+    update(gameInfoRef, {
+      currentPlayer: winner,
+      thisRoundSuit: null,
+      thisRoundCards: null,
+    });
   };
 
   const getRoundWinner = () => {

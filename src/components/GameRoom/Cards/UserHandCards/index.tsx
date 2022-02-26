@@ -1,6 +1,6 @@
 import React from "react";
 import db from "database";
-import { child, ref, set, get } from "firebase/database";
+import { child, ref, get, update } from "firebase/database";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { userDeckState } from "store/deck";
 import {
@@ -65,7 +65,6 @@ const UserHandCards = (props: UserHandCardsProperty) => {
   const playCard = async (card: Card) => {
     const { suit, number } = card;
     const cardsRef = child(gameInfoRef, "thisRoundCards");
-    const suitRef = child(gameInfoRef, "thisRoundSuit");
 
     const userPlayData = {
       player: userName,
@@ -84,14 +83,19 @@ const UserHandCards = (props: UserHandCardsProperty) => {
         console.error(error);
       });
 
+    let toUpdateGameInfo = {
+      thisRoundCards: [...cards, userPlayData],
+    } as any;
+
     if (!cards.length) {
-      set(suitRef, suit);
+      toUpdateGameInfo.thisRoundSuit = suit;
     }
 
-    await set(cardsRef, [...cards, userPlayData]);
     if (!isUserLastPlayer) {
-      switchToNextPlayer();
+      toUpdateGameInfo.currentPlayer = nextPlayer;
     }
+
+    update(gameInfoRef, toUpdateGameInfo);
   };
 
   const removeCardFromDeck = (card: Card) => {
@@ -101,11 +105,6 @@ const UserHandCards = (props: UserHandCardsProperty) => {
       return !isCard;
     });
     setUserDeck(newDeck);
-  };
-
-  const switchToNextPlayer = () => {
-    const nextPlayerRef = child(roomRef, "currentPlayer");
-    set(nextPlayerRef, nextPlayer);
   };
 
   return (

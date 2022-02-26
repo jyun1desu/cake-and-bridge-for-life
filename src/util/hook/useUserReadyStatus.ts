@@ -1,5 +1,5 @@
 import db, { getFirebaseData } from "database";
-import { child, ref, update, set } from "firebase/database";
+import { child, ref, update } from "firebase/database";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { userNameState, userRoomState, userIDState } from "store/user";
@@ -31,15 +31,17 @@ const useUserReadyStatus = (type: ReadyTypes): [Values, Handlers] => {
         const playersData = Object.values(rawFirebaseData) as PlayerData[];
         const allReady = playersData.filter((data) => data.ready).length === 4;
         if (allReady) {
-          await set(child(roomRef, "currentPlayer"), userName);
-          await set(child(roomRef, type), true);
+          await update(roomRef, {
+            gameInfo: {
+              currentPlayer: userName,
+            },
+            [type]: true,
+          });
         }
       }
     };
-
     setReady(readyStatus, type);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [readyStatus, type]);
+  }, [readyStatus, type, roomId, userId, userName]);
 
   return [{ userReadyStatus: readyStatus }, { setReadyStatus }];
 };

@@ -4,11 +4,11 @@ import db from "database";
 import {
   child,
   ref,
-  update,
   remove,
   onValue,
   onDisconnect,
   off,
+  set,
 } from "firebase/database";
 import styled from "styled-components";
 import { color } from "style/theme";
@@ -57,6 +57,7 @@ const GameRoom = () => {
   const setThisRoundSuit = useSetRecoilState(thisRoundSuitState);
   const roomId = useRecoilValue(userRoomState);
   const roomRef = ref(db, roomId);
+  const gameInfoRef = child(roomRef, "gameInfo");
 
   useEffect(() => {
     initGameData();
@@ -72,17 +73,29 @@ const GameRoom = () => {
   }, []);
 
   const initGameData = async () => {
-    remove(child(roomRef, "gameInfo"));
     initGameRoomData();
-    await dealDeck();
+    dealDeck();
+    // onValue(gameInfoRef, (d) => {
+    //   const gameData = d.val();
+    //   if (!gameData) return;
+    //   const { currentPlayer } = gameData;
+    //   let toUpdate = {
+    //     currentPlayer,
+    //   } as any;
+
+    //   const newDeck = generateNewDeck();
+    //   toUpdate.deck = newDeck;
+
+    //   set(gameInfoRef, toUpdate);
+    //   dealDeck();
+    //   off(gameInfoRef);
+    // });
   };
 
   const dealDeck = async () => {
-    const gameInfoRef = child(roomRef, "gameInfo");
-    const newDeck = generateNewDeck();
-    await update(gameInfoRef, { deck: newDeck });
-
     const deckRef = child(gameInfoRef, "deck");
+    const newDeck = generateNewDeck();
+    set(deckRef, newDeck);
     onValue(deckRef, (data) => {
       const deck = data.val();
       setOtherPlayerDeck({
@@ -92,20 +105,22 @@ const GameRoom = () => {
       });
       if (deck) {
         setUserDeck(deck[userIndex]);
+        off(deckRef);
       }
     });
   };
 
   const listenOnCurrentPlayer = () => {
-    const currentPlayerRef = child(roomRef, "currentPlayer");
+    const currentPlayerRef = child(gameInfoRef, "currentPlayer");
     onValue(currentPlayerRef, (data) => {
       const nowPlayerID = data.val();
-      setNowPlayerState(nowPlayerID);
+      if (nowPlayerID) {
+        setNowPlayerState(nowPlayerID);
+      }
     });
   };
 
   const listenOnThisRoundSuit = () => {
-    const gameInfoRef = child(roomRef, "gameInfo");
     const roundSuitRef = child(gameInfoRef, "thisRoundSuit");
     onValue(roundSuitRef, (data) => {
       const roundSuit = data.val();
@@ -135,17 +150,12 @@ const GameRoom = () => {
 
   const removeListeners = () => {
     const gameInfoRef = child(roomRef, "gameInfo");
-    const currentPlayerRef = child(roomRef, "currentPlayer");
     const eventRef = child(roomRef, "event");
     const deckInfo = child(gameInfoRef, "deck");
     const roundSuitRef = child(gameInfoRef, "thisRoundSuit");
-
-    off(currentPlayerRef);
     off(deckInfo);
     off(roundSuitRef);
-
     remove(eventRef);
-
     onDisconnect(roomRef).cancel();
     onDisconnect(child(roomRef, `playersInfo/${userID}`)).cancel();
   };

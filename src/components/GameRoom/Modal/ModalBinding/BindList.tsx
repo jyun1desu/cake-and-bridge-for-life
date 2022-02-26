@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 import db from "database";
-import { child, ref, set, onValue, off, get } from "firebase/database";
+import { child, ref, onValue, off, get, update } from "firebase/database";
 import classnames from "classnames";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -12,7 +12,6 @@ import {
   userPickBindState,
   nowBindState,
   availibleTricksState,
-  userPassState,
 } from "store/bind";
 import { isUserTurnState, trumpState } from "store/game";
 import { relationWithUser, OrderedStartFromTeamOne } from "store/players";
@@ -129,7 +128,6 @@ const BindList = (props: BindListProperty) => {
   const [userPickBind, setUserPickBind] = useRecoilState(userPickBindState);
   const [nowBind, setNowBind] = useRecoilState(nowBindState);
   const playerList = useRecoilValue(OrderedStartFromTeamOne);
-  const setUserPass = useSetRecoilState(userPassState);
   const setTrump = useSetRecoilState(trumpState);
   const { nextPlayer, teammate, previousPlayer } = useRecoilValue(
     relationWithUser
@@ -142,7 +140,6 @@ const BindList = (props: BindListProperty) => {
 
   const roomRef = ref(db, roomId);
   const gameInfoRef = child(roomRef, "gameInfo");
-  const nextPlayerRef = child(roomRef, "currentPlayer");
 
   useEffect(() => {
     detectTrumpDecided();
@@ -181,7 +178,6 @@ const BindList = (props: BindListProperty) => {
   }, [isUserTurn, userPickBind, nowBind]);
 
   const callBind = async () => {
-    if (!isUserTurn || buttonMessage === "不能PASS!") return;
     const userBindListRef = child(gameInfoRef, `calledBinds/${userName}`);
 
     const prevUserBinds = await get(userBindListRef)
@@ -196,33 +192,35 @@ const BindList = (props: BindListProperty) => {
         console.error(error);
       });
 
-    await set(userBindListRef, [...prevUserBinds, userPickBind || "pass"]);
+    const nextPlayer = getNext();
+
+    let toUpdate = {
+      [`calledBinds/${userName}`]: [...prevUserBinds, userPickBind || "pass"],
+      currentPlayer: nextPlayer,
+    } as any;
 
     if (userPickBind) {
-      const bindRef = child(gameInfoRef, "nowBind");
-      await set(bindRef, { ...userPickBind, player: userName });
-    } else {
-      setUserPass(true);
+      toUpdate = {
+        ...toUpdate,
+        nowBind: { ...userPickBind, player: userName },
+      };
     }
 
-    switchToNextPlayer();
+    await update(gameInfoRef, toUpdate);
     setUserPickBind(null);
   };
 
-  const switchToNextPlayer = () => {
+  const getNext = () => {
     const passedPlayers = Object.entries(calledList)
-      .filter((v) => {
-        const calledBinds = v[1];
-
-        return calledBinds.includes("pass");
-      })
+      .filter((v) => v[1].includes("pass"))
       .map((v) => v[0]);
 
-	const playersOrder = [nextPlayer, teammate, previousPlayer];
-	const next = playersOrder.filter(player => {
-		return !passedPlayers.includes(player)
-	})[0];
-    set(nextPlayerRef, next);
+    const playersOrder = [nextPlayer, teammate, previousPlayer];
+    const next = playersOrder.filter((player) => {
+      return !passedPlayers.includes(player);
+    })[0];
+
+    return next;
   };
 
   const detectTrumpDecided = () => {
@@ -250,7 +248,13 @@ const BindList = (props: BindListProperty) => {
           });
 
         setTrump({ suit, number });
-        set(nextPlayerRef, getNextPlayer(player));
+
+        update(gameInfoRef, {
+          currentPlayer: getNextPlayer(player),
+          calledBinds: null,
+          nowBind: null,
+        });
+
         off(bindListRef);
       }
     });
@@ -279,6 +283,7 @@ const BindList = (props: BindListProperty) => {
         <button
           onClick={callBind}
           className={classnames({ has_pick_bind: userPickBind })}
+          disabled={!isUserTurn || buttonMessage === "不能PASS!"}
         >
           {buttonMessage}
         </button>

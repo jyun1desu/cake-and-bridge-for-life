@@ -17,11 +17,6 @@ export const nowBindState = atom({
     default: { player: null, number:0, suit: CardSuitType.Club },
 });
 
-export const userPassState = atom({
-    key: 'userPassState',
-    default: false as Boolean,
-});
-
 export const playersCalledListState = atom({
     key: 'playersCalledListState',
     default: {} as { [key: string]: CalledBind[] },

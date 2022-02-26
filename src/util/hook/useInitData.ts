@@ -6,7 +6,7 @@ import { thisRoundCardsState, trumpState } from 'store/game';
 import { playersData } from 'store/players';
 import { teamScoresState } from 'store/score';
 import { userWinTricksState } from 'store/winTricks';
-import {  userPickBindState, nowBindState, userPassState, playersCalledListState } from 'store/bind';
+import {  userPickBindState, nowBindState, playersCalledListState } from 'store/bind';
 
 
 const useInitData = () => {
@@ -18,7 +18,6 @@ const useInitData = () => {
     const initScore = useResetRecoilState(teamScoresState);
     const initUserPickBind = useResetRecoilState(userPickBindState);
     const initNowBind = useResetRecoilState(nowBindState);
-    const initPassState = useResetRecoilState(userPassState);
     const initRoundCards = useResetRecoilState(thisRoundCardsState);
     const initTrump = useResetRecoilState(trumpState);
     const initCalledList = useResetRecoilState(playersCalledListState);
@@ -37,7 +36,6 @@ const useInitData = () => {
         initScore();
         initUserPickBind();
         initNowBind();
-        initPassState();
         initCalledList();
         initRoundCards();
         initTrump();

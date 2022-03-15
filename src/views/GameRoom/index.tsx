@@ -75,37 +75,27 @@ const GameRoom = () => {
   const initGameData = async () => {
     initGameRoomData();
     dealDeck();
-    // onValue(gameInfoRef, (d) => {
-    //   const gameData = d.val();
-    //   if (!gameData) return;
-    //   const { currentPlayer } = gameData;
-    //   let toUpdate = {
-    //     currentPlayer,
-    //   } as any;
-
-    //   const newDeck = generateNewDeck();
-    //   toUpdate.deck = newDeck;
-
-    //   set(gameInfoRef, toUpdate);
-    //   dealDeck();
-    //   off(gameInfoRef);
-    // });
   };
 
   const dealDeck = async () => {
     const deckRef = child(gameInfoRef, "deck");
     const newDeck = generateNewDeck();
-    set(deckRef, newDeck);
+
+    if (userIndex === 1) {
+      set(deckRef, newDeck);
+    }
+
+    setOtherPlayerDeck({
+      [nextPlayer]: 13,
+      [teammate]: 13,
+      [previousPlayer]: 13,
+    });
+
     onValue(deckRef, (data) => {
       const deck = data.val();
-      setOtherPlayerDeck({
-        [nextPlayer]: 13,
-        [teammate]: 13,
-        [previousPlayer]: 13,
-      });
+
       if (deck) {
         setUserDeck(deck[userIndex]);
-        off(deckRef);
       }
     });
   };

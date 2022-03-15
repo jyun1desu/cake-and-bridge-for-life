@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.js": "/cake-and-bridge-for-life/static/js/main.6ae72e79.chunk.js",
-    "main.js.map": "/cake-and-bridge-for-life/static/js/main.6ae72e79.chunk.js.map",
+    "main.js": "/cake-and-bridge-for-life/static/js/main.8bd091ce.chunk.js",
+    "main.js.map": "/cake-and-bridge-for-life/static/js/main.8bd091ce.chunk.js.map",
     "runtime-main.js": "/cake-and-bridge-for-life/static/js/runtime-main.d00aaaf4.js",
     "runtime-main.js.map": "/cake-and-bridge-for-life/static/js/runtime-main.d00aaaf4.js.map",
-    "static/js/2.d618fa55.chunk.js": "/cake-and-bridge-for-life/static/js/2.d618fa55.chunk.js",
-    "static/js/2.d618fa55.chunk.js.map": "/cake-and-bridge-for-life/static/js/2.d618fa55.chunk.js.map",
+    "static/js/2.c461422e.chunk.js": "/cake-and-bridge-for-life/static/js/2.c461422e.chunk.js",
+    "static/js/2.c461422e.chunk.js.map": "/cake-and-bridge-for-life/static/js/2.c461422e.chunk.js.map",
     "static/js/3.dec842a0.chunk.js": "/cake-and-bridge-for-life/static/js/3.dec842a0.chunk.js",
     "static/js/3.dec842a0.chunk.js.map": "/cake-and-bridge-for-life/static/js/3.dec842a0.chunk.js.map",
     "index.html": "/cake-and-bridge-for-life/index.html",
-    "static/js/2.d618fa55.chunk.js.LICENSE.txt": "/cake-and-bridge-for-life/static/js/2.d618fa55.chunk.js.LICENSE.txt",
+    "static/js/2.c461422e.chunk.js.LICENSE.txt": "/cake-and-bridge-for-life/static/js/2.c461422e.chunk.js.LICENSE.txt",
     "static/media/bumpintowindow.fd5eab02.gif": "/cake-and-bridge-for-life/static/media/bumpintowindow.fd5eab02.gif",
     "static/media/kanaheiclap.23b0e19f.gif": "/cake-and-bridge-for-life/static/media/kanaheiclap.23b0e19f.gif",
     "static/media/logo.ba38e50a.svg": "/cake-and-bridge-for-life/static/media/logo.ba38e50a.svg",
@@ -18,7 +18,7 @@
   },
   "entrypoints": [
     "static/js/runtime-main.d00aaaf4.js",
-    "static/js/2.d618fa55.chunk.js",
-    "static/js/main.6ae72e79.chunk.js"
+    "static/js/2.c461422e.chunk.js",
+    "static/js/main.8bd091ce.chunk.js"
   ]
 }
